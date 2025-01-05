@@ -2,6 +2,7 @@ import express from 'express';
 import logger from 'morgan';
 import { createServer } from 'node:http';
 import { Server } from 'socket.io';
+import { getGeminiResponse } from './services/geminiService.js';
 
 const port = process.env.PORT ?? 3001;
 const app = express();
@@ -21,9 +22,23 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
   console.log(`a user connected: ${socket.id}`);
-  socket.on('message', (message) => {
-    console.log(`Server.consolelog.message-received: ${message}`);
-    io.emit('message_response', 'I RECEIVED YOUR MESSAGE:' + message);
+
+  socket.on('chat_message', async (message) => {
+    console.log(`Received message: ${message}`);
+    try {
+      const stream = await getGeminiResponse(message);
+
+      for await (const chunk of stream) {
+        const text = chunk.text();
+        console.log(`Sending chunk: ${text}`);
+        socket.emit('chat_response', text);
+      }
+
+      socket.emit('chat_done');
+    } catch (error) {
+      console.error('Error:', error);
+      socket.emit('chat_error', 'Streaming error');
+    }
   });
 });
 

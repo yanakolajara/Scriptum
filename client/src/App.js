@@ -9,7 +9,7 @@ function App() {
 
   useEffect(() => {
     socket.on('connect', () => {
-      console.log('✅ Connecter:', socket.id);
+      console.log('✅ Connected:', socket.id);
       console.log('Status:', socket.connected);
     });
 
@@ -17,24 +17,37 @@ function App() {
       console.log('❌ Disconnected' + socket.id);
     });
 
-    socket.on('message_response', (message) => {
-      console.log('Received:', message);
+    socket.on('chat_response', (data) => {
+      setAiResponse((prev) => prev + data);
+    });
+
+    socket.on('chat_done', () => {
+      setChat((prev) => [...prev, { role: 'ai', text: aiResponse }]);
+      setLoading(false);
+      setAiResponse('');
+    });
+
+    socket.on('chat_error', (error) => {
+      setAiResponse(`Error: ${error}`);
       setLoading(false);
     });
 
     return () => {
       socket.off('connect');
       socket.off('disconnect');
+      socket.off('chat_response');
+      socket.off('chat_done');
+      socket.off('chat_error');
     };
-  }, []);
+  }, [aiResponse]);
 
   const sendMessage = () => {
     if (!message.trim()) return;
 
-    // setChat((prev) => [...prev, { role: 'user', text: message }]);
-    // setAiResponse('');
+    setChat((prev) => [...prev, { role: 'user', text: message }]);
+    setAiResponse('');
     setLoading(true);
-    socket.emit('message', message);
+    socket.emit('chat_message', message);
     setMessage('');
   };
 
@@ -42,10 +55,10 @@ function App() {
     <div className='App'>
       <h1>Chat</h1>
 
-      {/* <div className='chat-container'>
+      <div className='chat-container'>
         {chat.map((msg, index) => (
           <p key={index}>
-            <strong>{msg.role === 'user' ? 'You' : 'IA'}:</strong> {msg.text}
+            <strong>{msg.role === 'user' ? 'You' : 'AI'}:</strong> {msg.text}
           </p>
         ))}
         {loading && (
@@ -54,7 +67,7 @@ function App() {
             <span className='blinking-cursor'>|</span>
           </p>
         )}
-      </div> */}
+      </div>
 
       <input
         type='text'
@@ -62,7 +75,7 @@ function App() {
         onChange={(e) => setMessage(e.target.value)}
       />
       <button onClick={sendMessage} disabled={loading}>
-        Enviar
+        Send
       </button>
     </div>
   );
