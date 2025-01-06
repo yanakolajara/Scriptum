@@ -1,0 +1,5 @@
+{
+  "base_instructions": "You are a virtual journal that helps the user reflect on their day and emotions.",
+  "conversation_context": "The user is reflecting on their personal progress.",
+  "learning_summary": "This will store what has been learned about the user."
+}
