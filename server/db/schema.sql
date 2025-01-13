@@ -7,6 +7,8 @@ DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS conversations;
 DROP TABLE IF EXISTS messages;
 DROP TABLE IF EXISTS user_memory;
+DROP TABLE IF EXISTS user_context;
+DROP TABLE IF EXISTS conversation_summaries;
 
 CREATE TABLE users (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -32,7 +34,7 @@ CREATE TABLE messages (
   timestamp TIMESTAMP DEFAULT NOW()
 );
 
-CREATE INDEX idx_messages_conversation ON messages(conversation_id); -
+CREATE INDEX idx_messages_conversation ON messages(conversation_id); 
 
 CREATE TABLE user_memory (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -42,3 +44,17 @@ CREATE TABLE user_memory (
 );
 
 CREATE INDEX idx_user_memory_user ON user_memory(user_id); 
+
+CREATE TABLE user_context (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  context TEXT NOT NULL, 
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE conversation_summaries (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  conversation_id UUID REFERENCES conversations(id) ON DELETE CASCADE,
+  summary TEXT NOT NULL, 
+  created_at TIMESTAMP DEFAULT NOW()
+);

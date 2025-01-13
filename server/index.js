@@ -1,26 +1,32 @@
 import express from 'express';
-import logger from 'morgan';
-import { createServer } from 'node:http';
+import morgan from 'morgan';
 import { Server } from 'socket.io';
-import { handleWebSocketEvents } from './controllers/websocketController.js';
+import { createServer } from 'node:http';
+import { PORT, CLIENT_URL } from './config/env.js';
+import { createChatEvent, genaiMessageEvent } from './sockets/chat.sockets.js';
 
-const port = process.env.PORT ?? 3001;
 const app = express();
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:3000',
+    origin: CLIENT_URL,
     methods: ['GET', 'POST'],
   },
 });
 
-app.use(logger('dev'));
+app.use(morgan('dev'));
+app.use(express.json());
+
 app.get('/', (req, res) => {
   res.send('<h1>Hello world</h1>');
 });
 
-handleWebSocketEvents(io);
+io.on('connection', (socket) => {
+  socket.on('chat:create', (userID) => createChatEvent(socket, userID));
+  socket.on('genai:request', (data) => genaiMessageEvent(socket, data));
+  socket.on('disconnect', () => console.log('WS Disconnected:', socket.id));
+});
 
-server.listen(port, () => {
-  console.log(`Server running on port: ${port}`);
+server.listen(PORT, () => {
+  console.log(`Server running on port: ${PORT}`);
 });
