@@ -15,11 +15,13 @@ export const useChat = () => {
   const [chatArr, setChatArr] = useState([]);
   const [streaming, setStreaming] = useState('');
   const [userInput, setUserInput] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleChatCreated = (chatID) => setChatID(chatID);
 
   const handleSendMessage = () => {
     if (isStringEmpty(userInput)) return;
+    setLoading(true);
     const updatedChat = [...chatArr, { role: 'user', text: userInput }];
     setChatArr(updatedChat);
     setStreaming('');
@@ -28,11 +30,12 @@ export const useChat = () => {
   };
 
   const handleGenaiStream = (chunk) => {
-    setStreaming(streaming + chunk);
+    setStreaming((prev) => `${prev}${chunk}`);
   };
 
   const handleGenaiFinalized = () => {
-    const updatedChat = [...chatArr, { role: 'FINALai', text: streaming }];
+    setLoading(false);
+    const updatedChat = [...chatArr, { role: 'ai', text: streaming }];
     setChatArr(updatedChat);
   };
 
@@ -48,7 +51,7 @@ export const useChat = () => {
       onGenaiFinalized: handleGenaiFinalized,
       onError: handleError,
     });
-    return () => cleanupListeners;
+    return () => cleanupListeners();
   }, [streaming]);
 
   useEffect(() => {
@@ -59,6 +62,7 @@ export const useChat = () => {
     userInput,
     chatArr,
     streaming,
+    loading,
     handleChatCreated,
     handleSendMessage,
     handleGenaiStream,
