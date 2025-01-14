@@ -3,12 +3,12 @@ CREATE DATABASE ai_journal;
 
 \c ai_journal;
 
-DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS conversations;
-DROP TABLE IF EXISTS messages;
-DROP TABLE IF EXISTS user_memory;
-DROP TABLE IF EXISTS user_context;
-DROP TABLE IF EXISTS conversation_summaries;
+DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS conversations CASCADE;
+DROP TABLE IF EXISTS messages CASCADE;
+DROP TABLE IF EXISTS user_memory CASCADE;
+DROP TABLE IF EXISTS user_context CASCADE;
+DROP TABLE IF EXISTS conversation_summaries CASCADE;
 
 CREATE TABLE users (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
