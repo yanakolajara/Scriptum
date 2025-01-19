@@ -6,66 +6,23 @@
 }
 
 .App {
-  display: flex;
-  flex-direction: row;
+  //   display: flex;
+  //   flex-direction: row;
+  display: grid;
+  grid-template-columns: 25% auto;
   height: 100vh;
-  padding: 10px;
+  padding: 15px;
+  background: #fefdf6;
 }
 
-.navbar {
-  width: 20%;
-  height: 100%;
-  background-color: #f5f5f5;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 20px;
-  border-right: 2px solid #ddd;
-
-  header {
-    font-size: 1.4rem;
-    font-weight: bold;
-  }
-
-  article {
-    flex-grow: 1;
-    padding-top: 20px;
-
-    a {
-      text-decoration: none;
-      color: black;
-      font-size: 1.2rem;
-      display: block;
-      margin-bottom: 10px;
-    }
-  }
-
-  footer {
-    display: flex;
-    flex-direction: column;
-
-    button {
-      margin: 5px 0;
-      padding: 8px;
-      border: none;
-      cursor: pointer;
-      background: #ddd;
-      border-radius: 5px;
-      transition: 0.2s;
-
-      &:hover {
-        background: #ccc;
-      }
-    }
-  }
+.spacer {
 }
 
 .content {
+  display: flex;
   width: 80%;
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  justify-self: center;
   padding: 20px;
 }
 
@@ -73,9 +30,9 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 70%;
-  height: 90%;
-  background-color: #fff;
+  width: 100%;
+
+  background-color: #dedede;
   border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   padding: 15px;
