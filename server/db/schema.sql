@@ -3,58 +3,53 @@ CREATE DATABASE ai_journal;
 
 \c ai_journal;
 
-DROP TABLE IF EXISTS users CASCADE;
-DROP TABLE IF EXISTS conversations CASCADE;
-DROP TABLE IF EXISTS messages CASCADE;
-DROP TABLE IF EXISTS user_memory CASCADE;
-DROP TABLE IF EXISTS user_context CASCADE;
-DROP TABLE IF EXISTS conversation_summaries CASCADE;
+-- DROP TABLE IF EXISTS JournalEntryTags;
+-- DROP TABLE IF EXISTS Tags;
+DROP TABLE IF EXISTS journal_entries;
+DROP TABLE IF EXISTS user_contexts;
+DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  name TEXT NOT NULL,
-  email TEXT UNIQUE NOT NULL,
-  timestamp TIMESTAMP DEFAULT NOW()
+    id SERIAL PRIMARY KEY,
+    oauth_provider VARCHAR(50),
+    oauth_id VARCHAR(100),
+    email VARCHAR(255) UNIQUE NOT NULL,
+    hashed_password VARCHAR(255),                 
+    first_name VARCHAR(255),
+    middle_name VARCHAR(255),
+    last_name VARCHAR(255),
+    is_verified BOOLEAN DEFAULT FALSE   
 );
 
-CREATE TABLE conversations (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
-  title TEXT, 
-  timestamp TIMESTAMP DEFAULT NOW()
+CREATE TABLE user_contexts (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER UNIQUE NOT NULL,       
+    context TEXT NOT NULL,                 
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
-CREATE INDEX idx_conversations_user ON conversations(user_id); 
-
-CREATE TABLE messages (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  conversation_id UUID REFERENCES conversations(id) ON DELETE CASCADE,
-  sender TEXT CHECK (sender IN ('user', 'ai')), 
-  content TEXT NOT NULL,
-  timestamp TIMESTAMP DEFAULT NOW()
+CREATE TABLE journal_entries (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    content TEXT NOT NULL,                 
+    description VARCHAR(255),              
+    entry_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    starred BOOLEAN DEFAULT FALSE,         
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
-CREATE INDEX idx_messages_conversation ON messages(conversation_id); 
+-- CREATE TABLE tags (
+--     id SERIAL PRIMARY KEY,
+--     name VARCHAR(50) UNIQUE NOT NULL,
+--     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+-- );
 
-CREATE TABLE user_memory (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
-  memory TEXT NOT NULL, 
-  updated_at TIMESTAMP DEFAULT NOW()
-);
-
-CREATE INDEX idx_user_memory_user ON user_memory(user_id); 
-
-CREATE TABLE user_context (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
-  context TEXT NOT NULL, 
-  updated_at TIMESTAMP DEFAULT NOW()
-);
-
-CREATE TABLE conversation_summaries (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  conversation_id UUID REFERENCES conversations(id) ON DELETE CASCADE,
-  summary TEXT NOT NULL, 
-  created_at TIMESTAMP DEFAULT NOW()
-);
+-- CREATE TABLE journal_entry_tags (
+--     id SERIAL PRIMARY KEY,
+--     journal_entry_id INTEGER NOT NULL,
+--     tag_id INTEGER NOT NULL,
+--     FOREIGN KEY (journal_entry_id) REFERENCES journal_entries(id) ON DELETE CASCADE,
+--     FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE,
+--     UNIQUE (journal_entry_id, tag_id)
+-- );

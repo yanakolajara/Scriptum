@@ -1,7 +1,8 @@
 import React from 'react';
-import { useChat } from './useChat.js';
-import ChatDisplay from './ChatDisplay.jsx';
-import ChatInput from './ChatInput.jsx';
+import { useChat } from './hooks/useChat.js';
+import ChatDisplay from './components/ChatDisplay.jsx';
+import ChatInput from './components/ChatInput.jsx';
+import ChatHeader from './components/ChatHeader.jsx';
 
 export default function Chat() {
   const {
@@ -14,8 +15,8 @@ export default function Chat() {
   } = useChat();
 
   return (
-    <div className='chat'>
-      <h1>Chat</h1>
+    <div className='chat content'>
+      <ChatHeader />
       <ChatDisplay chatArr={chatArr} streaming={streaming} loading={loading} />
       <ChatInput
         userInput={userInput}

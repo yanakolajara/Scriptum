@@ -10,13 +10,11 @@ function App() {
     <div className='App'>
       <Navbar />
       <div className='spacer'>
-        <div className='content'>
-          <Routes>
-            <Route path='/' element={<Home />} />
-            <Route path='/chat' element={<Chat />} />
-            <Route path='*' element={<h1>Not found</h1>} />
-          </Routes>
-        </div>
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/chat' element={<Chat />} />
+          <Route path='*' element={<h1>Not found</h1>} />
+        </Routes>
       </div>
     </div>
   );

@@ -1,7 +1,6 @@
 import db from '../db/dbConfig.js';
-import { asyncHandler } from '../utils/async.handler.js';
 
-export const createConversation = asyncHandler(async (userID) => {
+export const createConversation = async (userID) => {
   const title = 'New Chat';
   const values = [userID, title];
   const result = await db.one(
@@ -14,7 +13,7 @@ export const createConversation = asyncHandler(async (userID) => {
   );
   console.log('chat.controller:', result);
   return result;
-});
+};
 
 export const createMessage = async (chatID, userInput, role) => {
   const values = [chatID, role, userInput];

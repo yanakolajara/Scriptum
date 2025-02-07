@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { isStringEmpty } from './validations.js';
-import { chatTranscriptFormat } from './formatting.js';
+import { isStringEmpty } from '../utils/validations.js';
+import { chatTranscriptFormat } from '../utils/formatting.js';
 import {
   chatCreate,
   cleanupListeners,

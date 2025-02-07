@@ -1,24 +1,18 @@
+import dotenv from 'dotenv';
 import pgPromise from 'pg-promise';
-import {
-  PG_HOST,
-  PG_PORT,
-  PG_DATABASE,
-  PG_USER,
-  PG_PASSWORD,
-} from '../config/env.js';
 
-const pgp = pgPromise();
+dotenv.config();
+const pgp = pgPromise({});
 
 const cn = {
-  host: PG_HOST,
-  port: PG_PORT,
-  database: PG_DATABASE,
-  user: PG_USER,
-  password: PG_PASSWORD,
+  host: process.env.PG_HOST,
+  port: process.env.PG_PORT,
+  database: process.env.PG_DATABASE,
+  user: process.env.PG_USER,
+  password: process.env.PG_PASSWORD,
 };
 
 const db = pgp(cn);
-
 db.connect()
   .then((obj) => {
     console.log('Database connected');

@@ -1,11 +1,11 @@
 import React from 'react';
-import Message from './Message';
+import ChatMessage from './ChatMessage';
 
 export default function ChatDisplay({ chatArr, streaming, loading }) {
   return (
     <div className='chat-container'>
       {chatArr.map((msg, index) => (
-        <Message key={index} msg={msg} />
+        <ChatMessage key={index} msg={msg} />
       ))}
       {loading && (
         <p>
