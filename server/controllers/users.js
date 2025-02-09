@@ -1,4 +1,6 @@
-import { validateUser } from '../schemas/user.js';
+import { validatePartialUser, validateUser } from '../schemas/user.js';
+import jwt from 'jsonwebtoken';
+import cookieParser from 'cookie-parser';
 
 export class UserController {
   constructor({ userModel }) {
@@ -16,29 +18,52 @@ export class UserController {
   };
   create = async (req, res) => {
     const result = validateUser(req.body);
+    res.status(200).json(result);
     if (!result.success) {
       return res.status(400).json({ message: result.error.message });
     }
     const user = await this.userModel.create(result);
     res.status(201).json({
       success: true,
-      message: 'Please check your email for the verification code.',
+      //   message: 'Please check your email for the verification code.',
+      message: 'Registration successful',
     });
   };
-  verify = async (req, res) => {
-    const user = await this.userModel.verify(req.body);
-    //TODO: Create token
-    //TODO: Send token as a cookie
+
+  // get = async (req, res) => {
+  //   const result = validatePartialUser(req.body);
+  //   if (!result.success) {
+  //     return res.status(400).json({ message: result.error.message });
+  //   }
+  //   const user = this.userModel.login(result);
+  //   const token = jwt.sign(
+  //     {
+  //       id: user.id,
+  //     },
+  //     process.env.JWT_SECRET
+  //   );
+
+  //   //TODO: Add an expiration timer to the token
+
+  //   //TODO: Add cookie config to the cookie
+  //   res
+  //     .cookie('access_token', token, {
+  //       httpOnly: true,
+  //     })
+  //     .status(200)
+  //     .json({ success: true });
+  // };
+
+  update = async (req, res) => {
+    const result = validatePartialUser(req.body);
+    if (!result.success) {
+      return res.status(400).json({ message: result.error.message });
+    }
+    const user = await this.userModel.update(req.params.id, result);
     res.status(200).json(user);
   };
-
-  login = async (req, res) => {
-    res.status(200).json({ success: true });
-  };
-  update = async (req, res) => {
-    res.status(200).json({ success: true });
-  };
   delete = async (req, res) => {
-    res.status(200).json({ success: true });
+    const user = await this.userModel.delete(req.params.id);
+    res.status(200).json(user);
   };
 }

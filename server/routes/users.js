@@ -9,10 +9,10 @@ export const createUsersRouter = ({ userModel }) => {
   usersRouter.get('/:id', userController.getById);
 
   usersRouter.post('/create', userController.create);
-  usersRouter.post('/login', userController.login);
-  usersRouter.post('/verify', userController.verify);
   usersRouter.put('/:id', userController.update);
   usersRouter.delete('/:id', userController.delete);
+  // usersRouter.post('/login', userController.login);
+  // usersRouter.post('/verify', userController.verify);
 
   return usersRouter;
 };

@@ -1,5 +1,6 @@
-import db from '../db/dbConfig.js';
+import db from '../../db/dbConfig.js';
 import bcrypt from 'bcrypt';
+import { uuid } from 'uuidv4';
 
 export class UserModel {
   static async getAll() {
@@ -16,10 +17,11 @@ export class UserModel {
   }
   static async create({ email, password, first_name, middle_name, last_name }) {
     const hashedPassword = await bcrypt.hash(password, 10);
+    const userId = uuid();
     try {
       const user = await db.one(
-        'INSERT INTO users (email, password, first_name, middle_name, last_name) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-        [email, hashedPassword, first_name, middle_name, last_name]
+        'INSERT INTO users (id, email, password, first_name, middle_name, last_name) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+        [userId, email, hashedPassword, first_name, middle_name, last_name]
       );
       return user;
     } catch (error) {
@@ -27,14 +29,10 @@ export class UserModel {
     }
   }
 
-  static async verify() {
-    try {
-    } catch (error) {}
-  }
-  static async login() {
-    try {
-    } catch (error) {}
-  }
+  // static async get() {
+  //   try {
+  //   } catch (error) {}
+  // }
   static async update() {
     try {
     } catch (error) {}
