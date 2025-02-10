@@ -14,7 +14,7 @@ CREATE TABLE users (
     oauth_provider VARCHAR(50),
     oauth_id VARCHAR(100),
     email VARCHAR(255) UNIQUE NOT NULL,
-    hashed_password VARCHAR(255),                 
+    password VARCHAR(255),                 
     first_name VARCHAR(255),
     middle_name VARCHAR(255),
     last_name VARCHAR(255),

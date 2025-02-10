@@ -1,5 +1,32 @@
 ### Get hello world
-GET http://localhost:3001/
+GET http://localhost:8080/
 
 ### Get all users
-GET http://localhost:3001/users/
+GET http://localhost:8080/users/
+
+### Create user
+POST http://localhost:8080/users/
+Content-Type: application/json
+
+{
+    "email": "email@gmail.com",
+    "password": "MikeWaz0wsk1",
+    "first_name": "Mike",
+    "middle_name": "",
+    "last_name": "Wazowski"
+}
+
+### Edit user
+PUT http://localhost:8080/users/2
+Content-Type: application/json
+
+{
+    "email": "email@outlook.com",
+    "password": "MikeWaz0wsk#1",
+    "first_name": "Mike",
+    "middle_name": "",
+    "last_name": "Wazowski"
+}
+
+### Delete user
+DELETE http://localhost:8080/users/1

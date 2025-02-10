@@ -17,16 +17,19 @@ export class UserController {
     res.status(200).json(user);
   };
   create = async (req, res) => {
-    const result = validateUser(req.body);
-    res.status(200).json(result);
-    if (!result.success) {
-      return res.status(400).json({ message: result.error.message });
-    }
+    // const result = validateUser(req.body);
+    const result = req.body;
+    // if (!result.success) {
+    //   return res.status(400).json({ message: result.error.message });
+    // }
+    console.log(result);
     const user = await this.userModel.create(result);
     res.status(201).json({
       success: true,
-      //   message: 'Please check your email for the verification code.',
-      message: 'Registration successful',
+      // message: 'Please check your email for the verification code.',
+      data: {
+        result,
+      },
     });
   };
 
@@ -55,15 +58,20 @@ export class UserController {
   // };
 
   update = async (req, res) => {
-    const result = validatePartialUser(req.body);
-    if (!result.success) {
-      return res.status(400).json({ message: result.error.message });
-    }
-    const user = await this.userModel.update(req.params.id, result);
+    // const result = validatePartialUser(req.body);
+    // if (!result.success) {
+    //   return res.status(400).json({ message: result.error.message });
+    // }
+    const result = {
+      id: req.params.id,
+      ...req.body,
+    };
+    const user = await this.userModel.update(result);
     res.status(200).json(user);
   };
+
   delete = async (req, res) => {
-    const user = await this.userModel.delete(req.params.id);
+    const user = await this.userModel.delete({ id: req.params.id });
     res.status(200).json(user);
   };
 }

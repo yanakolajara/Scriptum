@@ -3,7 +3,7 @@
 TRUNCATE TABLE journal_entry_tags, tags, journal_entries, user_contexts, users RESTART IDENTITY CASCADE;
 
 
-INSERT INTO users (oauth_provider, oauth_id, email, hashed_password, first_name, middle_name, last_name, is_verified)
+INSERT INTO users (oauth_provider, oauth_id, email, password, first_name, middle_name, last_name, is_verified)
 VALUES 
   (NULL, NULL, 'yanakolajara@pursuit.org', '$2b$10$examplehashedpasswordalice', 'Yanako', '', 'Lajara', TRUE);
 
