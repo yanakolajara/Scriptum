@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { register } from '../../api/api';
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -16,9 +17,10 @@ export default function Register() {
       [name]: value,
     });
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    const userCreated = await register(formData);
+    console.log(userCreated);
   };
   return (
     <main>

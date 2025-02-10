@@ -1,6 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
 import { createUsersRouter } from './routes/users.js';
+import cors from 'cors';
 // import { Server } from 'socket.io';
 // import { createServer } from 'node:http';
 // import { createChatEvent, genaiMessageEvent } from './sockets/chat.sockets.js';
@@ -17,6 +18,7 @@ export const createApp = ({ userModel }) => {
 
   app.use(morgan('dev'));
   app.use(express.json());
+  app.use(cors());
   // app.use(corsMiddleware());
 
   app.use('/users', createUsersRouter({ userModel }));

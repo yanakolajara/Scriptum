@@ -6,8 +6,13 @@ import './styles/main.scss';
 import './App.scss';
 import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
+import { getAllUsers } from './api/api';
+import { useEffect } from 'react';
 
 function App() {
+  useEffect(() => {
+    getAllUsers();
+  }, []);
   return (
     <div className='App'>
       <Navbar />
