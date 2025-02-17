@@ -1,7 +1,8 @@
 import express from 'express';
 import morgan from 'morgan';
-import { createUsersRouter } from './routes/users.js';
+import { createUsersRouter } from './routes/users.routes.js';
 import cors from 'cors';
+import { errorHandler } from './middlewares/error.handler.js';
 // import { Server } from 'socket.io';
 // import { createServer } from 'node:http';
 // import { createChatEvent, genaiMessageEvent } from './sockets/chat.sockets.js';
@@ -22,6 +23,12 @@ export const createApp = ({ userModel }) => {
   // app.use(corsMiddleware());
 
   app.use('/users', createUsersRouter({ userModel }));
+
+  app.use((err, req, res, next) => {
+    res.status(err.statusCode || 500).json({ message: err.message });
+  });
+
+  app.use(errorHandler);
 
   app.get('/', (req, res) => {
     res.status(200).json({ message: 'Welcome to Scriptum API' });

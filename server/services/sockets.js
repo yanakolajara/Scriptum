@@ -1,4 +1,4 @@
-import { getGenaiResponse } from '../services/genai.service.js';
+import { getGenaiResponse } from './genaiService.js';
 import {
   createConversation,
   createMessage,

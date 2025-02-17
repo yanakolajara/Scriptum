@@ -1,5 +1,5 @@
 import { createApp } from './app.js';
-import { UserModel } from './models/postgresql/user.js';
+import { UserModel } from './models/postgresql/user.model.js';
 
 const app = createApp({ userModel: UserModel });
 const PORT = process.env.PORT || 8080;

@@ -5,6 +5,7 @@ CREATE DATABASE ai_journal;
 
 -- DROP TABLE IF EXISTS JournalEntryTags;
 -- DROP TABLE IF EXISTS Tags;
+DROP TABLE IF EXISTS mfa_codes;
 DROP TABLE IF EXISTS journal_entries;
 DROP TABLE IF EXISTS user_contexts;
 DROP TABLE IF EXISTS users;
@@ -20,6 +21,7 @@ CREATE TABLE users (
     last_name VARCHAR(255),
     is_verified BOOLEAN DEFAULT FALSE   
 );
+
 
 CREATE TABLE user_contexts (
     id SERIAL PRIMARY KEY,
@@ -37,6 +39,13 @@ CREATE TABLE journal_entries (
     entry_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     starred BOOLEAN DEFAULT FALSE,         
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE mfa_codes (
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    code VARCHAR(6) NOT NULL,
+    expires_at TIMESTAMP NOT NULL
 );
 
 -- CREATE TABLE tags (
