@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { register } from '../../api/api';
+import { useNavigate } from 'react-router-dom';
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -9,6 +10,7 @@ export default function Register() {
     email: '',
     password: '',
   });
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,7 +22,7 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const userCreated = await register(formData);
-    console.log(userCreated);
+    navigate('/');
   };
   return (
     <main>

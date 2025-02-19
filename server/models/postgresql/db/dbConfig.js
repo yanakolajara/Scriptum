@@ -1,15 +1,14 @@
-import dotenv from 'dotenv';
 import pgPromise from 'pg-promise';
+import { config } from '../../../config/config.js';
 
-dotenv.config();
 const pgp = pgPromise({});
 
 const cn = {
-  host: process.env.PG_HOST,
-  port: process.env.PG_PORT,
-  database: process.env.PG_DATABASE,
-  user: process.env.PG_USER,
-  password: process.env.PG_PASSWORD,
+  host: config.db.host,
+  port: config.db.port,
+  database: config.db.database,
+  user: config.db.user,
+  password: config.db.password,
 };
 
 const db = pgp(cn);

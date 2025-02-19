@@ -1,7 +1,10 @@
-DROP DATABASE IF EXISTS ai_journal;
-CREATE DATABASE ai_journal;
+SELECT pg_terminate_backend(pg_stat_activity.pid)
+FROM pg_stat_activity
+WHERE pg_stat_activity.datname = 'scriptum' AND pid <> pg_backend_pid();
 
-\c ai_journal;
+DROP DATABASE IF EXISTS scriptum;
+CREATE DATABASE scriptum;
+\c scriptum;
 
 -- DROP TABLE IF EXISTS JournalEntryTags;
 -- DROP TABLE IF EXISTS Tags;
@@ -11,21 +14,18 @@ DROP TABLE IF EXISTS user_contexts;
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    oauth_provider VARCHAR(50),
-    oauth_id VARCHAR(100),
+    id UUID PRIMARY KEY,
     email VARCHAR(255) UNIQUE NOT NULL,
-    password VARCHAR(255),                 
+    password VARCHAR(255),
     first_name VARCHAR(255),
     middle_name VARCHAR(255),
     last_name VARCHAR(255),
-    is_verified BOOLEAN DEFAULT FALSE   
+    is_verified BOOLEAN DEFAULT FALSE
 );
-
 
 CREATE TABLE user_contexts (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER UNIQUE NOT NULL,       
+    user_id UUID NOT NULL,       
     context TEXT NOT NULL,                 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
@@ -33,7 +33,7 @@ CREATE TABLE user_contexts (
 
 CREATE TABLE journal_entries (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER NOT NULL,
+    user_id UUID NOT NULL,
     content TEXT NOT NULL,                 
     description VARCHAR(255),              
     entry_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -48,12 +48,20 @@ CREATE TABLE mfa_codes (
     expires_at TIMESTAMP NOT NULL
 );
 
+CREATE TABLE refresh_tokens (
+    id SERIAL PRIMARY KEY,
+    user_id UUID NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    refresh_token VARCHAR(255) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
 -- CREATE TABLE tags (
 --     id SERIAL PRIMARY KEY,
 --     name VARCHAR(50) UNIQUE NOT NULL,
 --     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 -- );
-
+--
 -- CREATE TABLE journal_entry_tags (
 --     id SERIAL PRIMARY KEY,
 --     journal_entry_id INTEGER NOT NULL,

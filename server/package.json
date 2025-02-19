@@ -32,6 +32,7 @@
     "socket.io": "4.8.1",
     "supertest": "^7.0.0",
     "uuidv4": "^6.2.13",
+    "winston": "^3.17.0",
     "zod": "3.24.1"
   },
   "devDependencies": {

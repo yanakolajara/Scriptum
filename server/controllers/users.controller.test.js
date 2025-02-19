@@ -4,8 +4,22 @@ import { createApp } from '../app.js';
 class UserModel {
   constructor() {
     this.users = [];
-    this.nextId = 1;
   }
+
+  // getAllUsers()
+  // deleteAllUsers()
+  // register({email,
+  //   password,
+  //   first_name,
+  //   middle_name,
+  //   last_name})
+  // generateMfaCode({ id})
+  // verifyCode({id, code})
+  // deleteAllCodes({id})
+  // getByEmail({email})
+  // update({userData})
+  // delete({ id })
+  // getRefreshToken({ id})
 
   getAll = async () => {
     return this.users;

@@ -1,9 +1,8 @@
-import {
-  validateUserData,
-  validatePartialUserData,
-} from '../schemas/user.schema.js';
-import { sendEmail } from '../services/nodemailer.js';
 import jwt from 'jsonwebtoken';
+import { sendCodeToEmail } from '../services/email.service.js';
+import { comparePassword, createToken } from '../utils/auth.utils.js';
+import { DuplicateError, UnauthorizedError } from '../utils/errors.js';
+import { logger } from '../utils/logger.utils.js';
 
 export class UserController {
   constructor({ userModel }) {
@@ -12,37 +11,42 @@ export class UserController {
 
   register = async (req, res, next) => {
     try {
-      const userData = validateUserData(req.body);
-      const user = await this.userModel.register(userData);
-      //TODO: Delete all codes before creating a new one
-      const mfaCode = await this.userModel.generateMfaCode(user.email);
-      const emailSent = await sendEmail({
-        to: user.email,
-        subject: 'Verify your account',
-        html: `<p>Your verification code is: <strong>${mfaCode}</strong></p>`,
-      });
-      console.log('emailSent:', emailSent);
+      const data = req.body;
+      const userExists = await this.userModel.getByEmail(data.email);
+      if (userExists) throw new DuplicateError('Email already exists.');
+      await this.userModel.register(data);
+      const code = await this.userModel.createCode(data.email);
+      await sendCodeToEmail(code, data.email);
       res.status(201).json({
         message:
           'User registered successfully. Please check your email for the verification code.',
       });
     } catch (error) {
-      res.status(400).json({ message: error.message });
+      next(error);
     }
   };
 
   verify = async (req, res, next) => {
     try {
       const { email, code } = req.body;
-      const verified = await this.userModel.verifyCode({ email, code });
-      if (!verified) {
-        return res
-          .status(400)
-          .json({ message: 'Invalid or expired verification code.' });
-      }
-      const token = jwt.sign({ email }, process.env.JWT_SECRET, {});
-      res.status(200).json({ token, message: 'Verification successful.' });
-      //TODO: Delete all codes from email after verification
+      await this.userModel.verifyCode(email, code);
+      await this.userModel.deleteAllCodes(email);
+      const user = await this.userModel.getByEmail(email);
+      const accessToken = createToken({ id: user.id }, 'access');
+      const refreshToken = createToken({ id: user.id }, 'refresh');
+      res.cookie('accessToken', accessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production', //! Delete if causes issues
+        sameSite: 'Strict', //! Delete if causes issues
+      });
+      res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production', //! Delete if causes issues
+        sameSite: 'Strict', //! Delete if causes issues
+      });
+      res.status(200).json({
+        message: 'Verification successful.',
+      });
     } catch (error) {
       next(error);
     }
@@ -50,49 +54,66 @@ export class UserController {
 
   login = async (req, res, next) => {
     try {
-      const { email, password } = req.body;
-      const user = await this.userModel.getByEmail(email);
-      if (!user) {
-        return res.status(400).json({ message: 'User not found.' });
-      }
-      const isMatch = await this.userModel.comparePassword(
-        password,
-        user.password
-      );
-      if (!isMatch) {
-        return res.status(400).json({ message: 'Invalid credentials.' });
-      }
-      if (!user.is_verified) {
-        return res
-          .status(400)
-          .json({ message: 'User not verified. Please check your email.' });
-      }
-      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-        expiresIn: '1h',
+      const data = req.body;
+      const dbData = await this.userModel.getByEmail(data.email);
+      if (!dbData)
+        throw new UnauthorizedError('Email not connected to an account.');
+      await comparePassword(data.password, dbData.password);
+      await this.userModel.deleteAllCodes(data.email);
+      const code = await this.userModel.createCode(data.email);
+      await sendCodeToEmail(code, data.email);
+      res.status(200).json({
+        message: 'Please check your email for the verification code.',
       });
-      res.status(200).json({ token });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  refreshToken = async (req, res, next) => {
+    try {
+      const { token } = req.body;
+      if (!token)
+        return res.status(401).json({ message: 'Refresh token is required.' });
+      jwt.verify(token, process.env.REFRESH_SECRET, async (err, userData) => {
+        if (err)
+          return res.status(403).json({ message: 'Invalid refresh token.' });
+        const storedToken = await this.userModel.getRefreshToken({
+          id: userData.id,
+        });
+        if (!storedToken || storedToken !== token) {
+          return res
+            .status(403)
+            .json({ message: 'Refresh token has been revoked.' });
+        }
+        const newAccessToken = createToken({ type: 'access', id: user.id });
+        res.status(200).json({ accessToken: newAccessToken });
+      });
     } catch (error) {
       next(error);
     }
   };
 
   edit = async (req, res, next) => {
+    const { id } = req.user.id;
     try {
-      const userData = validatePartialUserData(req.body);
-      const updatedUser = await this.userModel.update({
-        id: req.params.id,
-        ...userData,
+      await this.userModel.update({
+        id,
+        ...req.body,
       });
-      res.status(200).json(updatedUser);
+      res.status(200).json({
+        message: 'User updated successfully',
+      });
     } catch (error) {
       next(error);
     }
   };
 
   delete = async (req, res, next) => {
+    const { id } = req.user.id;
     try {
-      const deletedUser = await this.userModel.delete(req.params.id);
-      res.status(200).json(deletedUser);
+      await this.userModel.delete({ id });
+      res.status(200).json({ message: 'User deleted successfully' });
     } catch (error) {
       next(error);
     }
