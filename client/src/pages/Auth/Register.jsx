@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { register } from '../../api/user.api';
 import { useNavigate } from 'react-router-dom';
 
 // Stores data in local storage
 const storeDataInLS = (data) => {
   window.localStorage.setItem('user', JSON.stringify(data));
+};
+
+// Validates if password is strong enough
+const isPasswordValid = (password) => {
+  const strongPasswordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  return strongPasswordRegex.test(password);
 };
 
 export default function Register() {
@@ -27,6 +34,12 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!isPasswordValid(formData.password)) {
+      alert(
+        'Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character'
+      );
+      return;
+    }
     const response = await register(formData);
     if (response.status !== 201) {
       alert(response.response.data.message || 'Invalid data');
@@ -36,6 +49,7 @@ export default function Register() {
     alert('User registered, check your email for verification code');
     navigate('/verify');
   };
+
   return (
     <main>
       <h1>Register</h1>
