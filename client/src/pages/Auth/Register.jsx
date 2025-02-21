@@ -1,18 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { register } from '../../api/user.api';
 import { useNavigate } from 'react-router-dom';
-
-// Stores data in local storage
-const storeDataInLS = (data) => {
-  window.localStorage.setItem('user', JSON.stringify(data));
-};
-
-// Validates if password is strong enough
-const isPasswordValid = (password) => {
-  const strongPasswordRegex =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-  return strongPasswordRegex.test(password);
-};
+import { isPasswordValid } from './utils/validators.utils';
+import { storeDataInLS } from '../../utils/window.utils';
 
 export default function Register() {
   const [formData, setFormData] = useState({
