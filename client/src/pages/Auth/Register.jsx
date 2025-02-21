@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
-import { register } from '../../api/api';
+import { register } from '../../api/user.api';
 import { useNavigate } from 'react-router-dom';
+
+// Stores data in local storage
+const storeDataInLS = (data) => {
+  window.localStorage.setItem('user', JSON.stringify(data));
+};
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -19,10 +24,17 @@ export default function Register() {
       [name]: value,
     });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const userCreated = await register(formData);
-    navigate('/');
+    const response = await register(formData);
+    if (response.status !== 201) {
+      alert(response.response.data.message || 'Invalid data');
+      return;
+    }
+    storeDataInLS(formData.email);
+    alert('User registered, check your email for verification code');
+    navigate('/verify');
   };
   return (
     <main>
