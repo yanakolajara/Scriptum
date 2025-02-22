@@ -14,6 +14,7 @@ export class UserController {
       const data = req.body;
       const userExists = await this.userModel.getByEmail(data.email);
       if (userExists) throw new DuplicateError('Email already exists.');
+      await this.userModel.deleteAllCodes(data.email);
       await this.userModel.register(data);
       const code = await this.userModel.createCode(data.email);
       await sendCodeToEmail(code, data.email);
@@ -64,6 +65,21 @@ export class UserController {
       await sendCodeToEmail(code, data.email);
       res.status(200).json({
         message: 'Please check your email for the verification code.',
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  // Resends a new code to the user's email
+  resendCode = async (req, res, next) => {
+    try {
+      const { email } = req.body;
+      await this.userModel.deleteAllCodes(email);
+      const code = await this.userModel.createCode(email);
+      await sendCodeToEmail(code, email);
+      res.status(200).json({
+        message: 'Verification code resent successfully.',
       });
     } catch (error) {
       next(error);

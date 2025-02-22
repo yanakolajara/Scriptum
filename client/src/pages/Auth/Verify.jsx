@@ -17,9 +17,9 @@ const getDataFromLS = (key) => {
 };
 
 export default function Verify() {
+  //TODO: Move state functions to custom hooks
   const [code, setCode] = useState('');
   const navigate = useNavigate();
-
   const handleChange = (e) => {
     const { value } = e.target;
     if (isValidChar(value.slice(-1))) {
@@ -31,11 +31,18 @@ export default function Verify() {
     const email = getDataFromLS('user');
     const response = await verify({ email, code });
     if (response.status !== 200) {
-      alert('Invalid code');
+      //TODO: Send new code if verification fails
+      alert('');
       return;
     }
     alert('Code verified');
     navigate('/');
+  };
+
+  const handleResend = async (e) => {
+    e.preventDefault();
+    //TODO: Create an endpoint to resend code (delete old code and send new one)
+    alert('Code resent');
   };
 
   useEffect(() => {
@@ -57,6 +64,13 @@ export default function Verify() {
           required
           disabled={isCodeComplete(code)}
         />
+        <p>
+          Din't receive it?{' '}
+          <a href='/#' onClick={handleResend}>
+            {' '}
+            Resend
+          </a>
+        </p>
       </form>
     </div>
   );
