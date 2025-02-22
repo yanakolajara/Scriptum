@@ -1,19 +1,13 @@
 import { useEffect, useState } from 'react';
 import { resendCode, verify } from '../../api/user.api';
 import { useNavigate } from 'react-router-dom';
+import { getDataFromLS } from '../../utils/window.utils';
+import { isCodeComplete } from './utils/validators.utils';
 
 // Validates if the entered char is valid
 const isValidChar = (char) => {
   const validChars = '0123456789';
   return validChars.includes(char);
-};
-
-// Validates if code has been fully entered
-const isCodeComplete = (code) => code.length === 6;
-
-// Gets data from local storage
-const getDataFromLS = (key) => {
-  return window.localStorage.getItem(key);
 };
 
 export default function Verify() {

@@ -4,3 +4,8 @@ export const getPath = () => window.location.pathname;
 export const storeDataInLS = (data) => {
   window.localStorage.setItem('user', JSON.stringify(data));
 };
+
+// Gets data from local storage
+export const getDataFromLS = (key) => {
+  return window.localStorage.getItem(key);
+};
