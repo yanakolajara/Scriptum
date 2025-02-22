@@ -26,3 +26,13 @@ export const verify = async (data) => {
     return error;
   }
 };
+
+// Resends a new verification code to the user's email
+export const resendCode = async (email) => {
+  try {
+    const response = await axiosInstance.post('/users/resend-code', { email });
+    return response;
+  } catch (error) {
+    return error;
+  }
+};

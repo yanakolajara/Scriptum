@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { verify } from '../../api/user.api';
+import { resendCode, verify } from '../../api/user.api';
 import { useNavigate } from 'react-router-dom';
 
 // Validates if the entered char is valid
@@ -31,8 +31,9 @@ export default function Verify() {
     const email = getDataFromLS('user');
     const response = await verify({ email, code });
     if (response.status !== 200) {
-      //TODO: Send new code if verification fails
-      alert('');
+      alert(response.response.data.message || 'Invalid code');
+      await resendCode(email);
+      setCode('');
       return;
     }
     alert('Code verified');
@@ -41,7 +42,8 @@ export default function Verify() {
 
   const handleResend = async (e) => {
     e.preventDefault();
-    //TODO: Create an endpoint to resend code (delete old code and send new one)
+    const email = getDataFromLS('user');
+    await resendCode(email);
     alert('Code resent');
   };
 

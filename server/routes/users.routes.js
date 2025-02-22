@@ -13,7 +13,7 @@ export const createUsersRouter = ({ userModel }) => {
 
   router.post('/register', validateUserData, userController.register);
   router.post('/verify', userController.verify);
-  router.post('/resend', userController.resendCode);
+  router.post('/resend-code', userController.resendCode);
   router.post('/refresh-token', userController.refreshToken);
   router.post('/login', validateLoginData, userController.login);
   router.put(
