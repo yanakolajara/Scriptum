@@ -30,21 +30,31 @@ export class UserController {
   verify = async (req, res, next) => {
     try {
       const { email, code } = req.body;
+
       await this.userModel.verifyCode(email, code);
+
       await this.userModel.deleteAllCodes(email);
+
       const user = await this.userModel.getByEmail(email);
+
+      if (!user) throw new UnauthorizedError('User not found.');
+
       const accessToken = createToken({ id: user.id }, 'access');
+
       const refreshToken = createToken({ id: user.id }, 'refresh');
+
       res.cookie('accessToken', accessToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production', //! Delete if causes issues
         sameSite: 'Strict', //! Delete if causes issues
       });
+
       res.cookie('refreshToken', refreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production', //! Delete if causes issues
         sameSite: 'Strict', //! Delete if causes issues
       });
+
       res.status(200).json({
         message: 'Verification successful.',
       });

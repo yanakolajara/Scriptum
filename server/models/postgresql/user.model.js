@@ -8,11 +8,16 @@ import { DatabaseError, UnauthorizedError } from '../../utils/errors.js';
 
 export class UserModel {
   static async getByEmail(email) {
+    console.log('🚀 ~ UserModel ~ getByEmail ~ email:', email);
     try {
-      return await db.oneOrNone('SELECT * FROM users WHERE email = $1', [
+      const user = await db.one('SELECT * FROM users WHERE email = $1', [
         email,
       ]);
+      console.log('🚀 ~ UserModel ~ getByEmail ~ user:', user);
+
+      return user;
     } catch (error) {
+      console.log('🚀 ~ UserModel ~ getByEmail ~ error:', error.stack);
       throw error;
     }
   }
