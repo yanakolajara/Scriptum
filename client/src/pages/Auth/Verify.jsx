@@ -12,26 +12,31 @@ const isValidChar = (char) => {
 
 export default function Verify() {
   //TODO: Move state functions to custom hooks
+
   const [code, setCode] = useState('');
   const navigate = useNavigate();
   const handleChange = (e) => {
+    e.preventDefault();
     const { value } = e.target;
+    // validates if character is a string with a number
     if (isValidChar(value.slice(-1))) {
       setCode(value);
     }
   };
 
   const handleVerify = async () => {
+    // Retrieve email from local storage/cookie
     const email = getDataFromLS('user');
-    const response = await verify({ email, code });
-    if (response.status !== 200) {
-      alert(response.response.data.message || 'Invalid code');
-      await resendCode(email);
-      setCode('');
-      return;
-    }
-    alert('Code verified');
-    navigate('/');
+    await verify({ email, code })
+      .then((res) => {
+        alert(res.message);
+        navigate('/');
+      })
+      .catch((err) => {
+        alert(err.message);
+        resendCode(email);
+        setCode('');
+      });
   };
 
   const handleResend = async (e) => {
@@ -42,6 +47,7 @@ export default function Verify() {
   };
 
   useEffect(() => {
+    // verifies if code is complete (6 digits)
     if (isCodeComplete(code)) {
       handleVerify();
     }

@@ -44,15 +44,15 @@ export const useChat = () => {
     setStreaming(`Error: ${error}`);
   };
 
-  useEffect(() => {
-    initializeListeners({
-      onChatCreated: handleChatCreated,
-      onGenaiStream: handleGenaiStream,
-      onGenaiFinalized: handleGenaiFinalized,
-      onError: handleError,
-    });
-    return () => cleanupListeners();
-  }, [streaming]);
+  // useEffect(() => {
+  //   initializeListeners({
+  //     onChatCreated: handleChatCreated,
+  //     onGenaiStream: handleGenaiStream,
+  //     onGenaiFinalized: handleGenaiFinalized,
+  //     onError: handleError,
+  //   });
+  //   return () => cleanupListeners();
+  // }, [streaming]);
 
   useEffect(() => {
     if (!chatID) chatCreate(userID);

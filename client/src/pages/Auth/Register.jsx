@@ -1,44 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { register } from '../../api/user.api';
-import { useNavigate } from 'react-router-dom';
-import { isPasswordValid } from './utils/validators.utils';
-import { storeDataInLS } from '../../utils/window.utils';
+import { useRegister } from './useRegister';
 
 export default function Register() {
-  const [formData, setFormData] = useState({
-    first_name: '',
-    middle_name: '',
-    last_name: '',
-    email: '',
-    password: '',
-  });
-  const navigate = useNavigate();
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!isPasswordValid(formData.password)) {
-      alert(
-        'Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character'
-      );
-      return;
-    }
-    const response = await register(formData);
-    if (response.status !== 201) {
-      alert(response.response.data.message || 'Invalid data');
-      return;
-    }
-    storeDataInLS(formData.email);
-    alert('User registered, check your email for verification code');
-    navigate('/verify');
-  };
+  const { handleChange, handleSubmit, formData } = useRegister();
 
   return (
     <main>
@@ -96,6 +60,16 @@ export default function Register() {
             required
           />
         </label>
+        {/* <label htmlFor=''>
+          Confirm password
+          <input
+            value={formData.passwordConfirm}
+            onChange={handleChange}
+            type='password'
+            name='password'
+            required
+          />
+        </label> */}
         <input type='submit' value='Register' />
       </form>
     </main>

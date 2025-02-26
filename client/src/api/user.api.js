@@ -5,7 +5,8 @@ export const register = async (data) => {
     const response = await axiosInstance.post('/users/register', data);
     return response;
   } catch (error) {
-    return error;
+    console.log(error.response);
+    throw new Error(error.response.data.message);
   }
 };
 
@@ -14,16 +15,19 @@ export const login = async (data) => {
     const response = await axiosInstance.get('/users/login', data);
     return response;
   } catch (error) {
-    return error;
+    console.log(error.response);
+    throw new Error(error.response.data.message);
   }
 };
 
 export const verify = async (data) => {
   try {
+    console.log('veridy(data)', data);
     const response = await axiosInstance.post('/users/verify', data);
     return response;
   } catch (error) {
-    return error;
+    console.log(error.response);
+    throw new Error(error.response.data.message);
   }
 };
 
@@ -33,6 +37,7 @@ export const resendCode = async (email) => {
     const response = await axiosInstance.post('/users/resend-code', { email });
     return response;
   } catch (error) {
-    return error;
+    console.log(error.response);
+    throw new Error(error.response.data.message);
   }
 };
