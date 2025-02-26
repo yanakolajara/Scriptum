@@ -1,27 +1,38 @@
-import { getGenaiResponse } from './genaiService.js';
-import {
-  createConversation,
-  createMessage,
-} from '../controllers/chat.controller.js';
+import { Server } from 'socket.io';
+import { getGenaiResponse } from './genai.service.js';
 
-export const createChatEvent = async (socket, userID) => {
-  const newChat = await createConversation(userID);
-  console.log('chat.sockets:', newChat);
-  socket.emit('chat:created', newChat.id);
-};
+export const initializeChatSockets = (httpServer, corsConfig) => {
+  const io = new Server(httpServer, corsConfig);
 
-export const genaiMessageEvent = async (socket, data) => {
-  console.log('genaiMessageEvent:', data);
-  const { chatID, userInput, chatTranscript } = data;
-  await createMessage(chatID, userInput, 'user');
-  let aiResponse = '';
-  const stream = await getGenaiResponse(chatTranscript);
-  for await (const chunk of stream) {
-    const text = chunk.text();
-    aiResponse += text;
-    socket.emit('genai:stream', text);
-  }
+  io.on('connection', (socket) => {
+    console.log(`Socket connected: ${socket.id}`);
 
-  await createMessage(chatID, aiResponse, 'ai');
-  socket.emit('genai:finalized');
+    socket.on('chat:start', (data) => {
+      console.log(`Chat started for user: ${data.userId}`);
+      createChatEvent(socket, data.userId);
+    });
+
+    socket.on('chat:response', async (socket, data) => {
+      const { chatTranscript, currMessage } = data;
+      let aiResponse = '';
+      const stream = await getGenaiResponse(chatTranscript, currMessage);
+      for await (const chunk of stream) {
+        aiResponse += chunk.text();
+        socket.emit('chat:stream', text);
+      }
+      socket.emit('chat:stream-end', aiResponse);
+    });
+
+    socket.on('chat:end', async (data) => {
+      console.log(`Chat ended for chatId: ${data.chatId}`);
+
+      const summary = 'This is your generated summary.'; //TODO: Generate summary with genai
+      // TODO: store the summary in the database.
+      socket.emit('chat:summary', { summary });
+    });
+
+    socket.on('disconnect', () => {
+      console.log(`Socket disconnected: ${socket.id}`);
+    });
+  });
 };

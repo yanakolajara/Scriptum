@@ -1,57 +1,57 @@
 import supertest from 'supertest';
 import { createApp } from '../app.js';
 
-class UserModel {
+class UserModelMock {
   constructor() {
     this.users = [];
+    this.user_contexts = [];
+    this.journal_entries = [];
+    this.mfa_codes = [];
+    this.refresh_tokens = [];
   }
 
-  // getAllUsers()
-  // deleteAllUsers()
-  // register({email,
-  //   password,
-  //   first_name,
-  //   middle_name,
-  //   last_name})
-  // generateMfaCode({ id})
-  // verifyCode({id, code})
-  // deleteAllCodes({id})
-  // getByEmail({email})
-  // update({userData})
-  // delete({ id })
-  // getRefreshToken({ id})
-
-  getAll = async () => {
-    return this.users;
+  getByEmail = (email) => {
+    return this.users.find((user) => user.email === email);
   };
-
-  getById = async (id) => {
-    const user = this.users.find((u) => u.id === parseInt(id));
-    return user || null;
+  getRefreshToken = (id) => {
+    return this.refresh_tokens.find((token) => token.user_id === id);
   };
-
-  create = async (userData) => {
-    const user = { id: this.nextId++, ...userData };
-    this.users.push(user);
-    return user;
+  deleteAllUsers = () => {
+    this.users = [];
   };
-
-  update = async (userData) => {
-    const index = this.users.findIndex((u) => u.id === parseInt(userData.id));
-    if (index === -1) return null;
-    this.users[index] = { ...this.users[index], ...userData };
-    return this.users[index];
+  register = (data) => {
+    this.users.push(data);
+    return data;
   };
-
-  delete = async ({ id }) => {
-    const index = this.users.findIndex((u) => u.id === parseInt(id));
-    if (index === -1) return null;
-    const deletedUser = this.users.splice(index, 1);
-    return deletedUser;
+  createCode = (email) => {
+    const code = Math.floor(100000 + Math.random() * 900000);
+    this.mfa_codes.push({ email, code });
+    return code;
+  };
+  verifyCode = (email, code) => {
+    const record = this.mfa_codes.find(
+      (c) => c.email === email && c.code === code
+    );
+    return !!record;
+  };
+  deleteAllCodes = (email) => {
+    this.mfa_codes = this.mfa_codes.filter((c) => c.email !== email);
+  };
+  update = (id, userData) => {
+    const userIndex = this.users.findIndex((u) => u.id === id);
+    if (userIndex) {
+      this.users[userIndex] = { ...this.users[user], ...userData };
+      return this.users[userIndex];
+    } else {
+      return null;
+    }
+  };
+  delete = (id) => {
+    this.users = this.users.filter((u) => u.id !== id);
   };
 }
 
-const app = createApp({ userModel: new UserModel() });
+const app = createApp({ userModel: new UserModelMock() });
 const api = supertest(app);
 
 const newUser = {

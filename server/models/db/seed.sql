@@ -7,6 +7,8 @@ INSERT INTO users (oauth_provider, oauth_id, email, password, first_name, middle
 VALUES 
   (NULL, NULL, 'yanakolajara@pursuit.org', '$2b$10$examplehashedpasswordalice', 'Yanako', '', 'Lajara', TRUE);
 
+
+
 INSERT INTO journal_entries (user_id, content, description, entry_date, starred)
 VALUES
   (1, 'Today was a productive day. I managed to finish my tasks and learned something new.', 'Productive Day', '2025-01-30', TRUE),

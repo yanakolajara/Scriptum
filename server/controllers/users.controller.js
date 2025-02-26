@@ -14,7 +14,7 @@ export class UserController {
       const data = req.body;
       const userExists = await this.userModel.getByEmail(data.email);
       if (userExists) throw new DuplicateError('Email already exists.');
-      await this.userModel.deleteAllCodes(data.email);
+      //* await this.userModel.deleteAllCodes(data.email);
       await this.userModel.register(data);
       const code = await this.userModel.createCode(data.email);
       await sendCodeToEmail(code, data.email);
@@ -30,19 +30,13 @@ export class UserController {
   verify = async (req, res, next) => {
     try {
       const { email, code } = req.body;
-
       await this.userModel.verifyCode(email, code);
-
       await this.userModel.deleteAllCodes(email);
 
       const user = await this.userModel.getByEmail(email);
-
       if (!user) throw new UnauthorizedError('User not found.');
-
       const accessToken = createToken({ id: user.id }, 'access');
-
       const refreshToken = createToken({ id: user.id }, 'refresh');
-
       res.cookie('accessToken', accessToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production', //! Delete if causes issues

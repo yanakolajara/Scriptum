@@ -54,3 +54,16 @@ export class ConnectionError extends Error {
     this.status = 500; // RFC 9110: 500 Internal Server Error
   }
 }
+
+/**
+ * Represents a 500 Internal Server Error for unexpected server failures.
+ * @params {string} message - The error message.
+ * @returns {InternalServerError} An InternalServerError object.
+ */
+export class InternalServerError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'InternalServerError';
+    this.status = 500; // RFC 9110: 500 Internal Server Error
+  }
+} // RFC 9110: 500 InternalServerError

@@ -30,6 +30,8 @@ export const sendCodeToEmail = async (code, email) => {
     subject: 'Verify your account',
     html: `<p>Your verification code is: <strong>${code}</strong></p>`,
   };
-
+  //TODO: Handle errors (email not found, email not sent, service down)
+  // if FAIL: retry sending email
+  // if FAIL 3 times: respond with InternalServerError, and message to try later
   return transporter.sendMail(mailOptions);
 };

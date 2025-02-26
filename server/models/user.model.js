@@ -1,24 +1,26 @@
 import db from './db/dbConfig.js';
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
-import { generateCode } from '../../utils/auth.utils.js';
-import { config } from '../../config/config.js';
-import { logger } from '../../utils/logger.utils.js';
-import { DatabaseError, UnauthorizedError } from '../../utils/errors.js';
+import { generateCode } from '../utils/auth.utils.js';
+import { config } from '../config/config.js';
+import { logger } from '../utils/logger.utils.js';
+import {
+  DatabaseError,
+  InternalServerError,
+  UnauthorizedError,
+} from '../utils/errors.js';
 
 export class UserModel {
   static async getByEmail(email) {
-    console.log('🚀 ~ UserModel ~ getByEmail ~ email:', email);
     try {
-      const user = await db.one('SELECT * FROM users WHERE email = $1', [
+      console.log('getByEmail(email) email:', email);
+      const users = await db.oneOrNone('SELECT * FROM users WHERE email = $1', [
         email,
       ]);
-      console.log('🚀 ~ UserModel ~ getByEmail ~ user:', user);
-
-      return user;
+      return users;
     } catch (error) {
-      console.log('🚀 ~ UserModel ~ getByEmail ~ error:', error.stack);
-      throw error;
+      console.log('getByEmail(email) error:', error);
+      throw new InternalServerError(error.message);
     }
   }
   static async getRefreshToken(id) {
