@@ -1,29 +1,30 @@
 import React from 'react';
 
 export default function ChatInput({
-  userInput,
-  setUserInput,
-  handleSendMessage,
+  message,
+  loading,
+  setMessage,
+  sendMessage,
 }) {
-  const handleKeyDown = (e) => {
-    console.log(e.key);
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      handleSendMessage();
-    }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    sendMessage(message);
   };
 
+  //TODO: Add loading skelleton while waiting for response
   return (
     <div>
-      <input
-        type='text'
-        value={userInput}
-        onChange={(e) => setUserInput(e.target.value)}
-        onKeyDown={handleKeyDown}
-        required
-      />
-
-      <button onClick={handleSendMessage}>Send</button>
+      <form onSubmit={handleSubmit}>
+        <input
+          type='text'
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          placeholder='Type your message...'
+          disabled={loading}
+          required
+        />
+        <input type='submit' value='Send' />
+      </form>
     </div>
   );
 }
