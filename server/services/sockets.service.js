@@ -1,34 +1,33 @@
 import { Server } from 'socket.io';
 import { getGenaiResponse } from './genai.service.js';
+import { v4 as uuidv4 } from 'uuid';
 
-export const initializeChatSockets = (httpServer, corsConfig) => {
-  const io = new Server(httpServer, corsConfig);
+export const initializeChatSockets = (httpServer) => {
+  const io = new Server(httpServer, {
+    cors: { origin: '*' },
+  });
 
   io.on('connection', (socket) => {
-    console.log(`Socket connected: ${socket.id}`);
-
-    socket.on('chat:start', (data) => {
-      console.log(`Chat started for user: ${data.userId}`);
-      createChatEvent(socket, data.userId);
-    });
-
-    socket.on('chat:response', async (socket, data) => {
-      const { chatTranscript, currMessage } = data;
-      let aiResponse = '';
-      const stream = await getGenaiResponse(chatTranscript, currMessage);
+    let chatCache = '';
+    socket.on('chat:message', async ({ message, userToken }) => {
+      chatCache += `User: ${message}\n\n`;
+      const messageId = uuidv4();
+      socket.emit('chat:stream-start', { messageId });
+      let response = '';
+      const stream = await getGenaiResponse(chatCache);
       for await (const chunk of stream) {
-        aiResponse += chunk.text();
-        socket.emit('chat:stream', text);
+        response += chunk.text();
+        socket.emit('chat:stream', { messageId, chunk: chunk.text() });
       }
-      socket.emit('chat:stream-end', aiResponse);
+
+      chatCache += `AI: ${response}\n\n`;
+      socket.emit('chat:stream-fulfilled', { messageId });
     });
 
     socket.on('chat:end', async (data) => {
       console.log(`Chat ended for chatId: ${data.chatId}`);
-
-      const summary = 'This is your generated summary.'; //TODO: Generate summary with genai
-      // TODO: store the summary in the database.
-      socket.emit('chat:summary', { summary });
+      const entry = 'This is your generated summary.';
+      socket.emit('chat:entry', { entry });
     });
 
     socket.on('disconnect', () => {

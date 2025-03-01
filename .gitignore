@@ -2,6 +2,7 @@ node_modules/
 .DS_Store
 
 .env
+*.todo
 client/.env
 server/.env
 
