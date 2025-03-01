@@ -5,23 +5,17 @@ import ChatInput from './components/ChatInput.jsx';
 import ChatHeader from './components/ChatHeader.jsx';
 
 export default function Chat() {
-  const {
-    setUserInput,
-    handleSendMessage,
-    loading,
-    userInput,
-    chatArr,
-    streaming,
-  } = useChat();
+  const { loading, chat, message, setMessage, sendMessage } = useChat();
 
   return (
     <div className='chat content'>
       <ChatHeader />
-      <ChatDisplay chatArr={chatArr} streaming={streaming} loading={loading} />
+      <ChatDisplay chat={chat} loading={loading} />
       <ChatInput
-        userInput={userInput}
-        setUserInput={setUserInput}
-        handleSendMessage={handleSendMessage}
+        message={message}
+        setMessage={setMessage}
+        sendMessage={sendMessage}
+        loading={loading}
       />
     </div>
   );

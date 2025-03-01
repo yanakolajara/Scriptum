@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 export default function ChatInput({
   message,
@@ -12,6 +12,7 @@ export default function ChatInput({
   };
 
   //TODO: Add loading skelleton while waiting for response
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -20,10 +21,9 @@ export default function ChatInput({
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder='Type your message...'
-          disabled={loading}
           required
         />
-        <input type='submit' value='Send' />
+        <input type='submit' value='Send' disabled={loading} />
       </form>
     </div>
   );
