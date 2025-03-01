@@ -55,15 +55,17 @@
     max-width: 75%;
   }
 
-  p:nth-child(odd) {
-    background-color: #fffbcc;
-    align-self: flex-end;
-  }
+  // TODO: Use tailwind for pre-made components.
+  // TODO: Handle message style (color and position) in component's params (HOCs)
+  // p:nth-child(odd) {
+  //   background-color: #fffbcc;
+  //   align-self: flex-end;
+  // }
 
-  p:nth-child(even) {
-    background-color: #f0f0f0;
-    align-self: flex-start;
-  }
+  // p:nth-child(even) {
+  //   background-color: #f0f0f0;
+  //   align-self: flex-start;
+  // }
 
   .blinking-cursor {
     animation: blink 1s infinite;
