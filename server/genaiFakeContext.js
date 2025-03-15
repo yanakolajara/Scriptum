@@ -1,4 +1,4 @@
-export const userContetxt = {
+export const userContext = {
   personal: {
     name: 'Yanako Lajara',
     age: '',

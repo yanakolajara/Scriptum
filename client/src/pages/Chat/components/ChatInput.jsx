@@ -8,6 +8,7 @@ export default function ChatInput({
 }) {
   const handleSubmit = (e) => {
     e.preventDefault();
+    // sendMessageStream(message);
     sendMessage(message);
   };
 
