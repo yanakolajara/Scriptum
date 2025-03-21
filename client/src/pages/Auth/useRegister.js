@@ -32,9 +32,9 @@ export const useRegister = () => {
     try {
       const res = await register(formData);
       console.log(res);
-      if (res.status === 201) {
+      if (res.request.status === 201) {
         storeDataInLS('userId', res.data.id);
-        alert(res.message);
+        alert(res.data.message);
         navigate('/');
       } else {
         alert(res.message);

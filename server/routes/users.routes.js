@@ -1,11 +1,6 @@
 import { Router } from 'express';
 import { UserController } from '../controllers/users.controller.js';
 import { authenticateToken } from '../middlewares/auth.middleware.js';
-import {
-  validateLoginData,
-  validatePartialUserData,
-  validateUserData,
-} from '../middlewares/validate.middleware.js';
 import { TempUserController } from '../controllers/tempUsers.controller.js';
 
 // export const createUsersRouter = ({ userModel }) => {
@@ -32,7 +27,8 @@ export const createUsersRouter = ({ userModel }) => {
   const router = Router();
   const userController = new TempUserController({ userModel });
 
-  router.post('/register', validateUserData, userController.register);
-  router.post('/login', validateLoginData, userController.login);
+  router.post('/register', userController.register);
+  router.post('/login', userController.login);
+  router.post('/verify-email', userController.verifyEmail);
   return router;
 };

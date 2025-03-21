@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useLogin } from './useLogin';
 
 export default function Login() {
+  const { handleLogin } = useLogin();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -15,7 +17,7 @@ export default function Login() {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+    handleLogin(formData);
   };
   return (
     <main>

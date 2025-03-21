@@ -1,5 +1,4 @@
 import db from './db/dbConfig.js';
-import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 import { generateCode } from '../utils/auth.utils.js';
 import { config } from '../config/config.js';
@@ -51,10 +50,9 @@ export class UserModel {
   }) {
     try {
       const id = uuidv4();
-      const hashedPassword = await bcrypt.hash(password, 10);
       const user = await db.one(
         'INSERT INTO users (id, email, password, first_name, middle_name, last_name) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-        [id, email, hashedPassword, first_name, middle_name, last_name]
+        [id, email, password, first_name, middle_name, last_name]
       );
       return user;
     } catch (error) {

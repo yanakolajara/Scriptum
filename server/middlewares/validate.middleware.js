@@ -35,42 +35,36 @@ const loginSchema = z.object({
   password: z.string({ message: 'Password is required' }),
 });
 
-// Middleware for full user data validation (for registration)
-export const validateUserData = (req, res, next) => {
+/**
+ * Validates user data for registration.
+ * @param {object} data - The user data to validate.
+ * @throws {ValidationError} - If the data is invalid.
+ * @returns {object} - The validated user data.
+ */
+export const registerDataValidation = (data) => {
   try {
-    req.body = userSchema.parse(req.body);
-    next();
+    return userSchema.parse(data);
   } catch (e) {
-    next(
-      new ValidationError(e.issues.map((issue) => issue.message).join(', '))
+    throw new ValidationError(
+      e.issues.map((issue) => issue.message).join(', ')
     );
   }
 };
 
-// Middleware for partial user data validation (for updates)
-export const validatePartialUserData = (req, res, next) => {
+/**
+ * Validates user data for login.
+ * @param {object} data - The user data to validate.
+ * @throws {ValidationError} - If the data is invalid.
+ * @returns {object} - The validated user data.
+ */
+export const loginDataValidation = (data) => {
   try {
-    req.body = userSchema.partial().parse(req.body);
-    next();
+    return loginSchema.parse(data);
   } catch (e) {
-    next(
-      new ValidationError(e.issues.map((issue) => issue.message).join(', '))
+    throw new ValidationError(
+      e.issues.map((issue) => issue.message).join(', ')
     );
   }
 };
 
 // Middleware for login data validation (only email and password)
-export const validateLoginData = (req, res, next) => {
-  try {
-    logger.info(req.body);
-    req.body = loginSchema.parse(req.body);
-    logger.info('data validated');
-    // req.body = userSchema.pick({ email: true, password: true }).parse(req.body);
-    next();
-  } catch (e) {
-    logger.error(e);
-    next(
-      new ValidationError(e.issues.map((issue) => issue.message).join(', '))
-    );
-  }
-};

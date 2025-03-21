@@ -24,14 +24,39 @@ transporter.verify((error, success) => {
  * @param {string} email - The email address to send the code to.
  */
 export const sendCodeToEmail = async (code, email) => {
-  const mailOptions = {
-    from: config.email.fromEmail,
-    to: email,
-    subject: 'Verify your account',
-    html: `<p>Your verification code is: <strong>${code}</strong></p>`,
-  };
-  //TODO: Handle errors (email not found, email not sent, service down)
-  // if FAIL: retry sending email
-  // if FAIL 3 times: respond with InternalServerError, and message to try later
-  return transporter.sendMail(mailOptions);
+  try {
+    const mailOptions = {
+      from: config.email.fromEmail,
+      to: email,
+      subject: 'Verify your account',
+      html: `<p>Your verification code is: <strong>${code}</strong></p>`,
+    };
+    return transporter.sendMail(mailOptions);
+  } catch (error) {
+    console.error('Error sending email:', error);
+    throw error;
+  }
+};
+
+/**
+ * Sends a verification link to an email address.
+ * @param {string} email - The email address to send the link to.
+ * @param {string} token - The verification token to send.
+ * @returns {Promise<void>}
+ * @throws {Error} - If the email fails to send.
+ */
+export const sendEmailVerification = async (email, token) => {
+  try {
+    const mailOptions = {
+      from: config.email.fromEmail,
+      to: email,
+      subject: 'Welcome to Scriptum',
+      html: `<p>Please click the following link to verify your email:</p>
+      <a href="${config.app.clientUrl}/verify-email/${token}">Verify Email</a>`,
+    };
+    return transporter.sendMail(mailOptions);
+  } catch (error) {
+    console.error('Error sending email:', error);
+    throw error;
+  }
 };
