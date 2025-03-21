@@ -9,7 +9,9 @@ import './styles/main.scss';
 import './App.scss';
 import { AuthProvider } from './providers/auth.provider';
 import { axiosInstance } from './api/axios';
-import Verify from './pages/Auth/Verify';
+import CheckEmail from './pages/Auth/CheckEmail';
+import VerifyEmail from './pages/Auth/VerifyEmail';
+import TwoFactor from './pages/Auth/TwoFactor';
 
 function App() {
   const testApi = async () => {
@@ -31,9 +33,11 @@ function App() {
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/register' element={<Register />} />
+            <Route path='/check-email' element={<CheckEmail />} />
+            <Route path='/verify-email' element={<VerifyEmail />} />
             <Route path='/login' element={<Login />} />
             <Route path='/chat' element={<Chat />} />
-            <Route path='/verify' element={<Verify />} />
+            <Route path='/twoFactor' element={<TwoFactor />} />
             <Route path='*' element={<h1>Not found</h1>} />
           </Routes>
         </div>

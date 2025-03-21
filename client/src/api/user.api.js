@@ -10,6 +10,16 @@ export const register = async (data) => {
   }
 };
 
+export const verifyEmail = async (data) => {
+  try {
+    const response = await axiosInstance.post('/users/verify-email', data);
+    return response;
+  } catch (error) {
+    console.log(error.response);
+    throw new Error(error.response.data.message);
+  }
+};
+
 export const login = async (data) => {
   try {
     const response = await axiosInstance.get('/users/login', data);

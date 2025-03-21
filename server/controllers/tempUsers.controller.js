@@ -1,7 +1,10 @@
 // import jwt from 'jsonwebtoken';
 import e from 'express';
 import { registerDataValidation } from '../middlewares/validate.middleware.js';
-import { sendCodeToEmail } from '../services/email.service.js';
+import {
+  sendCodeToEmail,
+  sendEmailVerification,
+} from '../services/email.service.js';
 import { comparePassword, createToken } from '../utils/auth.utils.js';
 import { DuplicateError, UnauthorizedError } from '../utils/errors.js';
 import { logger } from '../utils/logger.utils.js';
@@ -22,7 +25,7 @@ export class TempUserController {
       const userExists = await this.userModel.getByEmail(data.email);
       if (userExists) throw new DuplicateError('Email already exists.');
       //Hash password
-      const hashedPassword = await bcrypt.hash(password, 10);
+      const hashedPassword = await bcrypt.hash(data.password, 10);
       const newUser = await this.userModel.register({
         ...data,
         password: hashedPassword,
@@ -42,34 +45,56 @@ export class TempUserController {
           'User registered successfully, verify email to activate account.',
       });
     } catch (error) {
+      console.log(error);
       next(error);
     }
   };
 
+  /**
+   * Changes the is_verified property of a user in database to true.
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   */
   verifyEmail = async (req, res, next) => {
-    // try {
-    //   const { email, code } = req.body;
-    //   await this.userModel.verifyCode(email);
-    //   const user = await this.userModel.getByEmail(email);
-    //   if (!user) throw new UnauthorizedError('User not found.');
-    //   createToken(
-    //     {
-    //       id: user.id,
-    //       email: user.email,
-    //       first_name: user.first_name,
-    //       middle_name: user.middle_name,
-    //       last_name: user.last_name,
-    //     },
-    //     'access'
-    //   );
-    //   createToken({ id: user.id }, 'refresh');
-    //   res.status(200).json({
-    //     message: 'User verified successfully.',
-    //   });
-    // } catch (error) {
-    //   next(error);
-    // }
+    try {
+      const { token } = req.body;
+      const decoded = jwt.verify(token, config.jwt.secret);
+      const user = await this.userModel.getByEmail(decoded.email);
+      if (!user) throw new UnauthorizedError('User not found.');
+      await this.userModel.verifyEmail(user.email);
+      res.status(200).json({
+        message: 'User verified successfully.',
+      });
+    } catch (error) {
+      next(error);
+    }
   };
+
+  // verifyEmail = async (req, res, next) => {
+  // try {
+  //   const { email, code } = req.body;
+  //   await this.userModel.verifyCode(email);
+  //   const user = await this.userModel.getByEmail(email);
+  //   if (!user) throw new UnauthorizedError('User not found.');
+  //   createToken(
+  //     {
+  //       id: user.id,
+  //       email: user.email,
+  //       first_name: user.first_name,
+  //       middle_name: user.middle_name,
+  //       last_name: user.last_name,
+  //     },
+  //     'access'
+  //   );
+  //   createToken({ id: user.id }, 'refresh');
+  //   res.status(200).json({
+  //     message: 'User verified successfully.',
+  //   });
+  // } catch (error) {
+  //   next(error);
+  // }
+  // };
 
   login = async (req, res, next) => {
     try {

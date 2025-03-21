@@ -60,6 +60,16 @@ export class UserModel {
     }
   }
 
+  static async verifyEmail(email) {
+    try {
+      await db.none('UPDATE users SET is_verified = true WHERE email = $1', [
+        email,
+      ]);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   static async createCode(email) {
     try {
       const code = generateCode();

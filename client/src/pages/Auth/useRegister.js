@@ -33,9 +33,8 @@ export const useRegister = () => {
       const res = await register(formData);
       console.log(res);
       if (res.request.status === 201) {
-        storeDataInLS('userId', res.data.id);
-        alert(res.data.message);
-        navigate('/');
+        storeDataInLS('user', res.data);
+        navigate('/check-email');
       } else {
         alert(res.message);
       }

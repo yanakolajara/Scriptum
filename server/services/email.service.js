@@ -52,7 +52,7 @@ export const sendEmailVerification = async (email, token) => {
       to: email,
       subject: 'Welcome to Scriptum',
       html: `<p>Please click the following link to verify your email:</p>
-      <a href="${config.app.clientUrl}/verify-email/${token}">Verify Email</a>`,
+      <a href="${config.app.clientUrl}/verify-email?token=${token}">Verify Email</a>`,
     };
     return transporter.sendMail(mailOptions);
   } catch (error) {

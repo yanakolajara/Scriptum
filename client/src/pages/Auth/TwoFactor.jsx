@@ -10,7 +10,7 @@ const isValidChar = (char) => {
   return validChars.includes(char);
 };
 
-export default function Verify() {
+export default function TwoFactor() {
   //TODO: Move state functions to custom hooks
 
   const [code, setCode] = useState('');
