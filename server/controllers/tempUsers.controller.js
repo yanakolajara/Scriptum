@@ -1,6 +1,9 @@
 // import jwt from 'jsonwebtoken';
 import e from 'express';
-import { registerDataValidation } from '../middlewares/validate.middleware.js';
+import {
+  loginDataValidation,
+  registerDataValidation,
+} from '../middlewares/validate.middleware.js';
 import {
   sendCodeToEmail,
   sendEmailVerification,
@@ -98,17 +101,30 @@ export class TempUserController {
 
   login = async (req, res, next) => {
     try {
-      // Extract data from body
-      const data = req.body;
-      // Validate data
-      //TODO: Validate data
+      // Validate body data
+      const data = loginDataValidation(req.body);
       // Verify if user exists in database
-      const dbData = await this.userModel.getByEmail(email);
+      const dbData = await this.userModel.getByEmail(data.email);
       // Throw error if no user was found with the provided email or password
       if (!dbData) throw new UnauthorizedError('Invalid credentials.');
+      // Check if user is verified
+      if (!dbData.is_verified)
+        throw new UnauthorizedError('Email not verified.');
+      // Compare password
       const match = await comparePassword(data.password, dbData.password);
-      if (match) {
-        createToken(
+      // Throw error if password is incorrect
+      if (!match) throw new UnauthorizedError('Invalid credentials.');
+      if (dbData.mfa) {
+        console.log('MFA required');
+        // TODO Send code to email
+        // TODO Respond with mfa required message (mfa_required: true)
+        res.status(200).json({
+          message: 'Authentication code sent to email.',
+          mfa_required: true,
+        });
+      } else {
+        console.log('MFA not required');
+        const accessToken = jwt.sign(
           {
             id: dbData.id,
             email: dbData.email,
@@ -116,15 +132,23 @@ export class TempUserController {
             middle_name: dbData.middle_name,
             last_name: dbData.last_name,
           },
-          'access'
-        );
-        createToken({ id: dbData.id }, 'refresh');
+          config.jwt.secret,
+          { expiresIn: '7d' }
+        ); //! Remove expiration date after refresh token is implemented
+
+        res.cookie('access_token', accessToken, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'strict',
+          path: '/',
+        });
+
         res.status(200).json({
           message: 'User logged in successfully.',
+          mfa_required: false,
         });
-      } else {
-        throw new UnauthorizedError('Invalid credentials.');
       }
+      // Create tokens
     } catch (error) {
       next(error);
     }

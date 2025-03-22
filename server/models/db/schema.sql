@@ -20,7 +20,8 @@ CREATE TABLE users (
     first_name VARCHAR(255),
     middle_name VARCHAR(255),
     last_name VARCHAR(255),
-    is_verified BOOLEAN DEFAULT FALSE
+    is_verified BOOLEAN DEFAULT FALSE,
+    mfa BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE user_contexts (

@@ -22,7 +22,7 @@ export const verifyEmail = async (data) => {
 
 export const login = async (data) => {
   try {
-    const response = await axiosInstance.get('/users/login', data);
+    const response = await axiosInstance.post('/users/login', data);
     return response;
   } catch (error) {
     console.log(error.response);
@@ -32,7 +32,6 @@ export const login = async (data) => {
 
 export const verify = async (data) => {
   try {
-    console.log('veridy(data)', data);
     const response = await axiosInstance.post('/users/verify', data);
     return response;
   } catch (error) {

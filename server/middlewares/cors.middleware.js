@@ -4,6 +4,7 @@ const ACCEPTED_ORIGINS = ['http://localhost:3000', 'http://localhost:8080'];
 
 export const corsMiddleware = ({ acceptedOrigins = ACCEPTED_ORIGINS } = {}) =>
   cors({
+    credentials: true,
     origin: (origin, callback) => {
       if (acceptedOrigins.includes(origin)) {
         return callback(null, true);

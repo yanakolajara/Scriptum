@@ -21,10 +21,10 @@ export default function Login() {
   };
   return (
     <main>
-      <h1>Register</h1>
+      <h1>Log in</h1>
       <form
         onSubmit={handleSubmit}
-        style={{ display: 'flex', 'flex-direction': 'column' }}
+        style={{ display: 'flex', flexDirection: 'column' }}
       >
         <label htmlFor=''>
           Email
