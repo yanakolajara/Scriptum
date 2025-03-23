@@ -1,9 +1,15 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect, useContext } from 'react';
 export const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
+const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [token, setToken] = useState(document.cookie.includes('access_token'));
   const [loading, setLoading] = useState(true);
+
+  const isUserLoggedIn = () => {
+    console.log('Checking if user is logged in');
+    return document.cookie.includes('access_token');
+  };
 
   useEffect(() => {
     // const checkAuth = async () => {
@@ -17,11 +23,18 @@ export const AuthProvider = ({ children }) => {
     //   }
     // };
     // checkAuth();
+    console.log('Auth provider');
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, loading }}>
+    <AuthContext.Provider value={{ user, loading, isUserLoggedIn, token }}>
       {children}
     </AuthContext.Provider>
   );
+};
+
+export default AuthProvider;
+
+export const useAuth = () => {
+  return useContext();
 };

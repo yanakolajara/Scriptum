@@ -137,7 +137,7 @@ export class TempUserController {
         ); //! Remove expiration date after refresh token is implemented
 
         res.cookie('access_token', accessToken, {
-          httpOnly: true,
+          // httpOnly: true,
           secure: process.env.NODE_ENV === 'production',
           sameSite: 'strict',
           path: '/',
@@ -156,9 +156,7 @@ export class TempUserController {
 
   logout = async (req, res, next) => {
     try {
-      res.clearCookie('session_id');
-      res.clearCookie('auth_token');
-      res.send('Logged out');
+      res.clearCookie('access_token').status(200).send('Logged out');
       // res.status(200).json({ message: 'User logged out successfully.' });
     } catch (error) {
       next(error);

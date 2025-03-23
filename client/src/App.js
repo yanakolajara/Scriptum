@@ -7,7 +7,7 @@ import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
 import './styles/main.scss';
 import './App.scss';
-import { AuthProvider } from './providers/auth.provider';
+import AuthProvider from './providers/auth.provider';
 import { axiosInstance } from './api/axios';
 import CheckEmail from './pages/Auth/CheckEmail';
 import VerifyEmail from './pages/Auth/VerifyEmail';

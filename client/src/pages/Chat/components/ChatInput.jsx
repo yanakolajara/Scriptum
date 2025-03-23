@@ -12,6 +12,8 @@ export default function ChatInput({
     sendMessage(message);
   };
 
+  // todo: handle generate entry
+
   //TODO: Add loading skelleton while waiting for response
 
   return (
@@ -26,6 +28,7 @@ export default function ChatInput({
         />
         <input type='submit' value='Send' disabled={loading} />
       </form>
+      <button>Generate entry</button>
     </div>
   );
 }

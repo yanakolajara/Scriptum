@@ -50,3 +50,18 @@ export const resendCode = async (email) => {
     throw new Error(error.response.data.message);
   }
 };
+
+/**
+ * Logs out the user by deleting the access_token from cookies.
+ *
+ */
+export const logout = async () => {
+  try {
+    const response = await axiosInstance.post('/users/logout', {
+      withCredentials: true,
+    });
+    return response;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+};
