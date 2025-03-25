@@ -156,7 +156,10 @@ export class TempUserController {
 
   logout = async (req, res, next) => {
     try {
-      res.clearCookie('access_token').status(200).send('Logged out');
+      res
+        .clearCookie('access_token')
+        .status(200)
+        .json({ message: 'Logged out' });
       // res.status(200).json({ message: 'User logged out successfully.' });
     } catch (error) {
       next(error);
@@ -183,6 +186,28 @@ export class TempUserController {
     try {
       await this.userModel.delete({ id });
       res.status(200).json({ message: 'User deleted successfully' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  checkAuth = async (req, res, next) => {
+    try {
+      const token = req.cookies.access_token;
+      if (!token) throw new UnauthorizedError('No token provided.');
+      const decoded = jwt.verify(token, config.jwt.secret);
+      const user = await this.userModel.getByEmail(decoded.email);
+      if (!user) throw new UnauthorizedError('User not found.');
+      res.status(200).json({
+        message: 'User authenticated successfully.',
+        user: {
+          ...user,
+          id: undefined,
+          password: undefined,
+          is_verified: undefined,
+          mfa: undefined,
+        },
+      });
     } catch (error) {
       next(error);
     }

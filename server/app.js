@@ -1,5 +1,6 @@
 import express from 'express';
 import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
 import { createUsersRouter } from './routes/users.routes.js';
 import { errorHandler } from './middlewares/error.middleware.js';
 import { config } from './config/config.js';
@@ -12,6 +13,7 @@ export const createApp = ({ userModel, entriesModel }) => {
   app.use(morgan('dev'));
   app.use(express.json());
   app.use(corsMiddleware(config.security.corsAllowedOrigins));
+  app.use(cookieParser());
 
   //* Auth routes
   app.use('/users', createUsersRouter({ userModel }));

@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { register } from '../../api/user.api';
 import { isDataValid, isPasswordValid } from './utils/validators.utils';
 import { storeDataInLS } from '../../utils/window.utils';
+import { useAuth } from '../../providers/auth.provider';
 
 export const useRegister = () => {
+  const { register } = useAuth();
   const [formData, setFormData] = useState({
     first_name: '',
     middle_name: '',

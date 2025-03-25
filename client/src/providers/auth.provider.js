@@ -1,40 +1,107 @@
-import { createContext, useState, useEffect, useContext } from 'react';
-export const AuthContext = createContext();
-
-const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(document.cookie.includes('access_token'));
-  const [loading, setLoading] = useState(true);
-
-  const isUserLoggedIn = () => {
-    console.log('Checking if user is logged in');
-    return document.cookie.includes('access_token');
-  };
-
-  useEffect(() => {
-    // const checkAuth = async () => {
-    //   try {
-    //     const res = await axios.get('/api/auth/me', { withCredentials: true });
-    //     setUser(res.data.user);
-    //   } catch (err) {
-    //     setUser(null);
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // };
-    // checkAuth();
-    console.log('Auth provider');
-  }, []);
-
-  return (
-    <AuthContext.Provider value={{ user, loading, isUserLoggedIn, token }}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
-
-export default AuthProvider;
+import { useEffect, useState } from 'react';
+import { axiosInstance } from '../api/axios';
 
 export const useAuth = () => {
-  return useContext();
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const register = async (data) => {
+    try {
+      const response = await axiosInstance.post('/users/register', data);
+      return response;
+    } catch (error) {
+      console.log(error.response);
+      throw new Error(error.response.data.message);
+    }
+  };
+
+  const verifyEmail = async (data) => {
+    try {
+      const response = await axiosInstance.post('/users/verify-email', data);
+      return response;
+    } catch (error) {
+      console.log(error.response);
+      throw new Error(error.response.data.message);
+    }
+  };
+
+  const login = async (data) => {
+    try {
+      const response = await axiosInstance.post('/users/login', data);
+      return response;
+    } catch (error) {
+      console.log(error.response);
+      throw new Error(error.response.data.message);
+    }
+  };
+
+  const verify = async (data) => {
+    try {
+      const response = await axiosInstance.post('/users/verify', data);
+      return response;
+    } catch (error) {
+      console.log(error.response);
+      throw new Error(error.response.data.message);
+    }
+  };
+
+  // Resends a new verification code to the user's email
+  const resendCode = async (email) => {
+    try {
+      const response = await axiosInstance.post('/users/resend-code', {
+        email,
+      });
+      return response;
+    } catch (error) {
+      console.log(error.response);
+      throw new Error(error.response.data.message);
+    }
+  };
+
+  /**
+   * Logs out the user by deleting the access_token from cookies.
+   *
+   */
+  const logout = async () => {
+    try {
+      const response = await axiosInstance.post('/users/logout', {
+        withCredentials: true,
+      });
+      return response;
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  };
+
+  const checkAuth = async () => {
+    setLoading(true);
+    try {
+      const response = await axiosInstance.get('/users/check-auth');
+
+      setUser(response.data.user);
+    } catch (error) {
+      setError(error);
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {}, [checkAuth, setLoading, loading]);
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+  return {
+    user,
+    loading,
+    error,
+    register,
+    verifyEmail,
+    login,
+    verify,
+    logout,
+    resendCode,
+  };
 };

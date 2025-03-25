@@ -1,8 +1,9 @@
 import React from 'react';
-import { logout } from '../../../api/user.api';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../providers/auth.provider';
 
 export default function NavAccount() {
+  const { logout } = useAuth();
   const navigate = useNavigate();
   const handleLogout = async (e) => {
     e.preventDefault();

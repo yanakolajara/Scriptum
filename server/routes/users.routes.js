@@ -30,6 +30,7 @@ export const createUsersRouter = ({ userModel }) => {
   router.post('/register', userController.register);
   router.post('/login', userController.login);
   router.post('/verify-email', userController.verifyEmail);
+  router.get('/check-auth', userController.checkAuth);
   router.post('/logout', userController.logout);
   return router;
 };
