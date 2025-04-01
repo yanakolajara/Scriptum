@@ -6,6 +6,17 @@ import {
   UnauthorizedError,
 } from '../utils/errors.js';
 
-export class EntryModel {}
+export class EntryModel {
+  static async getAllEntries(id) {
+    try {
+      const entries = await db.any('SELECT * FROM entries WHERE user_id = $1', [
+        id,
+      ]);
+      return entries;
+    } catch (error) {
+      throw new InternalServerError(error.message);
+    }
+  }
+}
 
 export const entryModel = EntryModel;

@@ -1,13 +1,14 @@
 import express from 'express';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
+import jwt from 'jsonwebtoken';
 import { createUsersRouter } from './routes/users.routes.js';
 import { errorHandler } from './middlewares/error.middleware.js';
 import { config } from './config/config.js';
 import { corsMiddleware } from './middlewares/cors.middleware.js';
-import { createEntriesModel } from './routes/chat.routes.js';
+import { createEntriesRouter } from './routes/entries.routes.js';
 
-export const createApp = ({ userModel, entriesModel }) => {
+export const createApp = ({ userModel, entryModel }) => {
   const app = express();
 
   app.use(morgan('dev'));
@@ -15,11 +16,24 @@ export const createApp = ({ userModel, entriesModel }) => {
   app.use(corsMiddleware(config.security.corsAllowedOrigins));
   app.use(cookieParser());
 
+  app.use((req, res, next) => {
+    const token = req.cookies.access_token;
+    let data = null;
+    req.session = { user: null };
+    try {
+      data = jwt.verify(token, config.jwt.secret);
+      req.session.user = data;
+    } catch (error) {
+      req.session.user = null;
+    }
+    next();
+  });
+
   //* Auth routes
   app.use('/users', createUsersRouter({ userModel }));
 
   //* Protected routes
-  app.use('/entries', createEntriesModel({ entriesModel }));
+  app.use('/entries', createEntriesRouter({ entryModel }));
   // app.use('/comments', createCommentsRouter({ commentModel }));
 
   app.get('/', (req, res) => {

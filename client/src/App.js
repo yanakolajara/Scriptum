@@ -5,13 +5,14 @@ import Navbar from './components/layout/Navbar/Navbar';
 import Home from './pages/Home/Home';
 import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
-import './styles/main.scss';
-import './App.scss';
 import { axiosInstance } from './api/axios';
 import CheckEmail from './pages/Auth/CheckEmail';
 import VerifyEmail from './pages/Auth/VerifyEmail';
 import TwoFactor from './pages/Auth/TwoFactor';
+import Dashboard from './pages/Dashboard/Dashboard.jsx';
 import { useAuth } from './providers/auth.provider';
+import './styles/main.scss';
+import './App.scss';
 // import AuthProvider from './providers/auth.provider';
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
       <div className='spacer'>
         <Routes>
           <Route path='/' element={<Home />} />
+          <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/register' element={<Register />} />
           <Route path='/check-email' element={<CheckEmail />} />
           <Route path='/verify-email' element={<VerifyEmail />} />

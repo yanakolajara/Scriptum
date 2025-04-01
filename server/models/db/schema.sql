@@ -9,7 +9,7 @@ CREATE DATABASE scriptum;
 -- DROP TABLE IF EXISTS JournalEntryTags;
 -- DROP TABLE IF EXISTS Tags;
 DROP TABLE IF EXISTS mfa_codes;
-DROP TABLE IF EXISTS journal_entries;
+DROP TABLE IF EXISTS entries;
 DROP TABLE IF EXISTS user_contexts;
 DROP TABLE IF EXISTS users;
 
@@ -32,7 +32,7 @@ CREATE TABLE user_contexts (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
-CREATE TABLE journal_entries (
+CREATE TABLE entries (
     id SERIAL PRIMARY KEY,
     user_id UUID NOT NULL,
     content TEXT NOT NULL,                 
@@ -67,7 +67,7 @@ CREATE TABLE refresh_tokens (
 --     id SERIAL PRIMARY KEY,
 --     journal_entry_id INTEGER NOT NULL,
 --     tag_id INTEGER NOT NULL,
---     FOREIGN KEY (journal_entry_id) REFERENCES journal_entries(id) ON DELETE CASCADE,
+--     FOREIGN KEY (journal_entry_id) REFERENCES entries(id) ON DELETE CASCADE,
 --     FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE,
 --     UNIQUE (journal_entry_id, tag_id)
 -- );

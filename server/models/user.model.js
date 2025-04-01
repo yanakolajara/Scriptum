@@ -12,13 +12,23 @@ import {
 export class UserModel {
   static async getByEmail(email) {
     try {
-      console.log('getByEmail(email) email:', email);
-      const users = await db.oneOrNone('SELECT * FROM users WHERE email = $1', [
+      const user = await db.oneOrNone('SELECT * FROM users WHERE email = $1', [
         email,
       ]);
-      return users;
+      return user;
     } catch (error) {
       console.log('getByEmail(email) error:', error);
+      throw new InternalServerError(error.message);
+    }
+  }
+  static async getByID(id) {
+    try {
+      const user = await db.oneOrNone('SELECT * FROM users WHERE id = $1', [
+        id,
+      ]);
+      return user;
+    } catch (error) {
+      console.log('getByEmail(id) error:', error);
       throw new InternalServerError(error.message);
     }
   }
