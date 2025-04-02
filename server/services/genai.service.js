@@ -20,9 +20,8 @@ export class GenaiChat {
   async sendMessage(message) {
     const messageId = uuidv4();
     try {
-      const result = await this.chat.sendMessage(message);
-      const response = await result.response;
-      return await response.text();
+      const res = await this.chat.sendMessage(message);
+      return { text: res.response.text(), messageId };
     } catch (e) {
       console.error('Error in sendMessage:', e.message);
     }
@@ -38,18 +37,12 @@ export class GenaiChat {
     }
   }
 
-  async generateEntry(chat, userContext, cacheName) {
+  async generateEntry() {
     try {
-      await updateChatCache(chat, userContext, cacheName);
-      const summaryPrompt =
-        'Please provide a brief first-person summary of the conversation above.';
-      const summaryResponse = await chat.sendMessageStream(summaryPrompt);
-      let summary = '';
-      for await (const chunk of summaryResponse) {
-        summary += chunk.text();
-      }
-      await cacheManager.delete({ cacheName });
-      return summary;
+      const prompt =
+        'Please provide a brief first-person summary of the conversation.';
+      const res = await this.chat.sendMessage(prompt);
+      return res;
     } catch (error) {
       console.error('Error in generateEntry:', error.message);
     }

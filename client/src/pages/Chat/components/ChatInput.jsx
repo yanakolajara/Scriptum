@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { createEntry } from '../../../api/entries';
 
 export default function ChatInput({
   message,
@@ -13,6 +14,14 @@ export default function ChatInput({
   };
 
   // todo: handle generate entry
+  const handleGenerateEntry = async () => {
+    try {
+      const res = await createEntry();
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   //TODO: Add loading skelleton while waiting for response
 
@@ -28,7 +37,7 @@ export default function ChatInput({
         />
         <input type='submit' value='Send' disabled={loading} />
       </form>
-      <button>Generate entry</button>
+      <button onClick={handleGenerateEntry}>Generate entry</button>
     </div>
   );
 }
