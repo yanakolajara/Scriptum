@@ -87,7 +87,7 @@ export const useAuth = () => {
       setLoading(false);
     }
   };
-  useEffect(() => {}, [checkAuth, setLoading, loading]);
+  // useEffect(() => {}, [checkAuth, setLoading, loading]);
 
   useEffect(() => {
     checkAuth();
