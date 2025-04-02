@@ -36,7 +36,7 @@ CREATE TABLE entries (
     id SERIAL PRIMARY KEY,
     user_id UUID NOT NULL,
     content TEXT NOT NULL,                 
-    description VARCHAR(255),              
+    title VARCHAR(255),              
     entry_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     starred BOOLEAN DEFAULT FALSE,         
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE

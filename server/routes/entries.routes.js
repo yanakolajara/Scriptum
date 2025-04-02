@@ -25,7 +25,7 @@ export const createEntriesRouter = ({ entryModel }) => {
   const router = Router();
   const entryController = new EntryController({ entryModel });
   router.get('/', entryController.getAllEntries);
-  // router.post('/register', userController.register);
+  router.post('/', entryController.createEntry);
   // router.post('/login', userController.login);
   // router.post('/verify-email', userController.verifyEmail);
   // router.get('/check-auth', userController.checkAuth);

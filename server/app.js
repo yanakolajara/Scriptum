@@ -22,6 +22,7 @@ export const createApp = ({ userModel, entryModel }) => {
     req.session = { user: null };
     try {
       data = jwt.verify(token, config.jwt.secret);
+      //todo: Validate if token is actually valid (if user exists or token has been blacklisted)
       req.session.user = data;
     } catch (error) {
       req.session.user = null;
