@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { useAuth } from '../../providers/auth.provider';
+import { useAuth, useAuthContext } from '../../providers/auth.provider';
 
 // import { verifyEmail } from '../../api/user.api';
 
 export default function VerifyEmail() {
-  const { verifyEmail } = useAuth();
+  const { verifyEmail } = useAuthContext();
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token');
   const navigate = useNavigate();

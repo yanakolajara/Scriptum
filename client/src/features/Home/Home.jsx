@@ -1,6 +1,6 @@
 import React from 'react';
-import { useAuth } from '../../providers/auth.provider';
 import { useNavigate } from 'react-router-dom';
+import { useAuthContext } from '../../providers/auth.provider';
 
 const tempStyle = {
   display: 'flex',
@@ -8,7 +8,7 @@ const tempStyle = {
 };
 
 export default function Home() {
-  const { user } = useAuth();
+  const { user } = useAuthContext();
   const navigate = useNavigate();
 
   if (user) {

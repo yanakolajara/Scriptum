@@ -12,6 +12,7 @@ yarn-error.log*
 
 client/build/
 server/dist/
+drafts/
 
 package-lock.json
 pnpm-lock.yaml

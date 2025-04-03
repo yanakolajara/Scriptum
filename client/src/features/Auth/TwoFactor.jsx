@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getDataFromLS } from '../../utils/window.utils';
 import { isCodeComplete } from './utils/validators.utils';
-import { useAuth } from '../../providers/auth.provider';
+import { useAuth, useAuthContext } from '../../providers/auth.provider';
 
 // Validates if the entered char is valid
 const isValidChar = (char) => {
@@ -13,7 +13,7 @@ const isValidChar = (char) => {
 export default function TwoFactor() {
   //TODO: Move state functions to custom hooks
 
-  const { resendCode, verify } = useAuth();
+  const { resendCode, verify } = useAuthContext();
   const [code, setCode] = useState('');
   const navigate = useNavigate();
   const handleChange = (e) => {

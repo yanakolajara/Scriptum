@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react';
-import { isStringEmpty } from '../utils/validations.js';
-import { chatTranscriptFormat } from '../utils/formatting.js';
-import { useSocket } from './useSocket.js';
 import { v4 as uuidv4 } from 'uuid';
-import { socket } from '../../../socket.js';
+import { useSocket } from '../services/useSocket.js';
+import { socket } from '../services/socket.js';
 
 export const useChat = () => {
   const userToken = '550e8400-e29b-41d4-a716-446655440000'; // FIXME: Replace with real user id
@@ -15,7 +13,7 @@ export const useChat = () => {
     onResponse: ({ response }) => {
       setChat((prev) => [
         ...prev,
-        { role: 'ai', text: response, fulfilled: true, id: uuidv4() },
+        { role: 'ai', text: response.text, fulfilled: true, id: uuidv4() },
       ]);
       setLoading(false);
     },

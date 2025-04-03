@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../providers/auth.provider';
+import { useAuth, useAuthContext } from '../../providers/auth.provider';
 
 export const useLogin = () => {
-  const { login } = useAuth();
+  const { login } = useAuthContext();
   const navigate = useNavigate();
   const handleLogin = async (formData) => {
     try {

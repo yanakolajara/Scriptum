@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getEntries } from '../../api/entries';
+import { getEntries } from 'api/entries';
 
 export default function Dashboard() {
   const [entries, setEntries] = useState(null);
