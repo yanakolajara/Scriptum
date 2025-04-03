@@ -5,7 +5,7 @@ import Home from './features/Home/Home.jsx';
 import Dashboard from './features/Dashboard/Dashboard.jsx';
 import Chat from './features/Chat/Chat.jsx';
 import Login from './features/Auth/Login.jsx';
-// import Register from './pages/Auth/Register';
+import Register from './features/Auth/Register';
 // import CheckEmail from './pages/Auth/CheckEmail';
 // import VerifyEmail from './pages/Auth/VerifyEmail';
 // import TwoFactor from './pages/Auth/TwoFactor';
@@ -25,7 +25,7 @@ function App() {
             <Route path='/dashboard' element={<Dashboard />} />
             <Route path='/chat' element={<Chat />} />
             <Route path='/login' element={<Login />} />
-            {/* <Route path='/register' element={<Register />} /> */}
+            <Route path='/register' element={<Register />} />
             {/* <Route path='/check-email' element={<CheckEmail />} /> */}
             {/* <Route path='/verify-email' element={<VerifyEmail />} /> */}
             {/* <Route path='/twoFactor' element={<TwoFactor />} /> */}

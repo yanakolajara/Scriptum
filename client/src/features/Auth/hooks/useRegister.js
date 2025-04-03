@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { isDataValid, isPasswordValid } from './utils/validators.utils';
-import { storeDataInLS } from '../../utils/window.utils';
-import { useAuth, useAuthContext } from '../../providers/auth.provider';
+import { isDataValid } from '../utils/validators.utils';
+import { useAuthContext } from 'providers/auth.provider';
 
 export const useRegister = () => {
   const { register } = useAuthContext();
@@ -34,7 +33,7 @@ export const useRegister = () => {
       const res = await register(formData);
       console.log(res);
       if (res.request.status === 201) {
-        storeDataInLS('user', res.data);
+        // storeDataInLS('user', res.data);
         navigate('/check-email');
       } else {
         alert(res.message);

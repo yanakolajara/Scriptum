@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useRegister } from './useRegister';
+import { useRegister } from './hooks/useRegister';
 
 export default function Register() {
   const { handleChange, handleSubmit, formData } = useRegister();
