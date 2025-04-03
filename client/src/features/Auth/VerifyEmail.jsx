@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { useAuth, useAuthContext } from '../../providers/auth.provider';
-
+import { useAuthContext } from 'providers/auth.provider';
 // import { verifyEmail } from '../../api/user.api';
 
 export default function VerifyEmail() {
