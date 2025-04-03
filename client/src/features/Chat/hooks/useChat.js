@@ -24,6 +24,7 @@ export const useChat = () => {
       ]);
     },
     onStream: ({ messageId, chunk }) => {
+      // todo: if stream paused for x seconds, throw timeout error
       const updatedChat = chat.map((message) => {
         if (message.id === messageId) {
           return { ...message, text: message.text + chunk };
@@ -45,6 +46,7 @@ export const useChat = () => {
       setLoading(false);
     },
     onChatEnd: (summary) => {
+      //todo: modify chat to add summary
       console.log('Chat ended, summary:', summary);
     },
     onError: (e) => {
@@ -54,6 +56,9 @@ export const useChat = () => {
   });
 
   const sendMessage = (message, token = 'tokentesting') => {
+    //todo: validateMessage(message)
+    //todo: validateUserToken(userToken)
+    //todo: Handle errors (server, network, validations, etc)
     try {
       setLoading(true);
       setChat((prevChat) => [

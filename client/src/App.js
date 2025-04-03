@@ -4,7 +4,7 @@ import Navbar from './components/navbar/Navbar.jsx';
 import Home from './features/Home/Home.jsx';
 import Dashboard from './features/Dashboard/Dashboard.jsx';
 import Chat from './features/Chat/Chat.jsx';
-// import Login from './pages/Auth/Login';
+import Login from './features/Auth/Login.jsx';
 // import Register from './pages/Auth/Register';
 // import CheckEmail from './pages/Auth/CheckEmail';
 // import VerifyEmail from './pages/Auth/VerifyEmail';
@@ -24,7 +24,7 @@ function App() {
             <Route path='/' element={<Home />} />
             <Route path='/dashboard' element={<Dashboard />} />
             <Route path='/chat' element={<Chat />} />
-            {/* <Route path='/login' element={<Login />} /> */}
+            <Route path='/login' element={<Login />} />
             {/* <Route path='/register' element={<Register />} /> */}
             {/* <Route path='/check-email' element={<CheckEmail />} /> */}
             {/* <Route path='/verify-email' element={<VerifyEmail />} /> */}
