@@ -2,12 +2,14 @@ import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useSocket } from '../services/useSocket.js';
 import { socket } from '../services/socket.js';
+import { createEntry } from 'api/entries.js';
+import { useNavigate } from 'react-router-dom';
 
 export const useChat = () => {
-  const userToken = '550e8400-e29b-41d4-a716-446655440000'; // FIXME: Replace with real user id
   const [chat, setChat] = useState([]);
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useSocket({
     onResponse: ({ response }) => {
@@ -45,9 +47,13 @@ export const useChat = () => {
       setChat(updatedChat);
       setLoading(false);
     },
-    onEnd: (summary) => {
-      //todo: modify chat to add summary
-      console.log('Chat ended, summary:', summary);
+    onEntry: async ({ entry }) => {
+      try {
+        const res = await createEntry(entry);
+        navigate(`/entry?id=${res.data.id}`);
+      } catch (error) {
+        console.error('Error in entry:', error.message);
+      }
     },
     onError: (e) => {
       console.error('Error:', e);
@@ -71,7 +77,7 @@ export const useChat = () => {
         },
       ]);
       setMessage('');
-      socket.emit('message', { message, userToken });
+      socket.emit('message', { message });
     } catch (err) {
       console.error(err);
     }
@@ -90,7 +96,7 @@ export const useChat = () => {
   //       },
   //     ]);
   //     setMessage('');
-  //     socket.emit('message', { message, userToken });
+  //     socket.emit('message', { message });
   //   } catch (err) {
   //     console.error(err);
   //   }

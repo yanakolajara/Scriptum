@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { socket } from './socket.js';
 
 export const useSocket = (handlers) => {
-  const { onStreamStart, onStream, onStreamFulfilled, onEnd, onResponse } =
+  const { onStreamStart, onStream, onStreamFulfilled, onEntry, onResponse } =
     handlers;
   // todo: create an object with "socket actions" to avoid repetition in socket.on
   // todo: use sockets.on to listen unknown events (blackbox), events will be given by eventHandler object
@@ -22,7 +22,7 @@ export const useSocket = (handlers) => {
     socket.on('stream-start', onStreamStart);
     socket.on('stream', onStream);
     socket.on('stream-fulfilled', onStreamFulfilled);
-    socket.on('end', onEnd);
+    socket.on('entry', onEntry);
     // socket.on('genai:error', onError);
     return () => {
       socket.off('connect');

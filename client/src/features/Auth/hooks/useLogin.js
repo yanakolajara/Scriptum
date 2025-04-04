@@ -10,12 +10,12 @@ export const useLogin = () => {
       const res = await login(formData);
       const cookies = document.cookie.split(';');
 
-      if (res.request.status === 200) {
+      if (res.status === 200) {
         //todo: Check if 2fa is required
         alert(res.data.message);
         navigate('/');
       } else {
-        alert(res.message);
+        alert(res.data.message);
       }
     } catch (error) {
       console.error(error);

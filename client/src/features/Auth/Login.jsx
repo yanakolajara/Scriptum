@@ -19,6 +19,9 @@ export default function Login() {
     e.preventDefault();
     handleLogin(formData);
   };
+
+  //todo: change login success and not show popup
+  //todo: redirect to dashboard after login
   return (
     <main>
       <h1>Log in</h1>

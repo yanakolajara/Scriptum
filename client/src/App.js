@@ -9,6 +9,7 @@ import Register from './features/Auth/Register';
 import CheckEmail from './features/Auth/CheckEmail';
 import VerifyEmail from './features/Auth/VerifyEmail';
 import TwoFactor from './features/Auth/TwoFactor';
+import Entry from 'features/Entry/Entry.jsx';
 import './styles/main.scss';
 import './styles/App.scss';
 
@@ -22,6 +23,7 @@ function App() {
             <Route path='/' element={<Home />} />
             <Route path='/dashboard' element={<Dashboard />} />
             <Route path='/chat' element={<Chat />} />
+            <Route path='/entry' element={<Entry />} />
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
             <Route path='/check-email' element={<CheckEmail />} />

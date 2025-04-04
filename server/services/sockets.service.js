@@ -36,9 +36,7 @@ export const initializeChatSockets = (httpServer) => {
     });
 
     socket.on('end', async () => {
-      console.log('Ending chat');
       const entry = await genaiChat.generateEntry();
-      console.log('Entry generated:', entry);
       socket.emit('entry', { entry });
     });
 

@@ -53,7 +53,7 @@ export class GenaiChat {
         'including the main topics discussed and any important details. ' +
         'Please make sure to use proper grammar and punctuation. ';
       const res = await this.model.generateContent(`${prompt} \n\n ${history}`);
-      return { text: res.response.text() };
+      return res.response.text();
     } catch (error) {
       console.error('Error in generateEntry:', error.message);
     }

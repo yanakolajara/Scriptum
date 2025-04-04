@@ -13,14 +13,14 @@ export default function Chat() {
   };
 
   // todo: handle generate entry
-  const handleGenerateEntry = async () => {
-    try {
-      const res = await createEntry();
-      console.log(res);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const handleGenerateEntry = async () => {
+  //   try {
+  //     const res = await createEntry();
+  //     console.log(res);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   //todo: Add loading skelleton while waiting for response
   return (

@@ -17,7 +17,8 @@ const AuthProvider = ({ children }) => {
       return response;
     } catch (error) {
       setError(error.response.data.message);
-      throw new Error(error.response.data.message);
+      setLoading(false);
+      return error.response;
     }
   };
 
@@ -60,16 +61,15 @@ const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    console.log('howdy');
     const fetchUser = async () => {
       const response = await checkAuth();
-      console.log('🚀 ~ fetchUser ~ response:', response);
-
-      setUser(response.data);
+      setUser(response?.data || null);
     };
     console.log('after fetch');
     fetchUser();
   }, []);
+
+  // todo: rerender only when required (components should not keep re-rendering on every change of url or state)
 
   return (
     <AuthContext.Provider

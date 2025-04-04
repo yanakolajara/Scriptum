@@ -17,6 +17,17 @@ export class EntryModel {
       throw new InternalServerError(error.message);
     }
   }
+
+  static async getEntry(id) {
+    try {
+      const entry = await db.oneOrNone('SELECT * FROM entries WHERE id = $1', [
+        id,
+      ]);
+      return entry;
+    } catch (error) {
+      throw new InternalServerError(error.message);
+    }
+  }
   static async createEntry(entry) {
     try {
       const { user_id, content, title, starred } = entry;

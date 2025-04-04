@@ -8,6 +8,9 @@ export default function VerifyEmail() {
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token');
   const navigate = useNavigate();
+
+  //todo: design a nice email verification page
+  //todo: show verified email toast
   useEffect(() => {
     const verify = async () => {
       try {
