@@ -45,7 +45,7 @@ export const useChat = () => {
       setChat(updatedChat);
       setLoading(false);
     },
-    onChatEnd: (summary) => {
+    onEnd: (summary) => {
       //todo: modify chat to add summary
       console.log('Chat ended, summary:', summary);
     },
@@ -71,7 +71,7 @@ export const useChat = () => {
         },
       ]);
       setMessage('');
-      socket.emit('chat:message', { message, userToken });
+      socket.emit('message', { message, userToken });
     } catch (err) {
       console.error(err);
     }
@@ -90,15 +90,14 @@ export const useChat = () => {
   //       },
   //     ]);
   //     setMessage('');
-  //     socket.emit('chat:message', { message, userToken });
+  //     socket.emit('message', { message, userToken });
   //   } catch (err) {
   //     console.error(err);
   //   }
   // };
 
-  const endChat = (userToken) => {
-    //? Use session ID as entry ID
-    socket.emit('chat:ends');
+  const endChat = () => {
+    socket.emit('end');
   };
 
   useEffect(() => {}, [useSocket]);
@@ -110,5 +109,6 @@ export const useChat = () => {
     setChat,
     setMessage,
     sendMessage,
+    endChat,
   };
 };

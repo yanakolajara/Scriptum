@@ -3,13 +3,14 @@ import { v4 as uuidv4 } from 'uuid';
 import { config } from '../config/config.js';
 import { modelSettings } from './data/modelSettings.js';
 import { systemInstructions } from './data/systemInstructions.js';
+import { formatChat } from '../utils/adapters.utils.js';
 
 export class GenaiChat {
   constructor(userContext) {
     this.userContext = userContext;
     this.genAI = new GoogleGenerativeAI(config.externalServices.genaiApiKey);
-    const model = this.genAI.getGenerativeModel(modelSettings(userContext));
-    this.chat = model.startChat({
+    this.model = this.genAI.getGenerativeModel(modelSettings(userContext));
+    this.chat = this.model.startChat({
       history: [],
       generationConfig: {
         maxOutputTokens: 500,
@@ -37,12 +38,22 @@ export class GenaiChat {
     }
   }
 
+  /**
+   * Generates an entry in first person based on the chat history
+   *
+   * @returns
+   */
   async generateEntry() {
     try {
+      let history = await this.chat.getHistory();
+      history = formatChat(history);
       const prompt =
-        'Please provide a brief first-person summary of the conversation.';
-      const res = await this.chat.sendMessage(prompt);
-      return res;
+        'Generate an entry in first person based on the chat history. ' +
+        'The entry should be a summary of the conversation, ' +
+        'including the main topics discussed and any important details. ' +
+        'Please make sure to use proper grammar and punctuation. ';
+      const res = await this.model.generateContent(`${prompt} \n\n ${history}`);
+      return { text: res.response.text() };
     } catch (error) {
       console.error('Error in generateEntry:', error.message);
     }

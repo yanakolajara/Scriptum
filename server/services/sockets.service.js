@@ -9,36 +9,37 @@ export const initializeChatSockets = (httpServer) => {
 
   io.on('connection', async (socket) => {
     const genaiChat = new GenaiChat(userContext);
-
-    socket.on('chat:message', async ({ message }) => {
+    socket.on('message', async ({ message }) => {
       try {
         const res = await genaiChat.sendMessage(message);
-        socket.emit('chat:response', { response: res });
+        socket.emit('response', { response: res });
       } catch (error) {
-        console.error('Error in chat:message:', error.message);
-        socket.emit('chat:error', { error: error.message });
+        console.error('Error in message:', error.message);
+        socket.emit('error', { error: error.message });
       }
     });
 
-    socket.on('chat:message-stream', async ({ message }) => {
+    socket.on('message-stream', async ({ message }) => {
       try {
         const res = await genaiChat.sendMessageStream(message);
         for await (const chunk of res.stream) {
-          socket.emit('chat:stream', {
+          socket.emit('stream', {
             messageId: res.messageId,
             chunk: chunk.text(),
           });
         }
-        socket.emit('chat:stream-fulfilled', { messageId: res.messageId });
+        socket.emit('stream-fulfilled', { messageId: res.messageId });
       } catch (error) {
-        console.error('Error in chat:message:', error.message);
-        socket.emit('chat:error', { error: error.message });
+        console.error('Error in message:', error.message);
+        socket.emit('error', { error: error.message });
       }
     });
 
-    socket.on('chat:generate-entry', async (data) => {
+    socket.on('end', async () => {
+      console.log('Ending chat');
       const entry = await genaiChat.generateEntry();
-      socket.emit('chat:entry', { entry });
+      console.log('Entry generated:', entry);
+      socket.emit('entry', { entry });
     });
 
     socket.on('disconnect', () => {

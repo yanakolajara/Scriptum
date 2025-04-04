@@ -3,7 +3,8 @@ import { useChat } from './hooks/useChat.js';
 import { createEntry } from 'api/entries';
 
 export default function Chat() {
-  const { loading, chat, message, setMessage, sendMessage } = useChat();
+  const { loading, chat, message, setMessage, sendMessage, endChat } =
+    useChat();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -45,7 +46,7 @@ export default function Chat() {
           />
           <input type='submit' value='Send' disabled={loading} />
         </form>
-        <button onClick={handleGenerateEntry}>Generate entry</button>
+        <button onClick={endChat}>Generate entry</button>
       </section>
     </main>
   );
