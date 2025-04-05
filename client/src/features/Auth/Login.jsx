@@ -7,6 +7,7 @@ export default function Login() {
     email: '',
     password: '',
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,8 +42,15 @@ export default function Login() {
           <input
             value={formData.password}
             onChange={handleChange}
-            type='password'
+            type={showPassword ? 'text' : 'password'}
             name='password'
+          />
+        </label>
+        <label htmlFor=''>
+          Show password
+          <input
+            type='checkbox'
+            onChange={() => setShowPassword(!showPassword)}
           />
         </label>
         <input type='submit' value='Log in' />

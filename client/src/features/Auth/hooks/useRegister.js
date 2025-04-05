@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 
 export const useRegister = () => {
   const { register } = useAuthContext();
+  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     first_name: '',
     middle_name: '',
@@ -46,5 +47,11 @@ export const useRegister = () => {
     }
   };
 
-  return { handleChange, handleSubmit, formData };
+  return {
+    handleChange,
+    handleSubmit,
+    formData,
+    showPassword,
+    setShowPassword,
+  };
 };

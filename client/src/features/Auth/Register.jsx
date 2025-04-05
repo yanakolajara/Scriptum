@@ -2,7 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useRegister } from './hooks/useRegister';
 
 export default function Register() {
-  const { handleChange, handleSubmit, formData } = useRegister();
+  const {
+    formData,
+    showPassword,
+    handleChange,
+    handleSubmit,
+    setShowPassword,
+  } = useRegister();
 
   //todo: show password toggle
   //todo: display validation error as list
@@ -61,9 +67,17 @@ export default function Register() {
           <input
             value={formData.password}
             onChange={handleChange}
-            type='password'
+            type={showPassword ? 'text' : 'password'}
             name='password'
             required
+          />
+        </label>
+        <label htmlFor=''>
+          Show password
+          <input
+            type='checkbox'
+            onChange={() => setShowPassword(!showPassword)}
+            checked={showPassword}
           />
         </label>
         {/* <label htmlFor=''>
