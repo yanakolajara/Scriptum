@@ -27,7 +27,7 @@ export default function Navbar() {
         <a href='/chat'>Chat</a>
       </article>
       <footer className='navbar__footer cnt bg-secondary'>
-        {!loading && user ? (
+        {user ? (
           <section>
             <span>👤</span>
             <p>Yanako Lajara</p>

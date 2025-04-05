@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { isDataValid } from '../utils/validators.utils';
 import { useAuthContext } from 'providers/auth.provider';
+import toast from 'react-hot-toast';
 
 export const useRegister = () => {
   const { register } = useAuthContext();
@@ -26,17 +27,19 @@ export const useRegister = () => {
     e.preventDefault();
     const { success, message } = isDataValid(formData);
     if (!success) {
-      alert(message);
+      toast.error(message);
       return;
     }
     try {
       const res = await register(formData);
       console.log(res);
       if (res.request.status === 201) {
-        // storeDataInLS('user', res.data);
+        toast(res.data.message, {
+          icon: '📧',
+        });
         navigate('/check-email');
       } else {
-        alert(res.message);
+        toast.error(res.message);
       }
     } catch (error) {
       console.error(error);

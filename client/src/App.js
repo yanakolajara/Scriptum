@@ -1,5 +1,7 @@
+import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './providers/auth.provider.js';
+import toast, { Toaster } from 'react-hot-toast';
 import Navbar from './components/navbar/Navbar.jsx';
 import Home from './features/Home/Home.jsx';
 import Dashboard from './features/Dashboard/Dashboard.jsx';
@@ -16,6 +18,7 @@ import './styles/App.scss';
 function App() {
   return (
     <div className='App'>
+      <Toaster />
       <AuthProvider>
         <Navbar />
         <div className='spacer'>

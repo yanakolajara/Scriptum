@@ -63,7 +63,11 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const fetchUser = async () => {
       const response = await checkAuth();
-      setUser(response?.data || null);
+      if (response.status === 200) {
+        setUser(response.data.user);
+      } else {
+        setUser(null);
+      }
     };
     console.log('after fetch');
     fetchUser();
