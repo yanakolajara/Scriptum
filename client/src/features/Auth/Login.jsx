@@ -20,7 +20,6 @@ export default function Login() {
     handleLogin(formData);
   };
 
-  //todo: redirect to dashboard after login
   return (
     <main>
       <h1>Log in</h1>

@@ -14,7 +14,7 @@ export const useLogin = () => {
       if (res.status === 200) {
         //todo: Check if 2fa is required
         toast.success(res.data.message);
-        navigate('/');
+        navigate('/dashboard');
       } else {
         toast.error(res.data.message);
       }
