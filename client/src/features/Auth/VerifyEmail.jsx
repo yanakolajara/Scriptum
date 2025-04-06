@@ -11,7 +11,6 @@ export default function VerifyEmail() {
   const navigate = useNavigate();
 
   //todo: design a nice email verification page
-  //todo: show verified email toast
   useEffect(() => {
     const verify = async () => {
       try {

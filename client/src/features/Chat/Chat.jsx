@@ -12,16 +12,6 @@ export default function Chat() {
     sendMessage(message);
   };
 
-  // todo: handle generate entry
-  // const handleGenerateEntry = async () => {
-  //   try {
-  //     const res = await createEntry();
-  //     console.log(res);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
   //todo: Add loading skelleton while waiting for response
   return (
     <main className='chat content'>

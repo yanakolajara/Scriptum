@@ -11,14 +11,13 @@ export default function Dashboard() {
       setEntries(res.data);
       setLoading(false);
     } catch (e) {
+      setLoading(false);
       console.error(e);
     }
   };
   useEffect(() => {
     handleGetEntries();
   }, []);
-
-  //todo: fix loading state stuck when no user is logged in (CREATE PROTECTED ROUTE)
 
   if (loading) return <h1>Loading...</h1>;
   return (
