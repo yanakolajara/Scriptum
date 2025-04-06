@@ -18,9 +18,6 @@ export default function Register() {
   const number = /[0-9]/;
   const specialChar = /[!@#$%^&*(),.?":{}|<>]/;
 
-  //todo: display validation error as list
-  //todo: display validation error as container under submit button
-  //todo: display validation error dynamically (only proper fields missing)
   //todo: password validation specific types of special characters
 
   useEffect(() => {}, [passwordFocus, passwordBlur, formData.password]);
