@@ -10,6 +10,21 @@ export default function Register() {
     setShowPassword,
   } = useRegister();
 
+  const [passwordFocus, setPasswordFocus] = useState(false);
+  const [passwordBlur, setPasswordBlur] = useState(false);
+
+  const lowercase = /[a-z]/;
+  const uppercase = /[A-Z]/;
+  const number = /[0-9]/;
+  const specialChar = /[!@#$%^&*(),.?":{}|<>]/;
+
+  //todo: display validation error as list
+  //todo: display validation error as container under submit button
+  //todo: display validation error dynamically (only proper fields missing)
+  //todo: password validation specific types of special characters
+
+  useEffect(() => {}, [passwordFocus, passwordBlur, formData.password]);
+
   return (
     <main>
       <h1>Register</h1>
@@ -61,19 +76,53 @@ export default function Register() {
           <input
             value={formData.password}
             onChange={handleChange}
+            onFocus={() => setPasswordFocus(true)}
+            onBlur={() => setPasswordBlur(true)}
             type={showPassword ? 'text' : 'password'}
             name='password'
             required
           />
-        </label>
-        <label htmlFor=''>
-          Show password
           <input
             type='checkbox'
             onChange={() => setShowPassword(!showPassword)}
             checked={showPassword}
           />
         </label>
+
+        {passwordFocus && passwordBlur && (
+          <>
+            {formData.password.length < 8 && (
+              <p style={{ color: 'red' }}>
+                Password must be at least 8 characters long
+              </p>
+            )}
+            {!lowercase.test(formData.password) && (
+              <p style={{ color: 'red' }}>
+                Password must contain at least one lowercase letter
+              </p>
+            )}
+            {!uppercase.test(formData.password) && (
+              <p style={{ color: 'red' }}>
+                Password must contain at least one uppercase letter
+              </p>
+            )}
+            {!number.test(formData.password) && (
+              <p style={{ color: 'red' }}>
+                Password must contain at least one number
+              </p>
+            )}
+            {!specialChar.test(formData.password) && (
+              <p style={{ color: 'red' }}>
+                Password must contain at least one special character
+              </p>
+            )}
+            {formData.password.length > 0 && formData.password.length < 8 && (
+              <p style={{ color: 'red' }}>
+                Password must be at least 8 characters long
+              </p>
+            )}
+          </>
+        )}
         {/* <label htmlFor=''>
           Confirm password
           <input

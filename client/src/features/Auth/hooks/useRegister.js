@@ -14,6 +14,7 @@ export const useRegister = () => {
     email: '',
     password: '',
   });
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
