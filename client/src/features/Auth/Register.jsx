@@ -10,7 +10,6 @@ export default function Register() {
     setShowPassword,
   } = useRegister();
 
-  //todo: show password toggle
   //todo: display validation error as list
   //todo: display validation error as container under submit button
   //todo: display validation error dynamically (only proper fields missing)

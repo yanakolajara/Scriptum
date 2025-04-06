@@ -2,12 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { isCodeComplete } from './utils/validators.utils';
 import { useAuthContext } from 'providers/auth.provider';
-
-// todo: move to validationsValidates if the entered char is valid
-const isValidChar = (char) => {
-  const validChars = '0123456789';
-  return validChars.includes(char);
-};
+import { validateNumber } from 'utils/validations';
 
 export default function TwoFactor() {
   //todo: Move state functions to custom hooks
@@ -19,7 +14,7 @@ export default function TwoFactor() {
     e.preventDefault();
     const { value } = e.target;
     // validates if character is a string with a number
-    if (isValidChar(value.slice(-1))) {
+    if (validateNumber(value.slice(-1))) {
       setCode(value);
     }
   };
