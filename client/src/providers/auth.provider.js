@@ -73,7 +73,7 @@ const AuthProvider = ({ children }) => {
     fetchUser();
   }, []);
 
-  // todo: rerender only when required (components should not keep re-rendering on every change of url or state)
+  // todo: rerender only on auth change or requests failed due to token invalid
 
   return (
     <AuthContext.Provider

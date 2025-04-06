@@ -10,11 +10,6 @@ export default function Register() {
     setShowPassword,
   } = useRegister();
 
-  //todo: display validation error as list
-  //todo: display validation error as container under submit button
-  //todo: display validation error dynamically (only proper fields missing)
-  //todo: password validation specific types of special characters
-
   return (
     <main>
       <h1>Register</h1>

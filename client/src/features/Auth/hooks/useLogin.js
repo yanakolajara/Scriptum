@@ -9,10 +9,9 @@ export const useLogin = () => {
     //todo: Validate data
     try {
       const res = await login(formData);
-      const cookies = document.cookie.split(';');
+      // const cookies = document.cookie.split(';');
 
       if (res.status === 200) {
-        //todo: Check if 2fa is required
         toast.success(res.data.message);
         navigate('/dashboard');
       } else {

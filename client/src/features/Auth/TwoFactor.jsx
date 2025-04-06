@@ -5,8 +5,6 @@ import { useAuthContext } from 'providers/auth.provider';
 import { validateNumber } from 'utils/validations';
 
 export default function TwoFactor() {
-  //todo: Move state functions to custom hooks
-
   const { resendCode, verify } = useAuthContext();
   const [code, setCode] = useState('');
   const navigate = useNavigate();

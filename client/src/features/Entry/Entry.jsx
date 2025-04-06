@@ -20,7 +20,6 @@ export default function Entry() {
   }, []);
 
   if (!entry) return <h1>Loading...</h1>;
-  //todo: fetch entry by id
   return (
     <div>
       <h1>ENTRIES</h1>

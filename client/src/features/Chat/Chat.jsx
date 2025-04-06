@@ -12,7 +12,6 @@ export default function Chat() {
     sendMessage(message);
   };
 
-  //todo: Add loading skelleton while waiting for response
   return (
     <main className='chat content'>
       <header>

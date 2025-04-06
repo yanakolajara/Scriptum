@@ -115,9 +115,6 @@ export class TempUserController {
       // Throw error if password is incorrect
       if (!match) throw new UnauthorizedError('Invalid credentials.');
       if (dbData.mfa) {
-        console.log('MFA required');
-        // TODO Send code to email
-        // TODO Respond with mfa required message (mfa_required: true)
         res.status(200).json({
           message: 'Authentication code sent to email.',
           mfa_required: true,

@@ -5,6 +5,8 @@ export default function Dashboard() {
   const [entries, setEntries] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // fixme: turn into protected route
+
   const handleGetEntries = async () => {
     try {
       const res = await getEntries();
