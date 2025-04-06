@@ -1,6 +1,7 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuthContext } from 'providers/auth.provider';
+import toast from 'react-hot-toast';
 // import { verifyEmail } from '../../api/user.api';
 
 export default function VerifyEmail() {
@@ -15,10 +16,12 @@ export default function VerifyEmail() {
     const verify = async () => {
       try {
         const res = await verifyEmail({ token });
+        console.log(res);
         if (res.status === 200) {
+          toast.success(res.data.message);
           navigate('/login');
         } else {
-          alert(res.message);
+          toast.error(res.data.message);
         }
       } catch (error) {
         console.error(error);
@@ -26,5 +29,6 @@ export default function VerifyEmail() {
     };
     verify();
   }, [token, navigate]);
-  return <p>Loading...</p>;
+
+  return <div>Loading...</div>;
 }
