@@ -1,5 +1,5 @@
 import { io } from 'socket.io-client';
 
 export const socket = io(
-  process.env.REACT_APP_BACKEND_URL || 'http://localhost:8080'
+  import.meta.env.VITE_API_URL || 'http://localhost:8080'
 );
