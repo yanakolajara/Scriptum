@@ -74,6 +74,7 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   // todo: rerender only on auth change or requests failed due to token invalid
+  // todo: automatically render navbar options on auth change
 
   return (
     <AuthContext.Provider
