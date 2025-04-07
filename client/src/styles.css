@@ -1,1 +1,202 @@
 @import 'tailwindcss';
+
+/*? ----- _variables.scss -----  */
+
+/*
+$color-primary: #5144c5;
+$color-secondary: #6e5efd;
+$accent: #bebafd;
+$grey: #d9d9d9;
+$text-black: #302803; // 01171E
+$text-white: #f7f7f7;
+$background: #f0fcff;
+$success: #88c479;
+$error: #dc3545;
+
+//@use '../../../styles/_variables.scss' as vars;
+
+// $themes: (
+//   light: (
+//     text: #302803,
+//     background: #fefdf6,
+//     primary: #7d7308,
+//     secondary: #72f561,
+//     accent: #0dce1d,
+//   ),
+//   dark: (
+//     text: #fcf4cf,
+//     background: #090801,
+//     primary: #f7ed82,
+//     secondary: #1b9e0a,
+//     accent: #31f241,
+//   ),
+// ); */
+
+/*? ----- App.scss -----  */
+
+/* * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+.App {
+  //   display: flex;
+  //   flex-direction: row;
+  display: grid;
+  grid-template-columns: 25% auto;
+  height: 100vh;
+  padding: 15px;
+  background: #fefdf6;
+}
+
+.spacer {
+  padding: 50px 150px;
+}
+
+.content {
+}
+
+.chat {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+
+  background-color: #dedede;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  overflow: hidden;
+
+  h1 {
+    text-align: center;
+    font-size: 1.5rem;
+    color: #333;
+  }
+}
+
+.chat-container {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  p {
+    padding: 10px 15px;
+    border-radius: 15px;
+    max-width: 75%;
+  }
+
+  // p:nth-child(odd) {
+  //   background-color: #fffbcc;
+  //   align-self: flex-end;
+  // }
+
+  // p:nth-child(even) {
+  //   background-color: #f0f0f0;
+  //   align-self: flex-start;
+  // }
+
+  .blinking-cursor {
+    animation: blink 1s infinite;
+  }
+}
+
+.chat-input {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-top: 2px solid #ddd;
+
+  input {
+    flex-grow: 1;
+    padding: 8px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+  }
+
+  button {
+    background-color: #4a90e2;
+    border: none;
+    color: white;
+    padding: 10px;
+    margin-left: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+
+    &:hover {
+      background-color: #357abf;
+    }
+  }
+} */
+
+/*? ----- main.scss -----  */
+
+/* 
+@use './_variables.scss' as vars;
+
+@mixin container($type: section, $radius: 15px, $color, $stretch: true) {
+}
+
+.cnt {
+  //   @include container(vars.$color-primary, 'section', 5px, true);
+  display: flex;
+  //   flex-direction: column;
+  padding: 8px;
+  gap: 10px;
+}
+
+.bg {
+  &-primary {
+    background-color: vars.$color-primary;
+  }
+  &-secondary {
+    background-color: vars.$color-secondary;
+  }
+  &-accent {
+    background-color: vars.$accent;
+  }
+  &-grey {
+    background-color: vars.$grey;
+  }
+  &-success {
+    background-color: vars.$success;
+  }
+  &-error {
+    background-color: vars.$error;
+  }
+}
+
+.btn {
+  //   display: inline-flex;
+  //   padding: 6px 12px;
+  //   justify-content: center;
+  //   align-items: center;
+  //   gap: 10px;
+  //   flex-wrap: wrap;
+  //   border-radius: 5px;
+  //   border: 1px solid rgba(0, 0, 0, 0.15);
+  //   background: var(--accent, #bebafd);
+  //   color: vars.$text-white;
+  //   font-weight: bold;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+} */

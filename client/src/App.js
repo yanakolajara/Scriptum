@@ -1,8 +1,9 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './providers/auth.provider.js';
-import toast, { Toaster } from 'react-hot-toast';
-import Navbar from './components/navbar/Navbar.jsx';
+import { Toaster } from 'react-hot-toast';
+import NotFound from './components/NotFound/NotFound.jsx';
+import Navbar from './components/Navbar/Navbar.jsx';
 import Home from './features/Home/Home.jsx';
 import Dashboard from './features/Dashboard/Dashboard.jsx';
 import Chat from './features/Chat/Chat.jsx';
@@ -12,8 +13,6 @@ import CheckEmail from './features/Auth/CheckEmail';
 import VerifyEmail from './features/Auth/VerifyEmail';
 import TwoFactor from './features/Auth/TwoFactor';
 import Entry from 'features/Entry/Entry.jsx';
-import './styles/main.scss';
-import './styles/App.scss';
 
 function App() {
   return (
@@ -32,7 +31,7 @@ function App() {
             <Route path='/check-email' element={<CheckEmail />} />
             <Route path='/verify-email' element={<VerifyEmail />} />
             <Route path='/twoFactor' element={<TwoFactor />} />
-            <Route path='*' element={<h1>Not found</h1>} />
+            <Route path='*' element={<NotFound />} />
           </Routes>
         </div>
       </AuthProvider>
