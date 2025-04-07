@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../providers/auth.provider.js';
 import NavAccount from './NavAccount.jsx';
-import './Navbar.scss';
+// import './Navbar.scss';
 
 export default function Navbar() {
   const { user, loading, error } = useAuthContext();
@@ -17,29 +17,50 @@ export default function Navbar() {
       console.error(error);
     }
   };
+
   return (
-    <nav className='navbar'>
-      <header className='navbar__header bg-secondary'>
-        <h2 className='app-logo'>Scriptum</h2>
+    <nav className='flex flex-col rounded-[15px] shadow-[0_4px_4px_rgba(0,0,0,0.41)] bg-(--color-primary)'>
+      <header className='navbar__header rounded-t-[15px] h-[75px]  bg-(--color-secondary)'>
+        <h2 className='text-[34px] text-white text-center flex items-center justify-center h-[75px] drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)]'>
+          Scriptum
+        </h2>
       </header>
-      <article className='navbar__sections bg-primary'>
-        <a href='/'>Home</a>
-        <a href='/chat'>Chat</a>
+      <article className='flex flex-col items-center py-10 flex-grow bg-primary'>
+        <a
+          href='/'
+          className='w-4/5 py-2.5 mb-2.5 rounded-[20px] text-2xl font-bold text-center no-underline text-[#eae7ff] transition-all duration-200 hover:bg-[rgba(134,121,252,0.5)] hover:cursor-pointer'
+        >
+          Home
+        </a>
+        <a
+          href='/chat'
+          className='w-4/5 py-2.5 mb-2.5 rounded-[20px] text-2xl font-bold text-center no-underline text-[#eae7ff] transition-all duration-200 hover:bg-[rgba(134,121,252,0.5)] hover:cursor-pointer'
+        >
+          Chat
+        </a>
       </article>
-      <footer className='navbar__footer cnt bg-secondary'>
+      <footer className='flex flex-col bg-(--color-secondary) shadow-[0_0_10px_rgba(0,0,0,0.1)] rounded-b-[15px] bg-secondary'>
         {user ? (
-          <section>
+          <section className='flex items-center gap-2 p-4'>
             <span>👤</span>
-            <p>Yanako Lajara</p>
-            <button onClick={handleLogout}>Logout</button>
+            <p className='m-0'>Yanako Lajara</p>
+            <button
+              onClick={handleLogout}
+              className='bg-[#4a90e2] text-white p-[10px] ml-[10px] rounded-[50%] cursor-pointer text-[1.2rem] border-none hover:brightness-110'
+            >
+              Logout
+            </button>
           </section>
         ) : (
-          <article className='navbar__footer__guest'>
-            <button className='bg-success' onClick={() => navigate('/login')}>
+          <article className='flex justify-evenly items-center p-4'>
+            <button
+              onClick={() => navigate('/login')}
+              className='bg-(--success) text-white p-[10px] ml-[10px] rounded-[10%] cursor-pointer text-[1.2rem] border-none hover:brightness-110'
+            >
               Log in
             </button>
             <button
-              className='bg-secondary btn-signup'
+              className='bg-(--accent) text-white p-[10px] ml-[10px] rounded-[10%] cursor-pointer text-[1.2rem] border-none hover:brightness-110'
               onClick={() => navigate('/register')}
             >
               Register

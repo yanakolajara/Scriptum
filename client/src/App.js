@@ -16,11 +16,11 @@ import Entry from 'features/Entry/Entry.jsx';
 
 function App() {
   return (
-    <div className='App'>
+    <div className='grid grid-cols-[25%_auto] min-h-screen p-4 bg-[#fefdf6]'>
       <Toaster />
       <AuthProvider>
         <Navbar />
-        <div className='spacer'>
+        <div className='px-[150px] py-[50px]'>
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/dashboard' element={<Dashboard />} />

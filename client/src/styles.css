@@ -1,17 +1,20 @@
 @import 'tailwindcss';
 
+body {
+  --color-primary: #5144c5;
+  --color-secondary: #6e5efd;
+  --accent: #8288fa;
+  --grey: #d9d9d9;
+  --text-black: #302803; /* 01171E */
+  --text-white: #f7f7f7;
+  --background: #f0fcff;
+  --success: #88c479;
+  --error: #dc3545;
+}
 /*? ----- _variables.scss -----  */
 
 /*
-$color-primary: #5144c5;
-$color-secondary: #6e5efd;
-$accent: #bebafd;
-$grey: #d9d9d9;
-$text-black: #302803; // 01171E
-$text-white: #f7f7f7;
-$background: #f0fcff;
-$success: #88c479;
-$error: #dc3545;
+
 
 //@use '../../../styles/_variables.scss' as vars;
 
