@@ -24,6 +24,7 @@ export default function Home() {
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore.{' '}
         </p>
+
         <section
           style={{
             display: 'flex',

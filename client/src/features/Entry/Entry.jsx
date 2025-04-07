@@ -19,8 +19,6 @@ export default function Entry() {
     fetchEntry(entryId);
   }, []);
 
-  // fixme: entry not showing up with id
-
   if (!entry) return <h1>Loading...</h1>;
   console.log(entry);
   return (
