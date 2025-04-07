@@ -46,38 +46,42 @@ export const useChat = () => {
       setChat(updatedChat);
       setLoading(false);
     },
-    onEntry: async ({ entry }) => {
-      try {
-        const res = await createEntry(entry);
-        navigate(`/entry?id=${res.data.id}`);
-      } catch (error) {
-        console.error('Error in entry:', error.message);
-      }
-    },
     onError: (e) => {
       console.error('Error:', e);
       setLoading(false);
     },
   });
 
-  const sendMessage = (message) => {
-    //todo: validateMessage(message)
+  const generateEntry = async () => {
     try {
-      setLoading(true);
-      setChat((prevChat) => [
-        ...prevChat,
-        {
-          id: uuidv4(),
-          role: 'user',
-          text: message,
-          fulfilled: null,
-        },
-      ]);
-      setMessage('');
-      socket.emit('message', { message });
-    } catch (err) {
-      console.error(err);
+      socket.disconnect();
+      // const formattedChat = chat.map((msg) => {
+      //   return {
+      //     role: msg.role,
+      //     content: msg.text,
+      //   };
+      // });
+      const res = await createEntry(chat);
+      navigate(`/entry?id=${res.data.id}`);
+    } catch (error) {
+      console.error('Error in entry:', error.message);
     }
+  };
+
+  const sendMessage = (message) => {
+    if (!message) return;
+    setLoading(true);
+    setChat((prevChat) => [
+      ...prevChat,
+      {
+        id: uuidv4(),
+        role: 'user',
+        text: message,
+        fulfilled: null,
+      },
+    ]);
+    setMessage('');
+    socket.emit('message', { message });
   };
 
   // const sendMessageStream = (message, token = 'tokentesting') => {
@@ -100,7 +104,8 @@ export const useChat = () => {
   // };
 
   const endChat = () => {
-    socket.emit('end');
+    setLoading(true);
+    socket.emit('end-chat');
   };
 
   useEffect(() => {}, [useSocket]);
@@ -112,6 +117,7 @@ export const useChat = () => {
     setChat,
     setMessage,
     sendMessage,
+    generateEntry,
     endChat,
   };
 };

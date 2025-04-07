@@ -2,8 +2,7 @@ import { useEffect } from 'react';
 import { socket } from './socket.js';
 
 export const useSocket = (handlers) => {
-  const { onStreamStart, onStream, onStreamFulfilled, onEntry, onResponse } =
-    handlers;
+  const { onStreamStart, onStream, onStreamFulfilled, onResponse } = handlers;
 
   useEffect(() => {
     socket.on('connect', () => console.log('ws-connected:', socket.id));
@@ -12,8 +11,6 @@ export const useSocket = (handlers) => {
     socket.on('stream-start', onStreamStart);
     socket.on('stream', onStream);
     socket.on('stream-fulfilled', onStreamFulfilled);
-    socket.on('entry', onEntry);
-    // socket.on('genai:error', onError);
     return () => {
       socket.off('connect');
       socket.off('disconnect');
@@ -21,7 +18,6 @@ export const useSocket = (handlers) => {
       socket.off('stream-start');
       socket.off('stream');
       socket.off('stream-fulfilled');
-      socket.off('end');
     };
   }, [handlers]);
 };

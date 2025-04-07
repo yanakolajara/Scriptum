@@ -25,7 +25,15 @@ export default function Dashboard() {
   return (
     <main>
       <h1>Dashboard</h1>
-      {entries && entries.map((entry) => <p key={entry.id}>{entry.title}</p>)}
+      {entries &&
+        entries.map((entry) => {
+          return (
+            <div key={entry.id}>
+              <h2>{entry.title}</h2>
+              <p>{entry.content}</p>
+            </div>
+          );
+        })}
     </main>
   );
 }

@@ -18,9 +18,9 @@ export const getEntry = async (id) => {
   }
 };
 
-export const createEntry = async () => {
+export const createEntry = async (data) => {
   try {
-    const response = await axiosInstance.post('/entries');
+    const response = await axiosInstance.post('/entries', data);
     return response.data;
   } catch (error) {
     console.log(error);

@@ -1,3 +1,4 @@
+import { genaiRequest } from '../services/genai.service.js';
 import { UnauthorizedError, ValidationError } from '../utils/errors.js';
 
 export class EntryController {
@@ -41,8 +42,17 @@ export class EntryController {
       const data = req.body;
       if (!data) throw new ValidationError('No data provided.');
       //todo: validate if data contains the required information
+      const prompt =
+        'Generate an entry in first person based on the chat history. ' +
+        'The entry should be a summary of the conversation, ' +
+        'including the main topics discussed and any important details. ' +
+        'Please make sure to use proper grammar and punctuation. ';
+      const entry = await genaiRequest(
+        `${prompt} \n\n ${JSON.stringify(data)}`
+      );
+
       const newEntry = await this.entryModel.createEntry({
-        ...data,
+        content: entry.response.text(),
         user_id: user.id,
       });
       res.status(201).json({

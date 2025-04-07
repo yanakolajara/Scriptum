@@ -19,11 +19,13 @@ export default function Entry() {
     fetchEntry(id);
   }, []);
 
+  // fixme: entry not showing up with id
+
   if (!entry) return <h1>Loading...</h1>;
   return (
     <div>
       <h1>ENTRIES</h1>
-      <p>{entry.content}</p>
+      <p>{entry?.id}</p>
     </div>
   );
 }

@@ -28,12 +28,11 @@ export class EntryModel {
       throw new InternalServerError(error.message);
     }
   }
-  static async createEntry(entry) {
+  static async createEntry({ user_id, content, title, starred }) {
     try {
-      const { user_id, content, title, starred } = entry;
       const newEntry = await db.one(
         'INSERT INTO entries (user_id, content, title, starred) VALUES ($1, $2, $3, $4) RETURNING *',
-        [user_id, content, title, starred]
+        [user_id, content, title || 'New Entry', starred || false]
       );
       return newEntry;
     } catch (error) {

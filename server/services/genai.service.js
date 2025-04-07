@@ -2,8 +2,15 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { v4 as uuidv4 } from 'uuid';
 import { config } from '../config/config.js';
 import { modelSettings } from './data/modelSettings.js';
-import { systemInstructions } from './data/systemInstructions.js';
 import { formatChat } from '../utils/adapters.utils.js';
+import { userContext } from '../genaiFakeContext.js';
+
+export const genaiRequest = async (prompt) => {
+  const genai = new GoogleGenerativeAI(config.externalServices.genaiApiKey);
+  const model = genai.getGenerativeModel(modelSettings(userContext));
+  const res = await model.generateContent(prompt);
+  return res;
+};
 
 export class GenaiChat {
   constructor(userContext) {
@@ -43,7 +50,7 @@ export class GenaiChat {
    *
    * @returns
    */
-  async generateEntry() {
+  async generateEntry(chat) {
     try {
       let history = await this.chat.getHistory();
       history = formatChat(history);

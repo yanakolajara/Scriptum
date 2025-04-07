@@ -35,11 +35,6 @@ export const initializeChatSockets = (httpServer) => {
       }
     });
 
-    socket.on('end', async () => {
-      const entry = await genaiChat.generateEntry();
-      socket.emit('entry', { entry });
-    });
-
     socket.on('disconnect', () => {
       console.log(`Socket disconnected: ${socket.id}`);
     });

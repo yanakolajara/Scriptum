@@ -11,9 +11,11 @@ export default function Home() {
   const { user } = useAuthContext();
   const navigate = useNavigate();
 
-  if (user) {
-    navigate('/dashboard');
-  }
+  React.useEffect(() => {
+    if (user) {
+      navigate('/dashboard');
+    }
+  });
   return (
     <main style={tempStyle}>
       <article>
@@ -33,9 +35,7 @@ export default function Home() {
           <a href='/login'>Log in</a>
         </section>
       </article>
-      <article>
-        <img src='' alt='hero' />
-      </article>
+      <article>{/* <img src='' alt='hero' /> */}</article>
     </main>
   );
 }
