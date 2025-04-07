@@ -27,9 +27,11 @@ export const createEntry = async (data) => {
   }
 };
 
-export const editEntry = async (id, data) => {
+export const editEntry = async (data) => {
+  console.log('🚀 ~ editEntry ~ data:', data);
+
   try {
-    const response = await axiosInstance.put(`/entries/${id}`, data);
+    const response = await axiosInstance.put(`/entries/${data.id}`, data);
     return response.data;
   } catch (error) {
     console.log(error);

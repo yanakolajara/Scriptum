@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from 'providers/auth.provider.js';
 import NavAccount from './NavAccount.jsx';
+import { Cta } from 'components/Cta/index.jsx';
 // import './Navbar.scss';
 
 export default function Navbar() {
@@ -44,27 +45,12 @@ export default function Navbar() {
           <section className='flex items-center gap-2 p-4'>
             <span>👤</span>
             <p className='m-0'>Yanako Lajara</p>
-            <button
-              onClick={handleLogout}
-              className='bg-[#4a90e2] text-white p-[10px] ml-[10px] rounded-[50%] cursor-pointer text-[1.2rem] border-none hover:brightness-110'
-            >
-              Logout
-            </button>
+            <Cta text='Logout' onClick={handleLogout} />
           </section>
         ) : (
           <article className='flex justify-evenly items-center p-4'>
-            <button
-              onClick={() => navigate('/login')}
-              className='bg-(--success) text-white p-[10px] ml-[10px] rounded-[10%] cursor-pointer text-[1.2rem] border-none hover:brightness-110'
-            >
-              Log in
-            </button>
-            <button
-              className='bg-(--accent) text-white p-[10px] ml-[10px] rounded-[10%] cursor-pointer text-[1.2rem] border-none hover:brightness-110'
-              onClick={() => navigate('/register')}
-            >
-              Register
-            </button>
+            <Cta text='Login' onClick={() => navigate('/login')} />
+            <Cta text='Register' onClick={() => navigate('/register')} />
           </article>
         )}
       </footer>

@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { getEntries, deleteEntry, editEntry } from 'api/entries';
+import { Cta } from 'components/Cta';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 export default function Dashboard() {
   const [entries, setEntries] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   // fixme: turn into protected route
 
@@ -30,10 +34,9 @@ export default function Dashboard() {
     } catch (error) {}
   };
 
-  const handleEdit = () => {
-    console.log('edit');
+  const handleEdit = (id) => {
+    navigate(`/entry?id=${id}&edit=true`);
   };
-
   useEffect(() => {
     if (loading) {
       handleGetEntries();
@@ -55,13 +58,10 @@ export default function Dashboard() {
                 </section>
                 <hr />
                 <section className='flex justify-evenly p-2.5'>
-                  <p>{entry.entry_date}</p>
+                  <p>{entry.entry_date.slice(0, 16).split('T').join(' ')}</p>
                   <section className='flex gap-2.5'>
-                    <Button text='Edit' onClick={() => handleEdit()} />
-                    <Button
-                      text='Delete'
-                      onClick={() => handleDelete(entry.id)}
-                    />
+                    <Cta text='Edit' onClick={() => handleEdit(entry.id)} />
+                    <Cta text='Delete' onClick={() => handleDelete(entry.id)} />
                   </section>
                 </section>
               </article>
@@ -71,14 +71,3 @@ export default function Dashboard() {
     </main>
   );
 }
-
-const Button = ({ text, onClick }) => {
-  return (
-    <button
-      className='border-1 rounded-md p-1.5 hover:bg-gray-200 cursor-pointer'
-      onClick={onClick}
-    >
-      {text}
-    </button>
-  );
-};
