@@ -27,9 +27,7 @@ export const createEntriesRouter = ({ entryModel }) => {
   router.get('/', entryController.getAllEntries);
   router.get('/:id', entryController.getEntry);
   router.post('/', entryController.createEntry);
-  // router.post('/login', userController.login);
-  // router.post('/verify-email', userController.verifyEmail);
-  // router.get('/check-auth', userController.checkAuth);
-  // router.post('/logout', userController.logout);
+  router.put('/:id', entryController.updateEntry);
+  router.delete('/:id', entryController.deleteEntry);
   return router;
 };

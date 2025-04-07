@@ -26,3 +26,22 @@ export const createEntry = async (data) => {
     console.log(error);
   }
 };
+
+export const editEntry = async (id, data) => {
+  try {
+    const response = await axiosInstance.put(`/entries/${id}`, data);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const deleteEntry = async (id) => {
+  try {
+    console.log(id);
+    const response = await axiosInstance.delete(`/entries/${id}`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

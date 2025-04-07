@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuthContext } from '../../providers/auth.provider.js';
+import { useAuthContext } from 'providers/auth.provider.js';
 import NavAccount from './NavAccount.jsx';
 // import './Navbar.scss';
 

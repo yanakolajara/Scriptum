@@ -63,4 +63,36 @@ export class EntryController {
       next(error);
     }
   };
+
+  updateEntry = async (req, res, next) => {
+    try {
+      const user = req.session.user;
+      if (!user) throw new UnauthorizedError('User not logged in.');
+      const { id } = req.params;
+      if (!id) throw new ValidationError('No id provided.');
+      const data = req.body;
+      if (!data) throw new ValidationError('No data provided.');
+      const entry = await this.entryModel.updateEntry(id, data);
+      res
+        .status(200)
+        .json({ message: 'Entry updated successfully', data: entry });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  deleteEntry = async (req, res, next) => {
+    try {
+      const user = req.session.user;
+      if (!user) throw new UnauthorizedError('User not logged in.');
+      const { id } = req.params;
+      if (!id) throw new ValidationError('No id provided.');
+      const entry = await this.entryModel.deleteEntry(id);
+      res
+        .status(200)
+        .json({ message: 'Entry deleted successfully', data: entry });
+    } catch (error) {
+      next(error);
+    }
+  };
 }

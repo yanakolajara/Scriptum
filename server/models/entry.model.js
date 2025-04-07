@@ -39,6 +39,26 @@ export class EntryModel {
       throw new InternalServerError(error.message);
     }
   }
+
+  static async updateEntry(id, data) {
+    try {
+      const updatedEntry = await db.one(
+        'UPDATE entries SET content = $1, title = $2, starred = $3 WHERE id = $4 RETURNING *',
+        [data.content, data.title, data.starred, id]
+      );
+      return updatedEntry;
+    } catch (error) {
+      throw new InternalServerError(error.message);
+    }
+  }
+
+  static async deleteEntry(id) {
+    try {
+      await db.one('DELETE FROM entries WHERE id = $1 RETURNING *', [id]);
+    } catch (error) {
+      throw new InternalServerError(error.message);
+    }
+  }
 }
 
 export const entryModel = EntryModel;
