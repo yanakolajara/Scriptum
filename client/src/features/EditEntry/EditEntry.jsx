@@ -4,7 +4,7 @@ import { editEntry, getEntry } from 'api/entries';
 import { Form } from 'components/Form';
 import toast from 'react-hot-toast';
 
-export default function Entry() {
+export default function EditEntry() {
   const [entry, setEntry] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();

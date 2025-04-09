@@ -1,6 +1,5 @@
 import React from 'react';
 import { useChat } from './hooks/useChat.js';
-import { createEntry } from 'api/entries';
 
 export default function Chat() {
   const { loading, chat, message, setMessage, sendMessage, generateEntry } =

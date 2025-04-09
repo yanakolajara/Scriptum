@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLogin } from './hooks/useLogin';
+import { Form } from 'components/Form';
 
 export default function Login() {
   const { handleLogin } = useLogin();
@@ -10,33 +11,44 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
+    e.preventDefault();
+    console.log(e.target);
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [name]: value,
-    });
+    }));
   };
   const handleSubmit = (e) => {
+    console.log(formData);
     e.preventDefault();
     handleLogin(formData);
   };
 
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
+
   return (
     <main>
       <h1>Log in</h1>
-      <form
-        onSubmit={handleSubmit}
-        style={{ display: 'flex', flexDirection: 'column' }}
-      >
-        <label htmlFor=''>
-          Email
-          <input
-            value={formData.email}
-            onChange={handleChange}
-            type='email'
-            name='email'
-          />
-        </label>
+      <Form onSubmit={handleSubmit}>
+        <Form.InputText
+          // type='email'
+          name='email'
+          label='Email'
+          value={formData.email}
+          onChange={handleChange}
+          // required
+        />
+        <Form.InputText
+          type='password'
+          name='password'
+          label='Password'
+          value={formData.password}
+          onChange={handleChange}
+          required
+        />
         <label htmlFor=''>
           Password
           <input
@@ -54,7 +66,7 @@ export default function Login() {
           />
         </label>
         <input type='submit' value='Log in' />
-      </form>
+      </Form>
     </main>
   );
 }

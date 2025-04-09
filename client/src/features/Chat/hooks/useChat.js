@@ -62,7 +62,7 @@ export const useChat = () => {
       //   };
       // });
       const res = await createEntry(chat);
-      navigate(`/entry?id=${res.data.id}`);
+      navigate(`/edit-entry?id=${res.data.id}`);
     } catch (error) {
       console.error('Error in entry:', error.message);
     }

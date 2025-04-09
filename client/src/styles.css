@@ -1,15 +1,96 @@
 @import 'tailwindcss';
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 body {
-  --color-primary: #5144c5;
+  --color-primary: #3758f9;
   --color-secondary: #6e5efd;
   --accent: #8288fa;
-  --grey: #d9d9d9;
-  --text-black: #302803; /* 01171E */
-  --text-white: #f7f7f7;
-  --background: #f0fcff;
+  --grey: #dfe4ea;
+  --text-black: #111928;
+  --text-white: #ffffff;
+  --text-gray: #637381;
+  --background: #f9fafb;
   --success: #88c479;
   --error: #dc3545;
+
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+}
+/* 
+.cards-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 60px;
+} */
+
+/* @media (max-width: 991px) {
+  .cards-grid {
+    gap: 30px;
+  }
+}
+
+@media (max-width: 640px) {
+  .cards-grid {
+    gap: 15px;
+  }
+} */
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 35px;
+  gap: 28px;
+  box-shadow: 0px 1px 3px 0px rgba(166, 175, 195, 0.4);
+  border-radius: 8px;
+  background-color: var(--text-white);
+}
+
+/* @media (max-width: 640px) {
+  .card {
+    padding: 20px;
+  }
+} */
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.card-title {
+  width: 300px;
+  color: var(--text-black);
+  text-align: center;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 30px;
+}
+
+.card-description {
+  width: 300px;
+  color: var(--text-gray);
+  text-align: center;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+@media (max-width: 640px) {
+  .card-title,
+  .card-description {
+    width: 100%;
+  }
+}
+
+.card-button {
+  padding: 12px 28px;
+  border-radius: 50px;
+  border: 1px solid var(--grey);
+  color: var(--text-gray);
+  font-size: 16px;
+  cursor: pointer;
 }
 /*? ----- _variables.scss -----  */
 
@@ -141,7 +222,7 @@ body {
 
 /*? ----- main.scss -----  */
 
-/* 
+/*
 @use './_variables.scss' as vars;
 
 @mixin container($type: section, $radius: 15px, $color, $stretch: true) {

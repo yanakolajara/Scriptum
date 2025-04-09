@@ -35,7 +35,7 @@ export default function Dashboard() {
   };
 
   const handleEdit = (id) => {
-    navigate(`/entry?id=${id}&edit=true`);
+    navigate(`/edit-entry?id=${id}&edit=true`);
   };
   useEffect(() => {
     if (loading) {

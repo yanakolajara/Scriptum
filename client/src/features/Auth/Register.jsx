@@ -19,6 +19,7 @@ export default function Register() {
   const specialChar = /[!@#$%^&*(),.?":{}|<>]/;
 
   //todo: password validation specific types of special characters
+  //fixme: match special characters with backend
 
   useEffect(() => {}, [passwordFocus, passwordBlur, formData.password]);
 

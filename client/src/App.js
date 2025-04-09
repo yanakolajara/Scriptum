@@ -3,7 +3,6 @@ import { Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './providers/auth.provider.js';
 import { Toaster } from 'react-hot-toast';
 import NotFound from './components/NotFound/NotFound.jsx';
-import Navbar from './components/Navbar/Navbar.jsx';
 import Home from './features/Home/Home.jsx';
 import Dashboard from './features/Dashboard/Dashboard.jsx';
 import Chat from './features/Chat/Chat.jsx';
@@ -12,20 +11,21 @@ import Register from './features/Auth/Register';
 import CheckEmail from './features/Auth/CheckEmail';
 import VerifyEmail from './features/Auth/VerifyEmail';
 import TwoFactor from './features/Auth/TwoFactor';
-import Entry from 'features/Entry/Entry.jsx';
+import EditEntry from 'features/EditEntry/EditEntry.jsx';
+import Navbar from 'components/Navbar/Navbar.jsx';
 
 function App() {
   return (
-    <div className='grid grid-cols-[25%_auto] min-h-screen p-4 bg-[#fefdf6]'>
+    <div className='flex gap-[20px] p-[20px] min-h-[100vh] bg-[#3758F9]'>
       <Toaster />
       <AuthProvider>
         <Navbar />
-        <div className='px-[150px] py-[50px]'>
+        <div className='flex-1 rounded-[10px] py-[54px] px-[91px] bg-[var(--background)] max-lg:p-[30px] max-sm:p-[15px]'>
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/dashboard' element={<Dashboard />} />
             <Route path='/chat' element={<Chat />} />
-            <Route path='/entry' element={<Entry />} />
+            <Route path='/edit-entry' element={<EditEntry />} />
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
             <Route path='/check-email' element={<CheckEmail />} />

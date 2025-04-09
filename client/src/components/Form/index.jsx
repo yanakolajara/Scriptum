@@ -9,109 +9,138 @@ export const Form = ({ children, onSubmit, ...rest }) => {
   );
 };
 
-Form.InputText = ({ value, onChange, ...props }) => {
+Form.InputText = ({ value, onChange, label, name, ...props }) => {
   return (
-    <input
-      id='title'
-      type='text'
-      name='title'
-      value={value}
-      onChange={onChange}
-      className='w-full border-1 rounded-md p-1.5'
-      {...props}
-    />
+    <label>
+      {label || name}
+      <input
+        type='text'
+        name='title'
+        value={value}
+        onChange={onChange}
+        className='w-full border-1 rounded-md p-1.5'
+        {...props}
+      />
+    </label>
   );
 };
 
-Form.InputTextArea = ({ value, onChange, ...props }) => {
+Form.InputTextArea = ({ value, onChange, label, name, ...props }) => {
   return (
-    <textarea
-      id='content'
-      type='text'
-      name='content'
-      rows='10'
-      value={value}
-      onChange={onChange}
-      className='w-full border-1 rounded-md p-1.5 '
-      {...props}
-    />
+    <label>
+      {label || name}
+      <textarea
+        type='text'
+        name='content'
+        rows='10'
+        value={value}
+        onChange={onChange}
+        className='w-full border-1 rounded-md p-1.5 '
+        {...props}
+      />
+    </label>
   );
 };
 
-Form.InputDate = ({ value, onChange, ...props }) => {
+Form.Email = ({ value, onChange, label, name, ...props }) => {
   return (
-    <input
-      id='date'
-      type='date'
-      name='date'
-      value={value}
-      onChange={onChange}
-      className='w-full border-1 rounded-md p-1.5'
-      {...props}
-    />
+    <label>
+      {label || name}
+      <input
+        type='email'
+        name='email'
+        value={value}
+        onChange={onChange}
+        className='w-full border-1 rounded-md p-1.5'
+        {...props}
+      />
+    </label>
   );
 };
 
-Form.InputTime = ({ value, onChange, ...props }) => {
+Form.InputDate = ({ value, onChange, label, name, ...props }) => {
   return (
-    <input
-      id='time'
-      type='time'
-      name='time'
-      value={value}
-      onChange={onChange}
-      className='w-full border-1 rounded-md p-1.5'
-      {...props}
-    />
+    <label>
+      {label || name}
+      <input
+        type='date'
+        name='date'
+        value={value}
+        onChange={onChange}
+        className='w-full border-1 rounded-md p-1.5'
+        {...props}
+      />
+    </label>
   );
 };
 
-Form.InputDateTime = ({ value, onChange, ...props }) => {
+Form.InputTime = ({ value, onChange, label, name, ...props }) => {
   return (
-    <input
-      id='datetime'
-      type='datetime-local'
-      name='datetime'
-      value={value}
-      onChange={onChange}
-      className='w-full border-1 rounded-md p-1.5'
-      {...props}
-    />
+    <label>
+      {label || name}
+      <input
+        type='time'
+        name='time'
+        value={value}
+        onChange={onChange}
+        className='w-full border-1 rounded-md p-1.5'
+        {...props}
+      />
+    </label>
   );
 };
 
-Form.InputFile = ({ value, onChange, ...props }) => {
+Form.InputDateTime = ({ value, onChange, label, name, ...props }) => {
   return (
-    <input
-      id='file'
-      type='file'
-      name='file'
-      value={value}
-      onChange={onChange}
-      className='w-full border-1 rounded-md p-1.5'
-      {...props}
-    />
+    <label>
+      {label || name}
+      <input
+        type='datetime-local'
+        name='datetime'
+        value={value}
+        onChange={onChange}
+        className='w-full border-1 rounded-md p-1.5'
+        {...props}
+      />
+    </label>
   );
 };
 
-Form.InputCheckbox = ({ value, onChange, ...props }) => {
+Form.InputFile = ({ value, onChange, label, name, ...props }) => {
   return (
-    <input
-      id='checkbox'
-      type='checkbox'
-      name='checkbox'
-      value={value}
-      onChange={onChange}
-      className='w-full border-1 rounded-md p-1.5'
-      {...props}
-    />
+    <label>
+      {label || name}
+      <input
+        type='file'
+        name='file'
+        value={value}
+        onChange={onChange}
+        className='w-full border-1 rounded-md p-1.5'
+        {...props}
+      />
+    </label>
+  );
+};
+
+Form.InputCheckbox = ({ value, onChange, label, name, ...props }) => {
+  return (
+    <label>
+      {label || name}
+      <input
+        type='checkbox'
+        name='checkbox'
+        value={value}
+        onChange={onChange}
+        className='w-full border-1 rounded-md p-1.5'
+        {...props}
+      />
+    </label>
   );
 };
 
 Form.InputRadio = ({ value, onChange, ...props }) => {
   return (
     <input
-      id='radio'
       type='radio'
       name='radio'
       value={value}
