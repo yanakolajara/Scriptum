@@ -20,7 +20,7 @@ function App() {
       <Toaster />
       <AuthProvider>
         <Navbar />
-        <div className='flex-1 rounded-[10px] py-[54px] px-[91px] bg-[var(--background)] max-lg:p-[30px] max-sm:p-[15px]'>
+        <div className='flex p-[10px] justify-center items-center gap-[10px] flex-1 self-stretch rounded-[10px] bg-[var(--background)]'>
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/dashboard' element={<Dashboard />} />

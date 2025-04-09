@@ -12,22 +12,13 @@ export default function Chat() {
   };
 
   return (
-    <main className='flex flex-col justify-between w-full bg-[#dedede] rounded-xl shadow-lg p-4 overflow-hidden'>
+    <main className='flex w-[560px] h-[684px] py-[20px] px-[1px] flex-col justify-end items-center gap-[25px] rounded-2xl border border-[#DFE4EA]'>
       <header>
         <h2 className='text-center text-xl text-[#333]'>Chat</h2>
       </header>
       <section className='flex-grow overflow-y-auto p-4 flex flex-col gap-2.5'>
-        {chat.map((msg, index) => (
-          <p
-            key={index}
-            className={`p-4 rounded-xl max-w-[75%] ${
-              msg.role === 'user'
-                ? 'bg-[#fffbcc] self-end'
-                : 'bg-[#f0f0f0] self-start'
-            }`}
-          >
-            <strong>{msg.role === 'user' ? 'You' : 'Ai'}:</strong> {msg.text}
-          </p>
+        {chat.map((msgData, index) => (
+          <ChatMessage key={index} role={msgData.role} message={msgData.text} />
         ))}
       </section>
       <section className='flex items-center p-2.5 border-t-2 border-[#ddd]'>
@@ -57,3 +48,15 @@ export default function Chat() {
     </main>
   );
 }
+
+const ChatMessage = ({ message, role }) => {
+  return (
+    <p
+      className={`p-4 rounded-xl max-w-[75%] ${
+        role === 'user' ? 'bg-[#fffbcc] self-end' : 'bg-[#f0f0f0] self-start'
+      }`}
+    >
+      <strong>{role === 'user' ? 'You' : 'Ai'}:</strong> {message}
+    </p>
+  );
+};
