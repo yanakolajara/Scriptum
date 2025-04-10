@@ -15,7 +15,7 @@ Form.InputText = ({ value, onChange, label, name, ...props }) => {
       {label || name}
       <input
         type='text'
-        name='title'
+        name={name}
         value={value}
         onChange={onChange}
         className='w-full border-1 rounded-md p-1.5'
@@ -31,7 +31,7 @@ Form.InputTextArea = ({ value, onChange, label, name, ...props }) => {
       {label || name}
       <textarea
         type='text'
-        name='content'
+        name={name}
         rows='10'
         value={value}
         onChange={onChange}
@@ -48,7 +48,6 @@ Form.Email = ({ value, onChange, label, name, ...props }) => {
       {label || name}
       <input
         type='email'
-        name='email'
         value={value}
         onChange={onChange}
         className='w-full border-1 rounded-md p-1.5'
@@ -64,7 +63,6 @@ Form.InputDate = ({ value, onChange, label, name, ...props }) => {
       {label || name}
       <input
         type='date'
-        name='date'
         value={value}
         onChange={onChange}
         className='w-full border-1 rounded-md p-1.5'
@@ -80,7 +78,6 @@ Form.InputTime = ({ value, onChange, label, name, ...props }) => {
       {label || name}
       <input
         type='time'
-        name='time'
         value={value}
         onChange={onChange}
         className='w-full border-1 rounded-md p-1.5'
@@ -96,7 +93,6 @@ Form.InputDateTime = ({ value, onChange, label, name, ...props }) => {
       {label || name}
       <input
         type='datetime-local'
-        name='datetime'
         value={value}
         onChange={onChange}
         className='w-full border-1 rounded-md p-1.5'
@@ -112,7 +108,6 @@ Form.InputFile = ({ value, onChange, label, name, ...props }) => {
       {label || name}
       <input
         type='file'
-        name='file'
         value={value}
         onChange={onChange}
         className='w-full border-1 rounded-md p-1.5'
@@ -128,7 +123,6 @@ Form.InputCheckbox = ({ value, onChange, label, name, ...props }) => {
       {label || name}
       <input
         type='checkbox'
-        name='checkbox'
         value={value}
         onChange={onChange}
         className='w-full border-1 rounded-md p-1.5'
@@ -142,7 +136,6 @@ Form.InputRadio = ({ value, onChange, ...props }) => {
   return (
     <input
       type='radio'
-      name='radio'
       value={value}
       onChange={onChange}
       className='w-full border-1 rounded-md p-1.5'
@@ -153,7 +146,7 @@ Form.InputRadio = ({ value, onChange, ...props }) => {
 
 Form.Submit = ({ text, ...props }) => {
   return (
-    <Cta id='submit' type='submit' name='submit' text={text} {...props}>
+    <Cta id='submit' type='submit' text={text} {...props}>
       {text}
     </Cta>
   );

@@ -15,6 +15,7 @@ import EditEntry from 'features/EditEntry/EditEntry.jsx';
 import Navbar from 'components/Navbar/Navbar.jsx';
 
 function App() {
+  // todo: implement protected routes based on auth state
   return (
     <div className='flex gap-[20px] p-[20px] min-h-[100vh] bg-[#3758F9]'>
       <Toaster />

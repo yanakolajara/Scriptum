@@ -12,7 +12,6 @@ export default function Login() {
 
   const handleChange = (e) => {
     e.preventDefault();
-    console.log(e.target);
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -20,14 +19,11 @@ export default function Login() {
     }));
   };
   const handleSubmit = (e) => {
-    console.log(formData);
     e.preventDefault();
     handleLogin(formData);
   };
 
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
+  useEffect(() => {}, [formData]);
 
   return (
     <main>
@@ -42,22 +38,15 @@ export default function Login() {
           // required
         />
         <Form.InputText
-          type='password'
+          // todo: add show/hide password on Form component
+          type={showPassword ? 'text' : 'password'}
           name='password'
           label='Password'
           value={formData.password}
           onChange={handleChange}
           required
         />
-        <label htmlFor=''>
-          Password
-          <input
-            value={formData.password}
-            onChange={handleChange}
-            type={showPassword ? 'text' : 'password'}
-            name='password'
-          />
-        </label>
+
         <label htmlFor=''>
           Show password
           <input
@@ -65,7 +54,8 @@ export default function Login() {
             onChange={() => setShowPassword(!showPassword)}
           />
         </label>
-        <input type='submit' value='Log in' />
+
+        <Form.Submit text='Log in' />
       </Form>
     </main>
   );
