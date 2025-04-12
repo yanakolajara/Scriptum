@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../providers/auth.provider';
+import { Cta } from 'components/Cta';
 
 const tempStyle = {
   display: 'flex',
@@ -19,12 +20,7 @@ export default function Home() {
   return (
     <main style={tempStyle}>
       <article>
-        <h1>Home</h1>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore.{' '}
-        </p>
-
+        <h1>Welcome to Scriptum: Your AI-Powered Journal</h1>
         <section
           style={{
             display: 'flex',
@@ -32,8 +28,8 @@ export default function Home() {
             justifyContent: 'space-evenly',
           }}
         >
-          <a href='/register'>Create account</a>
-          <a href='/login'>Log in</a>
+          <Cta>Create account</Cta>
+          <Cta>Log in</Cta>
         </section>
       </article>
       <article>{/* <img src='' alt='hero' /> */}</article>
