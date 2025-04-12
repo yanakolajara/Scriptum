@@ -1,6 +1,7 @@
 // services/emailService.js
 import { createTransport } from 'nodemailer';
 import { config } from '../config/config.js';
+import { emailBody } from './data/email-verification-template.js';
 
 const transporter = createTransport({
   service: config.email.service,
@@ -47,12 +48,13 @@ export const sendCodeToEmail = async (code, email) => {
  */
 export const sendEmailVerification = async (email, token) => {
   try {
+    const verificationLink = `${config.app.clientUrl}/verify-email?token=${token}`;
+    const html = emailBody.replace('{{verificationLink}}', verificationLink);
     const mailOptions = {
       from: config.email.fromEmail,
       to: email,
       subject: 'Welcome to Scriptum',
-      html: `<p>Please click the following link to verify your email:</p>
-      <a href="${config.app.clientUrl}/verify-email?token=${token}">Verify Email</a>`,
+      html: html,
     };
     return transporter.sendMail(mailOptions);
   } catch (error) {
