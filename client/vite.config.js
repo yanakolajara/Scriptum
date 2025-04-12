@@ -27,7 +27,10 @@ export default defineConfig({
   },
   esbuild: {
     loader: 'jsx',
-    include: /\.jsx?$/,
+    include: /.jsx?$/,
     exclude: [],
+  },
+  build: {
+    outDir: './build',
   },
 });
