@@ -2,13 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { getEntries, deleteEntry, editEntry } from 'api/entries';
 import { Cta } from 'components/Cta';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useAuthContext } from 'providers/auth.provider';
 
 export default function Dashboard() {
   const [entries, setEntries] = useState(null);
   const [loading, setLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { user } = useAuthContext();
 
+  if (!user) {
+    navigate('/login');
+  }
   // fixme: turn into protected route
 
   const handleGetEntries = async () => {

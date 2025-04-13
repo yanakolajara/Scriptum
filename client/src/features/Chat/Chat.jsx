@@ -1,15 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useChat } from './hooks/useChat.js';
+import { useNavigate } from 'react-router-dom';
+import { useAuthContext } from 'providers/auth.provider.js';
 
 export default function Chat() {
   const { loading, chat, message, setMessage, sendMessage, generateEntry } =
     useChat();
+  const { user } = useAuthContext();
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // sendMessageStream(message);
     sendMessage(message);
   };
+
+  useEffect(() => {
+    if (!user) {
+      navigate('/login');
+    }
+  }, []);
 
   return (
     <main className='flex w-[560px] h-[684px] py-[20px] px-[1px] flex-col justify-end items-center gap-[25px] rounded-2xl border border-[#DFE4EA]'>

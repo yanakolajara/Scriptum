@@ -28,8 +28,8 @@ export default function Home() {
             justifyContent: 'space-evenly',
           }}
         >
-          <Cta>Create account</Cta>
-          <Cta>Log in</Cta>
+          <Cta onClick={() => navigate('/register')}> Create account</Cta>
+          <Cta onClick={() => navigate('/login')}>Log in</Cta>
         </section>
       </article>
       <article>{/* <img src='' alt='hero' /> */}</article>

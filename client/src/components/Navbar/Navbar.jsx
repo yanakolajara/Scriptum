@@ -19,6 +19,15 @@ export default function Navbar() {
     }
   };
 
+  useEffect(() => {}, [user]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!user) {
+    return <></>;
+  }
   // align-self: stretch;
   return (
     <div className='flex flex-col justify-between bg-transparent w-[231px] py-[12px]'>

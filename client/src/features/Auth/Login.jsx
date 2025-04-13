@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useLogin } from './hooks/useLogin';
 import { Form } from 'components/Form';
+import { useAuthContext } from 'providers/auth.provider';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
   const { handleLogin } = useLogin();
@@ -9,6 +11,8 @@ export default function Login() {
     password: '',
   });
   const [showPassword, setShowPassword] = useState(false);
+  const { user } = useAuthContext();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -23,7 +27,11 @@ export default function Login() {
     handleLogin(formData);
   };
 
-  useEffect(() => {}, [formData]);
+  useEffect(() => {
+    if (user) {
+      navigate('/dashboard');
+    }
+  }, [formData, user]);
 
   return (
     <main>

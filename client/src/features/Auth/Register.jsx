@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRegister } from './hooks/useRegister';
+import { useNavigate } from 'react-router-dom';
+import { useAuthContext } from 'providers/auth.provider';
 
 export default function Register() {
   const {
@@ -12,6 +14,8 @@ export default function Register() {
 
   const [passwordFocus, setPasswordFocus] = useState(false);
   const [passwordBlur, setPasswordBlur] = useState(false);
+  const { user } = useAuthContext();
+  const navigate = useNavigate();
 
   const lowercase = /[a-z]/;
   const uppercase = /[A-Z]/;
@@ -21,7 +25,11 @@ export default function Register() {
   //todo: password validation specific types of special characters
   //fixme: match special characters with backend
 
-  useEffect(() => {}, [passwordFocus, passwordBlur, formData.password]);
+  useEffect(() => {
+    if (user) {
+      navigate('/dashboard');
+    }
+  }, [passwordFocus, passwordBlur, formData.password, user]);
 
   return (
     <main>

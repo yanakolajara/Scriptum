@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useContext } from 'react';
+import { createContext, useState, useEffect, useContext, use } from 'react';
 import { axiosInstance } from '../api/axios';
 
 const AuthContext = createContext();
@@ -63,6 +63,7 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const fetchUser = async () => {
       const response = await checkAuth();
+      // todo: make constants change without changing the setUser, unless expired or invalid
       if (response.status === 200) {
         setUser(response.data.user);
       } else {
@@ -73,6 +74,9 @@ const AuthProvider = ({ children }) => {
     fetchUser();
   }, []);
 
+  useEffect(() => {
+    console.log('user changed');
+  }, [user]);
   // todo: rerender only on auth change or requests failed due to token invalid
   // todo: automatically render navbar options on auth change
 
