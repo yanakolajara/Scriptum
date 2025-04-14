@@ -16,7 +16,7 @@ export default function Home() {
     if (user) {
       navigate('/dashboard');
     }
-  });
+  }, [user]);
   return (
     <main style={tempStyle}>
       <article>

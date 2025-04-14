@@ -6,19 +6,17 @@ const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   const trycatchHandler = async (func) => {
     try {
       setLoading(true);
-      setError(null);
       const response = await func();
-      setLoading(false);
+      console.log(response);
       return response;
     } catch (error) {
-      setError(error.response.data.message);
-      setLoading(false);
       return error.response;
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -29,13 +27,19 @@ const AuthProvider = ({ children }) => {
   };
 
   const login = async (data) => {
-    return await trycatchHandler(() =>
-      axiosInstance.post('/users/login', data)
-    );
+    return await trycatchHandler(async () => {
+      const res = await axiosInstance.post('/users/login', data);
+      setUser(res.data.user);
+      return res;
+    });
   };
 
   const logout = async () => {
-    return await trycatchHandler(() => axiosInstance.post('/users/logout'));
+    return await trycatchHandler(async () => {
+      const res = await axiosInstance.post('/users/logout');
+      setUser(null);
+      return res;
+    });
   };
 
   const verify = async (data) => {
@@ -56,36 +60,11 @@ const AuthProvider = ({ children }) => {
     );
   };
 
-  const checkAuth = async () => {
-    return await trycatchHandler(() => axiosInstance.get('/users/check-auth'));
-  };
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const response = await checkAuth();
-      // todo: make constants change without changing the setUser, unless expired or invalid
-      if (response.status === 200) {
-        setUser(response.data.user);
-      } else {
-        setUser(null);
-      }
-    };
-    console.log('after fetch');
-    fetchUser();
-  }, []);
-
-  useEffect(() => {
-    console.log('user changed');
-  }, [user]);
-  // todo: rerender only on auth change or requests failed due to token invalid
-  // todo: automatically render navbar options on auth change
-
   return (
     <AuthContext.Provider
       value={{
         user,
         loading,
-        error,
         register,
         login,
         logout,

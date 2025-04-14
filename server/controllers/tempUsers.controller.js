@@ -120,7 +120,6 @@ export class TempUserController {
           mfa_required: true,
         });
       } else {
-        console.log('MFA not required');
         const accessToken = jwt.sign(
           {
             id: dbData.id,
@@ -133,17 +132,25 @@ export class TempUserController {
           { expiresIn: '7d' }
         ); //! Remove expiration date after refresh token is implemented
 
-        res.cookie('access_token', accessToken, {
-          // httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'strict',
-          path: '/',
-        });
-
-        res.status(200).json({
-          message: 'User logged in successfully.',
-          mfa_required: false,
-        });
+        res
+          .cookie('access_token', accessToken, {
+            // httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            path: '/',
+          })
+          .status(200)
+          .json({
+            message: 'User logged in successfully.',
+            mfa_required: false,
+            user: {
+              ...dbData,
+              id: undefined,
+              password: undefined,
+              is_verified: undefined,
+              mfa: undefined,
+            },
+          });
       }
       // Create tokens
     } catch (error) {

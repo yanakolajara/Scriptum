@@ -6,8 +6,7 @@ import { Cta } from 'components/Cta/index.jsx';
 // import './Navbar.scss';
 
 export default function Navbar() {
-  const { user, loading, error } = useAuthContext();
-  const { logout } = useAuthContext();
+  const { user, loading, logout } = useAuthContext();
   const navigate = useNavigate();
   const handleLogout = async (e) => {
     e.preventDefault();
@@ -19,13 +18,11 @@ export default function Navbar() {
     }
   };
 
-  useEffect(() => {}, [user]);
+  useEffect(() => {
+    console.log('user', user);
+  }, [user]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!user) {
+  if (!user || loading) {
     return <></>;
   }
   // align-self: stretch;

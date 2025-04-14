@@ -9,7 +9,6 @@ export const useLogin = () => {
     //todo: Validate data
     try {
       const res = await login(formData);
-      // const cookies = document.cookie.split(';');
 
       if (res.status === 200) {
         toast.success(res.data.message);

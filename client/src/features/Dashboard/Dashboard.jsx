@@ -10,10 +10,6 @@ export default function Dashboard() {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const { user } = useAuthContext();
-
-  if (!user) {
-    navigate('/login');
-  }
   // fixme: turn into protected route
 
   const handleGetEntries = async () => {
@@ -43,10 +39,13 @@ export default function Dashboard() {
     navigate(`/edit-entry?id=${id}&edit=true`);
   };
   useEffect(() => {
+    if (!user) {
+      navigate('/');
+    }
     if (loading) {
       handleGetEntries();
     }
-  }, [loading]);
+  }, [loading, user]);
 
   if (loading) return <h1>Loading...</h1>;
   return (
