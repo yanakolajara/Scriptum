@@ -1,9 +1,10 @@
 import cors from 'cors';
+import { config } from '../config/config';
 
 export const corsMiddleware = ({ acceptedOrigins } = {}) =>
   cors({
     credentials: true,
-    origin: acceptedOrigins,
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    origin: config.app.environment === 'development' ? '*' : acceptedOrigins,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     optionsSuccessStatus: 200,
   });
