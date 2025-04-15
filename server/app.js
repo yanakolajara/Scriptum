@@ -13,21 +13,24 @@ export const createApp = ({ userModel, entryModel }) => {
 
   app.use(morgan('dev'));
   app.use(express.json());
-  app.use((req, res, next) => {
-    const uri = config.security.corsAllowedOrigins;
-    res.header('Access-Control-Allow-Origin', uri); // Frontend URL
-    res.header(
-      'Access-Control-Allow-Methods',
-      'GET, POST, PUT, DELETE, OPTIONS'
-    );
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    res.header('Access-Control-Allow-Credentials', 'true');
-    if (req.method === 'OPTIONS') {
-      return res.sendStatus(200);
-    }
-    next();
-  });
-  app.use(corsMiddleware(config.security.corsAllowedOrigins));
+  // app.use((req, res, next) => {
+  //   const uri = config.security.corsAllowedOrigins;
+  //   res.header('Access-Control-Allow-Origin', uri); // Frontend URL
+  //   res.header(
+  //     'Access-Control-Allow-Methods',
+  //     'GET, POST, PUT, DELETE, OPTIONS'
+  //   );
+  //   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  //   res.header('Access-Control-Allow-Credentials', 'true');
+  //   if (req.method === 'OPTIONS') {
+  //     return res.sendStatus(200);
+  //   }
+  //   next();
+  // });
+
+  // todo: enable CORS options
+  // app.use(corsMiddleware(config.security.corsAllowedOrigins));
+  app.use(cors());
   app.use(cookieParser());
 
   app.use((req, res, next) => {
