@@ -14,6 +14,21 @@ export const createApp = ({ userModel, entryModel }) => {
 
   app.use(morgan('dev'));
   app.use(express.json());
+  app.use((req, res, next) => {
+    const origin = req.header('origin');
+    req.header('Access-Control-Allow-Origin', origin);
+    req.header(
+      'Access-Control-Allow-Methods',
+      'GET, POST, PUT, DELETE, OPTIONS'
+    );
+    req.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    req.header('Access-Control-Allow-Credentials', 'true');
+    if (req.method === 'OPTIONS') {
+      return res.sendStatus(200);
+    }
+
+    next();
+  });
   // app.use((req, res, next) => {
   //   const uri = config.security.corsAllowedOrigins;
   //   res.header('Access-Control-Allow-Origin', uri); // Frontend URL
