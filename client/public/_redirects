@@ -1,4 +1,10 @@
-/api/* http://localhost:8080/api/:splat 200
+# Proxy API requests to your backend
+/api/* https://scriptum-sk3d.onrender.com/api/:splat 200
 
+# Proxy user authentication endpoints
+/users/* https://scriptum-sk3d.onrender.com/users/:splat 200
+
+# Always return the main index.html for any other routes (for SPA routing)
 /* /index.html 200
+
 
