@@ -13,7 +13,7 @@ export const createApp = ({ userModel, entryModel }) => {
 
   app.use(morgan('dev'));
   app.use(express.json());
-  app.use(corsMiddleware(config.security.corsAllowedOrigins.split(',')));
+  app.use(corsMiddleware(config.security.corsAllowedOrigins));
   app.use(cookieParser());
 
   app.use((req, res, next) => {
