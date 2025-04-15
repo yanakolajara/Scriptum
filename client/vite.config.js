@@ -3,10 +3,10 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import { fileURLToPath } from 'url';
 import path from 'path';
+import dotenv from 'dotenv';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
@@ -21,26 +21,17 @@ export default defineConfig({
     },
     extensions: ['.js', '.jsx', '.json'],
   },
-  
+
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:8080/',
-        changeOrigin: true,
-        secure: false,
-        rewrite: (path) => path.replace(/^\/api/, '')
-      },
-      cors:false
-      },
-    port: 3000,
-    open: false,
-    proxy: {
-      '/api': {
-        target: import.meta.env.VITE_API_URL || 'http://localhost:8080',
+        target: process.env.VITE_API_URL,
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },
+    port: 3000,
+    open: false,
   },
   esbuild: {
     loader: 'jsx',
