@@ -46,7 +46,7 @@ export const createApp = ({ userModel, entryModel }) => {
 
   // todo: enable CORS options
   // app.use(corsMiddleware(config.security.corsAllowedOrigins));
-  app.use(cors());
+  // app.use(cors());
   app.use(cookieParser());
 
   app.use((req, res, next) => {
