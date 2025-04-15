@@ -4,6 +4,7 @@ import { axiosInstance } from '../api/axios';
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
+  const cookies = document.cookie.split(';');
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -43,22 +44,46 @@ const AuthProvider = ({ children }) => {
   };
 
   const verify = async (data) => {
-    return await trycatchHandler(() =>
-      axiosInstance.post('/users/verify', data)
-    );
+    return await trycatchHandler(async () => {
+      return await axiosInstance.post('/users/verify', data);
+    });
   };
 
   const resendCode = async (data) => {
-    return await trycatchHandler(() =>
-      axiosInstance.post('/users/resend-code', data)
-    );
+    return await trycatchHandler(async () => {
+      return await axiosInstance.post('/users/resend-code', data);
+    });
   };
 
   const verifyEmail = async (data) => {
-    return await trycatchHandler(() =>
-      axiosInstance.post('/users/verify-email', data)
-    );
+    return await trycatchHandler(async () => {
+      return await axiosInstance.post('/users/verify-email', data);
+    });
   };
+
+  const checkAuth = async (access_token) => {
+    return await trycatchHandler(async () => {
+      const res = await axiosInstance.get('/users/check-auth');
+      setUser(res.data.user);
+    });
+  };
+
+  useEffect(() => {
+    console.log('useEffect');
+    const cookiesArr = document.cookie.split(';');
+
+    const cookies = {};
+    for (let c of cookiesArr) {
+      const key = c.split('=')[0];
+      const value = c.split('=')[1];
+      cookies[key] = value;
+    }
+    if (cookies.access_token) {
+      checkAuth(cookies.access_token);
+    }
+  }, []);
+
+  useEffect(() => {}, [user]);
 
   return (
     <AuthContext.Provider
