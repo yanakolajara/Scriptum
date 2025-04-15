@@ -2,6 +2,7 @@ import express from 'express';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import jwt from 'jsonwebtoken';
+import cors from 'cors';
 import { createUsersRouter } from './routes/users.routes.js';
 import { errorHandler } from './middlewares/error.middleware.js';
 import { config } from './config/config.js';
