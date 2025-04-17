@@ -1,5 +1,9 @@
 .dashboard {
   padding: 0 25%;
+  overflow-y: auto;
+  max-height: 100vh;
+  scrollbar-width: thin;
+  scrollbar-color: var(--text-gray);
 
   &__container {
     display: flex;
