@@ -3,6 +3,9 @@ import { useLogin } from './hooks/useLogin';
 import { Form } from 'components/Form';
 import { useAuthContext } from 'providers/auth.provider';
 import { useNavigate } from 'react-router-dom';
+import './Login.scss';
+import Container from 'components/Container/Container';
+import heroImage from './assets/images/login-hero.png';
 
 export default function Login() {
   const { handleLogin } = useLogin();
@@ -34,37 +37,46 @@ export default function Login() {
   }, [formData, user]);
 
   return (
-    <main>
-      <h1>Log in</h1>
-      <Form onSubmit={handleSubmit}>
-        <Form.InputText
-          // type='email'
-          name='email'
-          label='Email'
-          value={formData.email}
-          onChange={handleChange}
-          // required
-        />
-        <Form.InputText
-          // todo: add show/hide password on Form component
-          type={showPassword ? 'text' : 'password'}
-          name='password'
-          label='Password'
-          value={formData.password}
-          onChange={handleChange}
-          required
-        />
-
-        <label htmlFor=''>
-          Show password
-          <input
-            type='checkbox'
-            onChange={() => setShowPassword(!showPassword)}
+    <main className='login'>
+      <Container className='login__container'>
+        <Form onSubmit={handleSubmit}>
+          <Form.Title>Log in</Form.Title>
+          <Form.InputText
+            // type='email'
+            name='email'
+            label='Email'
+            value={formData.email}
+            onChange={handleChange}
+            // required
           />
-        </label>
+          <Form.InputText
+            // todo: add show/hide password on Form component
+            type={showPassword ? 'text' : 'password'}
+            name='password'
+            label='Password'
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
 
-        <Form.Submit text='Log in' />
-      </Form>
+          <label htmlFor=''>
+            Show password
+            <input
+              type='checkbox'
+              onChange={() => setShowPassword(!showPassword)}
+            />
+          </label>
+
+          <Form.Submit text='Log in' />
+
+          <Form.Link to='/register'>
+            Don&apos;t have an account? Sign up
+          </Form.Link>
+        </Form>
+        <div className='carousel'>
+          <img src={heroImage} alt='login' />
+        </div>
+      </Container>
     </main>
   );
 }

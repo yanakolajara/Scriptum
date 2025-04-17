@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../providers/auth.provider';
 import { Cta } from 'components/Cta';
 import Button from 'components/Button/Button';
-import heroImage from '../../assets/images/hero-image.png';
+import heroImage from './assets/images/hero-image.png';
 import './Home.scss';
 
 export default function Home() {

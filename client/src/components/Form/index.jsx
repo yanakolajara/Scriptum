@@ -1,11 +1,21 @@
+import Button from 'components/Button/Button';
 import { Cta } from 'components/Cta';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export const Form = ({ children, onSubmit, ...rest }) => {
   return (
     <form className='flex flex-col gap-2.5' onSubmit={onSubmit} {...rest}>
       {children}
     </form>
+  );
+};
+
+Form.Title = ({ children, text, ...props }) => {
+  return (
+    <h2 className='text-2xl font-bold' {...props}>
+      {text || children}
+    </h2>
   );
 };
 
@@ -149,5 +159,13 @@ Form.Submit = ({ text, ...props }) => {
     <Cta id='submit' type='submit' text={text} {...props}>
       {text}
     </Cta>
+  );
+};
+
+Form.Link = ({ children, text, to, ...props }) => {
+  return (
+    <Link to={to} {...props}>
+      {children || text}
+    </Link>
   );
 };
