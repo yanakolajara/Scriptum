@@ -6,7 +6,7 @@ import { Cta } from 'components/Cta/index.jsx';
 // import './Navbar.scss';
 
 export default function Navbar() {
-  const { user, loading, logout } = useAuthContext();
+  const { user, logout } = useAuthContext();
   const navigate = useNavigate();
   const handleLogout = async (e) => {
     e.preventDefault();
@@ -22,9 +22,6 @@ export default function Navbar() {
     console.log('user', user);
   }, [user]);
 
-  if (!user || loading) {
-    return <></>;
-  }
   // align-self: stretch;
   return (
     <div className='flex flex-col justify-between bg-transparent w-[231px] py-[12px]'>
