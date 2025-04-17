@@ -12,15 +12,16 @@ import VerifyEmail from './features/Auth/VerifyEmail';
 import TwoFactor from './features/Auth/TwoFactor';
 import EditEntry from 'features/EditEntry/EditEntry.jsx';
 import Navbar from 'components/Navbar/Navbar.jsx';
+import './App.scss';
 
 function App() {
   // todo: implement protected routes based on auth state
 
   return (
-    <div className='flex gap-[20px] p-[20px] min-h-[100vh] bg-[#3758F9]'>
+    <div className='flex gap-[20px] p-[20px] h-[100vh] bg-[#3758F9]'>
       <Toaster />
       <Navbar />
-      <div className='flex p-[10px] justify-center items-center gap-[10px] flex-1 self-stretch rounded-[10px] bg-[var(--background)]'>
+      <div className='main-container'>
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/dashboard' element={<Dashboard />} />

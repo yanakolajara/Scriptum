@@ -3,6 +3,8 @@ import { getEntries, deleteEntry, editEntry } from 'api/entries';
 import { Cta } from 'components/Cta';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuthContext } from 'providers/auth.provider';
+import Card from 'components/Card/Card';
+import './dashboard.scss';
 
 export default function Dashboard() {
   const [entries, setEntries] = useState(null);
@@ -49,26 +51,34 @@ export default function Dashboard() {
 
   if (loading) return <h1>Loading...</h1>;
   return (
-    <main>
-      <h1 className='text-2xl'>Dashboard</h1>
-      <section className='flex flex-col gap-2.5'>
+    <main className='dashboard'>
+      <h2 className='text-2xl text-[#333] p-5.5'>Dashboard</h2>
+      <section className='dashboard__container'>
         {entries &&
           entries.map((entry) => {
             return (
-              <article className='border-1 rounded-md' key={entry.id}>
-                <section className='p-2.5'>
-                  <h2 className='text-xl'>{entry.title}</h2>
-                  <p className='text-sm'>{entry.content}</p>
-                </section>
-                <hr />
-                <section className='flex justify-evenly p-2.5'>
-                  <p>{entry.entry_date.slice(0, 16).split('T').join(' ')}</p>
-                  <section className='flex gap-2.5'>
-                    <Cta text='Edit' onClick={() => handleEdit(entry.id)} />
-                    <Cta text='Delete' onClick={() => handleDelete(entry.id)} />
-                  </section>
-                </section>
-              </article>
+              <Card
+                title={entry.title}
+                content={entry.content}
+                key={entry.id}
+                date={entry.entry_date}
+                onEdit={() => handleEdit(entry.id)}
+                onDelete={() => handleDelete(entry.id)}
+              />
+              // <article className='border-1 rounded-md' key={entry.id}>
+              //   <section className='p-2.5'>
+              //     <h2 className='text-xl'>{entry.title}</h2>
+              //     <p className='text-sm'>{entry.content}</p>
+              //   </section>
+              //   <hr />
+              //   <section className='flex justify-evenly p-2.5'>
+              //     <p>{entry.entry_date.slice(0, 16).split('T').join(' ')}</p>
+              //     <section className='flex gap-2.5'>
+              //       <Cta text='Edit' onClick={() => handleEdit(entry.id)} />
+              //       <Cta text='Delete' onClick={() => handleDelete(entry.id)} />
+              //     </section>
+              //   </section>
+              // </article>
             );
           })}
       </section>
