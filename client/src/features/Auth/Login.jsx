@@ -5,7 +5,7 @@ import { useAuthContext } from 'providers/auth.provider';
 import { useNavigate } from 'react-router-dom';
 import './Login.scss';
 import Container from 'components/Container/Container';
-import heroImage from './assets/images/login-hero.png';
+import authImage from './assets/images/auth.png';
 
 export default function Login() {
   const { handleLogin } = useLogin();
@@ -74,7 +74,7 @@ export default function Login() {
           </Form.Link>
         </Form>
         <div className='carousel'>
-          <img src={heroImage} alt='login' />
+          <img src={authImage} alt='login' />
         </div>
       </Container>
     </main>

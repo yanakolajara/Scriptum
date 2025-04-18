@@ -2,6 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useRegister } from './hooks/useRegister';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from 'providers/auth.provider';
+import { Form } from 'components/Form';
+import Container from 'components/Container/Container';
+import authImage from './assets/images/auth.png';
+import './Register.scss'; // Re-using register styles
 
 export default function Register() {
   const {
@@ -32,115 +36,102 @@ export default function Register() {
   }, [passwordFocus, passwordBlur, formData.password, user]);
 
   return (
-    <main>
-      <h1>Register</h1>
-      <form
-        onSubmit={handleSubmit}
-        style={{ display: 'flex', flexDirection: 'column' }}
-      >
-        <label htmlFor=''>
-          First name
-          <input
-            value={formData.first_name}
-            onChange={handleChange}
-            type='text'
-            name='first_name'
-            required
-          />
-        </label>
-        <label htmlFor=''>
-          Middle name
-          <input
-            value={formData.middle_name}
-            onChange={handleChange}
-            type='text'
-            name='middle_name'
-          />
-        </label>
-        <label htmlFor=''>
-          Last name
-          <input
-            value={formData.last_name}
-            onChange={handleChange}
-            type='text'
-            name='last_name'
-            required
-          />
-        </label>
-        <label htmlFor=''>
-          Email
-          <input
-            value={formData.email}
-            onChange={handleChange}
+    <main className='register'>
+      <Container className='register__container'>
+        <Form onSubmit={handleSubmit}>
+          <Form.Title>Register</Form.Title>
+          <div className='register__name'>
+            <Form.InputText
+              type='text'
+              name='first_name'
+              label='First name'
+              value={formData.first_name}
+              onChange={handleChange}
+              required
+            />
+            <Form.InputText
+              type='text'
+              name='middle_name'
+              label='Middle name'
+              value={formData.middle_name}
+              onChange={handleChange}
+            />
+            <Form.InputText
+              type='text'
+              name='last_name'
+              label='Last name'
+              value={formData.last_name}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <Form.InputText
             type='email'
             name='email'
+            label='Email'
+            value={formData.email}
+            onChange={handleChange}
             required
           />
-        </label>
-        <label htmlFor=''>
-          Password
-          <input
+          <Form.InputText
+            type={showPassword ? 'text' : 'password'}
+            name='password'
+            label='Password'
             value={formData.password}
             onChange={handleChange}
             onFocus={() => setPasswordFocus(true)}
             onBlur={() => setPasswordBlur(true)}
-            type={showPassword ? 'text' : 'password'}
-            name='password'
             required
           />
-          <input
-            type='checkbox'
-            onChange={() => setShowPassword(!showPassword)}
-            checked={showPassword}
-          />
-        </label>
 
-        {passwordFocus && passwordBlur && (
-          <>
-            {formData.password.length < 8 && (
-              <p style={{ color: 'red' }}>
-                Password must be at least 8 characters long
-              </p>
-            )}
-            {!lowercase.test(formData.password) && (
-              <p style={{ color: 'red' }}>
-                Password must contain at least one lowercase letter
-              </p>
-            )}
-            {!uppercase.test(formData.password) && (
-              <p style={{ color: 'red' }}>
-                Password must contain at least one uppercase letter
-              </p>
-            )}
-            {!number.test(formData.password) && (
-              <p style={{ color: 'red' }}>
-                Password must contain at least one number
-              </p>
-            )}
-            {!specialChar.test(formData.password) && (
-              <p style={{ color: 'red' }}>
-                Password must contain at least one special character
-              </p>
-            )}
-            {formData.password.length > 0 && formData.password.length < 8 && (
-              <p style={{ color: 'red' }}>
-                Password must be at least 8 characters long
-              </p>
-            )}
-          </>
-        )}
-        {/* <label htmlFor=''>
-          Confirm password
-          <input
-            value={formData.passwordConfirm}
-            onChange={handleChange}
-            type='password'
-            name='password'
-            required
-          />
-        </label> */}
-        <input type='submit' value='Register' />
-      </form>
+          <label htmlFor=''>
+            Show password
+            <input
+              type='checkbox'
+              onChange={() => setShowPassword(!showPassword)}
+              checked={showPassword}
+            />
+          </label>
+
+          {passwordFocus && passwordBlur && (
+            <div className='password-validation'>
+              {formData.password.length < 8 && (
+                <p style={{ color: 'red' }}>
+                  Password must be at least 8 characters long
+                </p>
+              )}
+              {!lowercase.test(formData.password) && (
+                <p style={{ color: 'red' }}>
+                  Password must contain at least one lowercase letter
+                </p>
+              )}
+              {!uppercase.test(formData.password) && (
+                <p style={{ color: 'red' }}>
+                  Password must contain at least one uppercase letter
+                </p>
+              )}
+              {!number.test(formData.password) && (
+                <p style={{ color: 'red' }}>
+                  Password must contain at least one number
+                </p>
+              )}
+              {!specialChar.test(formData.password) && (
+                <p style={{ color: 'red' }}>
+                  Password must contain at least one special character
+                </p>
+              )}
+            </div>
+          )}
+
+          <Form.Submit text='Register' />
+
+          <Form.Link to='/login'>Already have an account? Login</Form.Link>
+        </Form>
+        <div className='carousel'>
+          <img src={authImage} alt='register' />
+        </div>
+      </Container>
     </main>
   );
 }
