@@ -10,4 +10,34 @@
     flex-direction: column;
     gap: 20px;
   }
+
+  &__empty {
+    display: flex;
+    flex-direction: row;
+
+    width: 1000px;
+    &-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 10%;
+      gap: 10px;
+    }
+    &-title {
+      color: var(--text-black);
+      font-weight: bold;
+      font-size: 2rem;
+      padding-bottom: 5%;
+    }
+    &-description {
+      color: var(--text-gray);
+      padding-bottom: 10%;
+    }
+    &-cta {
+      padding: 12px 28px;
+      border-radius: 50px;
+      border: 1px solid var(--grey);
+      color: var(--text-gray);
+    }
+  }
 }

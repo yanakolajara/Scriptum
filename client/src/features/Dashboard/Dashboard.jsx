@@ -4,6 +4,7 @@ import { Cta } from 'components/Cta';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuthContext } from 'providers/auth.provider';
 import Card from 'components/Card/Card';
+import newEntryImg from './assets/images/new-entry.png';
 import './dashboard.scss';
 
 export default function Dashboard() {
@@ -54,9 +55,11 @@ export default function Dashboard() {
   // todo: if user has no entries, show message
   return (
     <main className='dashboard'>
-      <h2 className='text-2xl text-[#333] p-5.5'>Dashboard</h2>
+      {!!entries.length && (
+        <h2 className='text-2xl text-[#333] p-5.5'>Dashboard</h2>
+      )}
       <section className='dashboard__container'>
-        {entries &&
+        {entries.length ? (
           entries.map((entry) => {
             return (
               <Card
@@ -67,22 +70,30 @@ export default function Dashboard() {
                 onEdit={() => handleEdit(entry.id)}
                 onDelete={() => handleDelete(entry.id)}
               />
-              // <article className='border-1 rounded-md' key={entry.id}>
-              //   <section className='p-2.5'>
-              //     <h2 className='text-xl'>{entry.title}</h2>
-              //     <p className='text-sm'>{entry.content}</p>
-              //   </section>
-              //   <hr />
-              //   <section className='flex justify-evenly p-2.5'>
-              //     <p>{entry.entry_date.slice(0, 16).split('T').join(' ')}</p>
-              //     <section className='flex gap-2.5'>
-              //       <Cta text='Edit' onClick={() => handleEdit(entry.id)} />
-              //       <Cta text='Delete' onClick={() => handleDelete(entry.id)} />
-              //     </section>
-              //   </section>
-              // </article>
             );
-          })}
+          })
+        ) : (
+          <div className='dashboard__empty'>
+            <div className='dashboard__empty-content'>
+              <h2 className='dashboard__empty-title'>
+                Create your first entry
+              </h2>
+              <p className='dashboard__empty-description'>
+                This is where your thoughts, reflections, or even random ideas
+                come to life. Just start a chat and we’ll turn your words into
+                something meaningful.
+              </p>
+              <Cta
+                className='dashboard__empty-cta'
+                text='Start chat'
+                onClick={() => navigate('/chat')}
+              />
+            </div>
+            <div className='dashboard__empty-image'>
+              <img src={newEntryImg} alt='new entry' />
+            </div>
+          </div>
+        )}
       </section>
     </main>
   );
