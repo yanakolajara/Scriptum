@@ -5,11 +5,7 @@ import { Cta } from 'components/Cta';
 import { format, formatRelative, subDays } from 'date-fns';
 
 export default function Card({ title, content, date, onEdit, onDelete }) {
-  // const formattedDate = format(new Date(date), 'yyyy-MM-dd');
-  const formattedDate = formatRelative(
-    subDays(new Date(date), 3),
-    new Date(date)
-  );
+  const formattedDate = format(date, 'LLL dd, yyyy - hh:mmaaaa');
 
   return (
     <Container className='card'>
