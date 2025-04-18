@@ -54,6 +54,8 @@ export default function EditEntry() {
 
   if (!entry) return <h1>Loading...</h1>;
 
+  // FIXME: toast showing error message on success
+
   return (
     <Form onSubmit={handleEdit}>
       <Form.InputText

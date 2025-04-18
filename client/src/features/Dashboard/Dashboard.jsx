@@ -52,7 +52,8 @@ export default function Dashboard() {
 
   if (loading) return <h1>Loading...</h1>;
 
-  // todo: if user has no entries, show message
+  //FIXME: dashboard should not be centered when there are a few entries
+
   return (
     <main className='dashboard'>
       {!!entries.length && (
