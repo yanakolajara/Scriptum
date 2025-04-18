@@ -69,12 +69,12 @@ export default function EditEntry() {
         label='Content'
       />
       <hr />
-      <Form.InputDateTime
+      {/* <Form.InputDateTime
         name='entry_date'
         value={entry.entry_date.slice(0, 16)}
         onChange={handleChange}
         label='Entry Date'
-      />
+      /> */}
       <Form.Submit text='Save' />
     </Form>
   );
