@@ -48,13 +48,31 @@
   }
 }
 
-.user-profile {
-  // This class already exists in the original code
-  // Keeping as is since it has external styling
+.profile {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  padding: 0px;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.1);
+
+  &__avatar {
+    width: 60%;
+    height: 60%;
+    padding: 0px;
+    margin: 0px;
+  }
+  &__name {
+    display: flex;
+    color: var(--text-white);
+    font-size: 1.2rem;
+    width: 100%;
+    font-weight: 600;
+  }
 }
 
 .user-avatar {
-  // This class is referenced in the SVG
   width: 100%;
   height: 58px;
 }

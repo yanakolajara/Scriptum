@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { useChat } from './hooks/useChat.js';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from 'providers/auth.provider.js';
+import Container from 'components/Container/Container.jsx';
+import './Chat.scss';
 
 export default function Chat() {
   const { loading, chat, message, setMessage, sendMessage, generateEntry } =
@@ -22,11 +24,11 @@ export default function Chat() {
   }, []);
 
   return (
-    <main className='flex w-[560px] h-[684px] py-[20px] px-[1px] flex-col justify-end items-center gap-[25px] rounded-2xl border border-[#DFE4EA]'>
+    <Container className='chat-window'>
       <header>
         <h2 className='text-center text-xl text-[#333]'>Chat</h2>
       </header>
-      <section className='flex-grow overflow-y-auto p-4 flex flex-col gap-2.5'>
+      <section className='chat'>
         {chat.map((msgData, index) => (
           <ChatMessage key={index} role={msgData.role} message={msgData.text} />
         ))}
@@ -55,18 +57,23 @@ export default function Chat() {
           Generate entry
         </button>
       </section>
-    </main>
+    </Container>
   );
 }
 
 const ChatMessage = ({ message, role }) => {
   return (
-    <p
-      className={`p-4 rounded-xl max-w-[75%] ${
-        role === 'user' ? 'bg-[#fffbcc] self-end' : 'bg-[#f0f0f0] self-start'
-      }`}
-    >
-      <strong>{role === 'user' ? 'You' : 'Ai'}:</strong> {message}
-    </p>
+    <article className={`message-container message-container__${role}`}>
+      <p
+        className={`message-text message-${role} ${
+          role === 'user' ? 'bg-[#fffbcc] self-end' : 'bg-[#f0f0f0] self-start'
+        }`}
+      >
+        <strong style={{ paddingRight: '0.5rem' }}>
+          {role === 'user' ? 'You' : 'Ai'}:{' '}
+        </strong>{' '}
+        {message}
+      </p>
+    </article>
   );
 };

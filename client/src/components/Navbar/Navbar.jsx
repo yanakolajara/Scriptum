@@ -4,6 +4,7 @@ import { useAuthContext } from 'providers/auth.provider.js';
 import NavAccount from './NavAccount.jsx';
 import { Cta } from 'components/Cta/index.jsx';
 import { GrChat, GrHomeRounded, GrLogout } from 'react-icons/gr';
+import { HiUser } from 'react-icons/hi2';
 
 import './Navbar.scss';
 
@@ -35,11 +36,16 @@ export default function Navbar() {
           <GrHomeRounded />
           <div>Home</div>
         </div>
-        <button onClick={() => navigate('/chat')} className='navbar__menu-item'>
-          <GrChat />
+        {user && (
+          <button
+            onClick={() => navigate('/chat')}
+            className='navbar__menu-item'
+          >
+            <GrChat />
 
-          <div>Chat</div>
-        </button>
+            <div>Chat</div>
+          </button>
+        )}
         <div className='navbar__divider' />
         {/* <button
           onClick={() => navigate('')}
@@ -48,18 +54,31 @@ export default function Navbar() {
           <i className='' />
           <div>Settings</div>
         </button> */}
-        <button onClick={handleLogout} className='navbar__menu-item'>
-          <GrLogout />
-          <div>Log out</div>
-        </button>
+        {user && (
+          <button onClick={handleLogout} className='navbar__menu-item'>
+            <GrLogout />
+            <div>Log out</div>
+          </button>
+        )}
+        {!user && (
+          <button
+            onClick={() => navigate('/login')}
+            className='navbar__menu-item'
+          >
+            <GrLogout />
+            <div>Log In</div>
+          </button>
+        )}
       </div>
-      <div className='user-profile'>
-        <div
-          dangerouslySetInnerHTML={{
-            __html: `<svg id="514:4145" layer-name="User" width="231" height="58" viewBox="0 0 231 58" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="user-avatar" style="width: 100%; height: 58px"> <rect width="231" height="58" rx="29" fill="white" fill-opacity="0.15"></rect> <circle cx="29" cy="29" r="25" fill="url(#pattern0_514_4145)"></circle> <text fill="#DFE4EA" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="18" font-weight="bold" letter-spacing="0px"><tspan x="82.6855" y="35.5455">Devid Wilium</tspan></text> </svg>`,
-          }}
-        />
-      </div>
+      {user && (
+        <div className='profile'>
+          {/* <img src='' alt='profile-image' /> */}
+          <HiUser className='profile__avatar' fill='#fff' />
+          <p className='profile__name'>
+            {user.first_name} {user.last_name}
+          </p>
+        </div>
+      )}
     </div>
   );
 }

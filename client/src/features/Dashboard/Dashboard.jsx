@@ -50,6 +50,8 @@ export default function Dashboard() {
   }, [loading, user]);
 
   if (loading) return <h1>Loading...</h1>;
+
+  // todo: if user has no entries, show message
   return (
     <main className='dashboard'>
       <h2 className='text-2xl text-[#333] p-5.5'>Dashboard</h2>
