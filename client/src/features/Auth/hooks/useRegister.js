@@ -34,14 +34,13 @@ export const useRegister = () => {
     }
     try {
       const res = await register(formData);
-      console.log(res);
       if (res.request.status === 201) {
         toast(res.data.message, {
           icon: '📧',
         });
         navigate('/check-email');
       } else {
-        toast.error(res.message);
+        toast.error(res.data.message);
       }
     } catch (error) {
       console.error(error);

@@ -22,9 +22,10 @@ const AuthProvider = ({ children }) => {
   };
 
   const register = async (data) => {
-    return await trycatchHandler(() =>
-      axiosInstance.post('/users/register', data)
-    );
+    return await trycatchHandler(() => {
+      const res = axiosInstance.post('/users/register', data);
+      return res;
+    });
   };
 
   const login = async (data) => {

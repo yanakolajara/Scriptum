@@ -27,7 +27,5 @@ export const isDataValid = (formData) => {
   }
   return {
     success: true,
-    message:
-      'Registration successful. Please check your email for the verification code.',
   };
 };

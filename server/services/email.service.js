@@ -1,10 +1,12 @@
 // services/emailService.js
-import { createTransport } from 'nodemailer';
+import nodemailer from 'nodemailer';
 import { config } from '../config/config.js';
 import { emailBody } from './data/email-verification-template.js';
 
-const transporter = createTransport({
-  service: config.email.service,
+const transporter = nodemailer.createTransport({
+  host: config.email.host,
+  port: config.email.port,
+  secure: config.email.port === 465,
   auth: {
     user: config.email.user,
     pass: config.email.password,
@@ -32,7 +34,7 @@ export const sendCodeToEmail = async (code, email) => {
       subject: 'Verify your account',
       html: `<p>Your verification code is: <strong>${code}</strong></p>`,
     };
-    return transporter.sendMail(mailOptions);
+    return await transporter.sendMail(mailOptions);
   } catch (error) {
     console.error('Error sending email:', error);
     throw error;
@@ -56,7 +58,7 @@ export const sendEmailVerification = async (email, token) => {
       subject: 'Welcome to Scriptum',
       html: html,
     };
-    return transporter.sendMail(mailOptions);
+    return await transporter.sendMail(mailOptions);
   } catch (error) {
     console.error('Error sending email:', error);
     throw error;

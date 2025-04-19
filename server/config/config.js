@@ -34,8 +34,9 @@ export const config = {
     rateLimitMax: 100,
   },
   email: {
-    service: process.env.EMAIL_SERVICE,
+    host: process.env.EMAIL_HOST,
     user: process.env.EMAIL_USER,
+
     password: process.env.EMAIL_PASSWORD,
     fromName: process.env.EMAIL_FROM_NAME,
     fromEmail: process.env.EMAIL_FROM_EMAIL,
