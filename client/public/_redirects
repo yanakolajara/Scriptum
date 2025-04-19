@@ -1,3 +1,7 @@
+# Netlify redirects file
+
+# SPA fallback
 /* /index.html 200
 
-
+# Proxy API requests if needed (example)
+# /api/* https://scriptum-sk3d.onrender.com/:splat 200!
