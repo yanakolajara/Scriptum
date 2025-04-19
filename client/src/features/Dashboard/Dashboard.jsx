@@ -5,7 +5,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuthContext } from 'providers/auth.provider';
 import Card from 'components/Card/Card';
 import newEntryImg from './assets/images/new-entry.png';
-import './dashboard.scss';
+import './Dashboard.scss';
 
 export default function Dashboard() {
   const [entries, setEntries] = useState(null);
