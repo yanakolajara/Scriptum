@@ -13,10 +13,19 @@ import TwoFactor from './features/Auth/TwoFactor';
 import EditEntry from 'features/EditEntry/EditEntry.jsx';
 import Navbar from 'components/Navbar/Navbar.jsx';
 import './App.scss';
+import { axiosInstance } from 'api/axios.js';
 
 function App() {
   // todo: implement protected routes based on auth state
 
+  const corsTest = async () => {
+    console.log('cors test');
+    const res = await axiosInstance.get('/');
+    console.log('cors test RES:', res);
+  };
+  React.useEffect(() => {
+    corsTest();
+  }, []);
   return (
     <div className='flex gap-[20px] p-[20px] h-[100vh] bg-[#3758F9]'>
       <Toaster />
