@@ -57,7 +57,7 @@ export default function Dashboard() {
   return (
     <main className='dashboard'>
       {!!entries.length && (
-        <h2 className='text-2xl text-[#333] p-5.5'>Dashboard</h2>
+        <h2 className='dashboard__title'>Dashboard</h2>
       )}
       <section className='dashboard__container'>
         {entries.length ? (
@@ -81,7 +81,7 @@ export default function Dashboard() {
               </h2>
               <p className='dashboard__empty-description'>
                 This is where your thoughts, reflections, or even random ideas
-                come to life. Just start a chat and we’ll turn your words into
+                come to life. Just start a chat and we'll turn your words into
                 something meaningful.
               </p>
               <Cta

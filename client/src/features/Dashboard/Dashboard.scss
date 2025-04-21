@@ -44,4 +44,10 @@
       color: var(--text-gray);
     }
   }
+  
+  &__title {
+    font-size: 1.5rem;
+    color: #333;
+    padding: 1.375rem;
+  }
 }

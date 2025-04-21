@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../providers/auth.provider';
+import './NavAccount.scss';
 
 export default function NavAccount() {
   const { logout } = useAuthContext();
@@ -15,10 +16,10 @@ export default function NavAccount() {
     }
   };
   return (
-    <section>
-      <span>👤</span>
-      <p>Yanako Lajara</p>
-      <button onClick={handleLogout}>Logout</button>
+    <section className="nav-account">
+      <span className="nav-account__avatar">👤</span>
+      <p className="nav-account__name">Yanako Lajara</p>
+      <button className="nav-account__logout" onClick={handleLogout}>Logout</button>
     </section>
   );
 }

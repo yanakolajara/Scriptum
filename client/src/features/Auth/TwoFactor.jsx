@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { isCodeComplete } from './utils/validators.utils';
 import { useAuthContext } from 'providers/auth.provider';
 import { validateNumber } from 'utils/validations';
+import './TwoFactor.scss';
 
 export default function TwoFactor() {
   const { resendCode, verify } = useAuthContext();
@@ -45,10 +46,10 @@ export default function TwoFactor() {
     }
   }, [code]);
   return (
-    <div>
-      <h1>Verify</h1>
-      <p>Check your inbox</p>
-      <form>
+    <div className="two-factor">
+      <h1 className="two-factor__title">Verify</h1>
+      <p className="two-factor__subtitle">Check your inbox</p>
+      <form className="two-factor__form">
         <input
           type='text'
           value={code}
@@ -57,8 +58,9 @@ export default function TwoFactor() {
           maxLength={6}
           required
           disabled={isCodeComplete(code)}
+          className="two-factor__input"
         />
-        <p>
+        <p className="two-factor__resend">
           Din't receive it?{' '}
           <a href='/#' onClick={handleResend}>
             {' '}
