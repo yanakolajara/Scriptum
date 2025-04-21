@@ -18,11 +18,8 @@ export default defineConfig(({ mode }) => {
       __APP_ENV__: JSON.stringify(env.APP_ENV),
     },
     plugins: [react()],
-    css: {
-      postcss: {
-        plugins: ['tailwindcss', 'autoprefixer'],
-      },
-    },
+    // PostCSS configuration is handled in postcss.config.js
+
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src'),
