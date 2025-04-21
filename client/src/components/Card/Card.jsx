@@ -10,7 +10,7 @@ export default function Card({ title, content, date, onEdit, onDelete }) {
   return (
     <Container className='card'>
       {/* <h2>{title}</h2> */}
-      <div className='col-span-2 rounded-md'>{content}</div>
+      <div className='card-content'>{content}</div>
       <div className='divider' />
       <div className='card__footer'>
         <div className='card__date'>

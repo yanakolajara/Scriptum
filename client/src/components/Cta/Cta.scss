@@ -1,0 +1,9 @@
+.cta {
+  border: 1px solid gray;
+  border-radius: 5px;
+  padding: 12px;
+  cursor: pointer;
+  &:hover {
+    background-color: #dfe4ea;
+  }
+}

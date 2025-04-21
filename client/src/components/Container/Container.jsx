@@ -2,14 +2,7 @@ import React from 'react';
 import './Container.scss';
 
 export default function Container({ children, className }) {
-  return (
-    <div
-      // class='w-60  text-slate-600 border border-slate-300 grid grid-col-2 justify-center p-4 gap-4 rounded-lg shadow-md max-h-[200px]'
-      className={`container ${className}`}
-    >
-      {children}
-    </div>
-  );
+  return <div className={`container ${className}`}>{children}</div>;
 }
 
 Container.divider = () => {

@@ -40,17 +40,16 @@ export default function Login() {
     <main className='login'>
       <Container className='login__container'>
         <Form onSubmit={handleSubmit}>
-          <Form.Title>Log in</Form.Title>
-          <Form.InputText
-            // type='email'
+          <h2>Log in</h2>
+          <Form.Input
+            type='email'
             name='email'
             label='Email'
             value={formData.email}
             onChange={handleChange}
-            // required
+            required
           />
-          <Form.InputText
-            // todo: add show/hide password on Form component
+          <Form.Input
             type={showPassword ? 'text' : 'password'}
             name='password'
             label='Password'
@@ -58,20 +57,18 @@ export default function Login() {
             onChange={handleChange}
             required
           />
-
-          <label htmlFor=''>
-            Show password
-            <input
-              type='checkbox'
-              onChange={() => setShowPassword(!showPassword)}
-            />
-          </label>
-
-          <Form.Submit text='Log in' />
-
-          <Form.Link to='/register'>
-            Don&apos;t have an account? Sign up
-          </Form.Link>
+          <Form.InputCheckbox
+            type='checkbox'
+            name='showPassword'
+            label='Show password'
+            value={showPassword}
+            onChange={(e) => setShowPassword(e.target.checked)}
+          />
+          <Form.Submit type='submit' text='Log in' />
+          <p>
+            Don&apos;t have an account?
+            <a href='/register'>Sign up</a>
+          </p>
         </Form>
         <div className='carousel'>
           <img src={authImage} alt='login' />

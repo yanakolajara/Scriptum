@@ -1,0 +1,19 @@
+@mixin input {
+  width: 100%;
+  border: 1px solid var(--text-gray);
+  border-radius: 5px;
+  padding: 12px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+
+  &__input {
+    @include input;
+    // &-error {
+    //   border: 1px solid var(--error);
+    // }
+  }
+}

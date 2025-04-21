@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { editEntry, getEntry } from 'api/entries';
 import { Form } from 'components/Form';
 import toast from 'react-hot-toast';
+import './EditEntry.scss';
 
 export default function EditEntry() {
   const [entry, setEntry] = useState(null);
@@ -58,13 +59,15 @@ export default function EditEntry() {
 
   return (
     <Form onSubmit={handleEdit}>
-      <Form.InputText
+      <Form.Input
+        type='text'
         name='title'
         value={entry.title}
         onChange={handleChange}
         label='Title'
       />
       <Form.InputTextArea
+        type='text'
         name='content'
         value={entry.content}
         onChange={handleChange}

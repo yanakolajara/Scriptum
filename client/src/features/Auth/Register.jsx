@@ -39,9 +39,9 @@ export default function Register() {
     <main className='register'>
       <Container className='register__container'>
         <Form onSubmit={handleSubmit}>
-          <Form.Title>Register</Form.Title>
+          <h2>Register</h2>
           <div className='register__name'>
-            <Form.InputText
+            <Form.Input
               type='text'
               name='first_name'
               label='First name'
@@ -49,14 +49,14 @@ export default function Register() {
               onChange={handleChange}
               required
             />
-            <Form.InputText
+            <Form.Input
               type='text'
               name='middle_name'
               label='Middle name'
               value={formData.middle_name}
               onChange={handleChange}
             />
-            <Form.InputText
+            <Form.Input
               type='text'
               name='last_name'
               label='Last name'
@@ -66,7 +66,7 @@ export default function Register() {
             />
           </div>
 
-          <Form.InputText
+          <Form.Input
             type='email'
             name='email'
             label='Email'
@@ -74,7 +74,7 @@ export default function Register() {
             onChange={handleChange}
             required
           />
-          <Form.InputText
+          <Form.Input
             type={showPassword ? 'text' : 'password'}
             name='password'
             label='Password'
@@ -125,8 +125,10 @@ export default function Register() {
           )}
 
           <Form.Submit text='Register' />
-
-          <Form.Link to='/login'>Already have an account? Login</Form.Link>
+          <p>
+            Already have an account?
+            <a href='/login'>Log In</a>
+          </p>
         </Form>
         <div className='carousel'>
           <img src={authImage} alt='register' />

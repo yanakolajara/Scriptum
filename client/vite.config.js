@@ -1,16 +1,13 @@
 import { defineConfig, loadEnv } from 'vite';
-// Tailwind is used via postcss config
 import react from '@vitejs/plugin-react';
 import { fileURLToPath } from 'url';
 import path from 'path';
-// import dotenv from 'dotenv';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
-  // Load env file based on `mode` in the current working directory
   const env = loadEnv(mode, process.cwd(), '');
 
   return {
@@ -18,7 +15,6 @@ export default defineConfig(({ mode }) => {
       __APP_ENV__: JSON.stringify(env.APP_ENV),
     },
     plugins: [react()],
-    // PostCSS configuration is handled in postcss.config.js
 
     resolve: {
       alias: {

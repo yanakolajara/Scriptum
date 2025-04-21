@@ -12,8 +12,8 @@ import VerifyEmail from './features/Auth/VerifyEmail';
 import TwoFactor from './features/Auth/TwoFactor';
 import EditEntry from 'features/EditEntry/EditEntry.jsx';
 import Navbar from 'components/Navbar/Navbar.jsx';
-import './App.scss';
 import { axiosInstance } from 'api/axios.js';
+import './App.scss';
 
 function App() {
   // todo: implement protected routes based on auth state
@@ -27,7 +27,7 @@ function App() {
     corsTest();
   }, []);
   return (
-    <div className='flex gap-[20px] p-[20px] h-[100vh] bg-[#3758F9]'>
+    <div className='app'>
       <Toaster />
       <Navbar />
       <div className='main-container'>

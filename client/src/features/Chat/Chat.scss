@@ -6,6 +6,13 @@
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
+
+  .chat-header-text {
+    text-align: center;
+    font-size: x-large;
+    color: #333;
+  }
+
   .chat {
     display: flex;
     flex-grow: 1;
@@ -15,23 +22,89 @@
     flex-direction: column;
     gap: calc(var(--spacing) * 2.5) /* 0.625rem = 10px */;
   }
+
+  .chat-input-container {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border-top: 1px solid var(--text-gray);
+    &__form {
+      display: flex;
+      width: 100%;
+      align-items: center;
+    }
+  }
+}
+.input-field {
+  flex-grow: 1;
+  padding: 0.5rem;
+  border-radius: 9999px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.submit-button {
+  margin-left: 0.625rem;
+  background-color: #4a90e2;
+  color: white;
+  padding: 0.625rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  font-size: 1.125rem;
+
+  &:hover {
+    background-color: #357abf;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+}
+
+.generate-button {
+  margin-left: 0.625rem;
+  background-color: #4a90e2;
+  color: white;
+  padding: 0.625rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  font-size: 1.125rem;
+
+  &:hover {
+    background-color: #357abf;
+  }
 }
 
 .message-container {
-  display: flex;
-  width: 100%;
-
-  .message-text {
-    display: flex;
-    box-shadow: 0 0px 2px rgba(0, 0, 0, 0.25);
-    padding: calc(var(--spacing) * 4);
-    border-radius: var(--radius-xl);
-    max-width: 75%;
-  }
+  margin: 0.5rem 01rem;
   &__user {
+    display: flex;
     justify-content: flex-end;
   }
-  &__ai {
+
+  &__assistant {
+    display: flex;
     justify-content: flex-start;
   }
+}
+
+.message-text {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  max-width: 70%;
+  margin: 0.5rem 0;
+}
+
+.message-user {
+  background-color: #fffbcc;
+  align-self: flex-end;
+}
+
+.message-assistant {
+  background-color: #f0f0f0;
+  align-self: flex-start;
+}
+
+.sender-name {
+  padding-right: 0.5rem;
 }

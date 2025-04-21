@@ -5,6 +5,11 @@
   margin: 10px 0;
 }
 .card {
+  .card-content {
+    display: grid;
+    grid-column: span 2 span 2;
+    border-radius: 10px;
+  }
   &__footer {
     display: flex;
     justify-content: space-between;

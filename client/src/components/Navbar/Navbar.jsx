@@ -37,14 +37,11 @@ export default function Navbar() {
           <div>Home</div>
         </div>
         {user && (
-          <button
-            onClick={() => navigate('/chat')}
-            className='navbar__menu-item'
-          >
+          <div onClick={() => navigate('/chat')} className='navbar__menu-item'>
             <GrChat />
 
             <div>Chat</div>
-          </button>
+          </div>
         )}
         <div className='navbar__divider' />
         {/* <button
@@ -55,21 +52,19 @@ export default function Navbar() {
           <div>Settings</div>
         </button> */}
         {user && (
-          <button onClick={handleLogout} className='navbar__menu-item'>
+          <div onClick={handleLogout} className='navbar__menu-item'>
             <GrLogout />
             <div>Log out</div>
-          </button>
+          </div>
         )}
         {!user && (
-          <button
-            onClick={() => navigate('/login')}
-            className='navbar__menu-item'
-          >
+          <div onClick={() => navigate('/login')} className='navbar__menu-item'>
             <GrLogout />
             <div>Log In</div>
-          </button>
+          </div>
         )}
       </div>
+
       {user && (
         <div className='profile'>
           {/* <img src='' alt='profile-image' /> */}
