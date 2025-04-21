@@ -7,21 +7,34 @@ import { errorHandler } from './middlewares/error.middleware.js';
 import { config } from './config/config.js';
 import { corsMiddleware } from './middlewares/cors.middleware.js';
 import { createEntriesRouter } from './routes/entries.routes.js';
+import cors from 'cors';
 
 export const createApp = ({ userModel, entryModel }) => {
   const app = express();
 
   app.use(morgan('dev'));
   app.use(express.json());
-  
+
   // Apply CORS middleware first to handle preflight requests
-  app.use(corsMiddleware({ acceptedOrigins: config.security.corsAllowedOrigins }));
-  
+  // app.use(corsMiddleware({ acceptedOrigins: config.security.corsAllowedOrigins }));
+
+  const corsOptions = {
+    credentials: true,
+    origin:
+      config.app.environment === 'production'
+        ? 'https://scriptum-client-n4f89nqz9-yanakolajaras-projects.vercel.app'
+        : 'http://localhost:3000',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Add other methods if needed
+    allowedHeaders: ['Content-Type'], // Add other headers if needed
+  };
+
+  app.use(cors(corsOptions));
+
   // Add explicit OPTIONS handler for preflight requests
   app.options('*', (req, res) => {
     res.sendStatus(200);
   });
-  
+
   app.use(cookieParser());
 
   app.use((req, res, next) => {
