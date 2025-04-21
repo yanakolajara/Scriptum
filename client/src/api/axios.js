@@ -4,13 +4,31 @@ import axios from 'axios';
 axios.defaults.withCredentials = true;
 
 // Create axios instance with proper configuration
+const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+const isLocalDev = window.location.hostname === 'localhost';
+
+console.log('API URL:', apiUrl); // Debug log for troubleshooting
+console.log('Is local development:', isLocalDev);
+
+// Set up default axios configuration
+axios.defaults.headers.common['Content-Type'] = 'application/json';
+axios.defaults.headers.common['Accept'] = 'application/json';
+
 export const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8080',
-  timeout: 10000, // Increased timeout
+  baseURL: isLocalDev && !import.meta.env.PROD ? 'http://localhost:8080' : apiUrl,
+  timeout: 15000, // Increased timeout for potentially slow connections
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
-  }
+  },
+  // Only send credentials if not in development mode
+  withCredentials: true
+});
+
+// Debug middleware
+axiosInstance.interceptors.request.use(request => {
+  console.log('Starting Request:', request.method, request.url);
+  return request;
 });
 
 // Add request interceptor for handling common request tasks

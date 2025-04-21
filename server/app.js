@@ -13,7 +13,15 @@ export const createApp = ({ userModel, entryModel }) => {
 
   app.use(morgan('dev'));
   app.use(express.json());
-  app.use(corsMiddleware(config.security.corsAllowedOrigins));
+  
+  // Apply CORS middleware first to handle preflight requests
+  app.use(corsMiddleware({ acceptedOrigins: config.security.corsAllowedOrigins }));
+  
+  // Add explicit OPTIONS handler for preflight requests
+  app.options('*', (req, res) => {
+    res.sendStatus(200);
+  });
+  
   app.use(cookieParser());
 
   app.use((req, res, next) => {

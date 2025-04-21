@@ -1,0 +1,5 @@
+# Proxy API requests to your backend
+/api/*  https://scriptum-sk3d.onrender.com/:splat  200
+
+# SPA fallback
+/*      /index.html                                200
