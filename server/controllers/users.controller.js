@@ -133,9 +133,10 @@ export class UsersController {
 
         res
           .cookie('access_token', accessToken, {
-            // httpOnly: true,
+            httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict',
+            sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax', // Critical for cross-domain
+            maxAge: 24 * 60 * 60 * 1000, // 24 hours
             path: '/',
           })
           .status(200)
@@ -160,7 +161,12 @@ export class UsersController {
   logout = async (req, res, next) => {
     try {
       res
-        .clearCookie('access_token')
+        .clearCookie('access_token', {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
+          path: '/'
+        })
         .status(200)
         .json({ message: 'Logged out' });
       // res.status(200).json({ message: 'User logged out successfully.' });

@@ -1,5 +1,21 @@
-import { createContext, useState, useEffect, useContext, use } from 'react';
+import { createContext, useState, useEffect, useContext } from 'react';
 import { axiosInstance } from '../api/axios';
+
+// Token storage helper functions
+const setToken = (token) => {
+  localStorage.setItem('access_token', token);
+  // Update axios instance to include token in future requests
+  axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+};
+
+const getToken = () => {
+  return localStorage.getItem('access_token');
+};
+
+const removeToken = () => {
+  localStorage.removeItem('access_token');
+  delete axiosInstance.defaults.headers.common['Authorization'];
+};
 
 const AuthContext = createContext();
 
@@ -32,6 +48,28 @@ const AuthProvider = ({ children }) => {
     return await trycatchHandler(async () => {
       const res = await axiosInstance.post('/users/login', data);
       setUser(res.data.user);
+
+      // Store token in localStorage as backup for cookie auth
+      if (res.headers && res.headers.authorization) {
+        const token = res.headers.authorization.split(' ')[1];
+        localStorage.setItem('accessToken', token);
+      }
+
+      // Alternatively, we can extract token from cookies using javascript
+      const cookies = document.cookie.split(';');
+      const tokenCookie = cookies.find((c) =>
+        c.trim().startsWith('access_token=')
+      );
+
+      if (tokenCookie) {
+        const token = tokenCookie.split('=')[1];
+        localStorage.setItem('accessToken', token);
+        // Update axios instance
+        axiosInstance.defaults.headers.common[
+          'Authorization'
+        ] = `Bearer ${token}`;
+      }
+
       return res;
     });
   };

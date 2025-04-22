@@ -20,12 +20,14 @@ export const createApp = ({ userModel, entryModel }) => {
 
   const corsOptions = {
     credentials: true,
-    origin:
-      config.app.environment === 'production'
-        ? 'https://scriptum-app.vercel.app'
-        : 'http://localhost:3000',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Add other methods if needed
-    allowedHeaders: ['Content-Type'], // Add other headers if needed
+    origin: [
+      'https://scriptum-app.vercel.app',
+      'https://www.scriptum-app.vercel.app',
+      'http://localhost:3000',
+    ],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
+    exposedHeaders: ['set-cookie'],
   };
 
   app.use(cors(corsOptions));
@@ -37,16 +39,22 @@ export const createApp = ({ userModel, entryModel }) => {
 
   app.use(cookieParser());
 
+  // Middleware to check auth
   app.use((req, res, next) => {
-    const token = req.cookies.access_token;
-    let data = null;
-    req.session = { user: null };
+    const token =
+      req.cookies.access_token ||
+      (req.headers.authorization && req.headers.authorization.split(' ')[1]);
+
+    if (!token) {
+      req.session = { user: null };
+      return next();
+    }
+
     try {
-      data = jwt.verify(token, config.jwt.secret);
-      //todo: Validate if token is actually valid (if user exists or token has been blacklisted)
-      req.session.user = data;
+      const data = jwt.verify(token, config.jwt.secret);
+      req.session = { user: data };
     } catch (error) {
-      req.session.user = null;
+      req.session = { user: null };
     }
     next();
   });

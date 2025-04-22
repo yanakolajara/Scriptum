@@ -22,26 +22,16 @@ export const axiosInstance = axios.create({
     'Content-Type': 'application/json',
     Accept: 'application/json',
   },
-  // Only send credentials if not in development mode
   withCredentials: true,
 });
 
-// Debug middleware
-axiosInstance.interceptors.request.use((request) => {
-  console.log('Starting Request:', request.method, request.url);
-  return request;
-});
-
-// Add request interceptor for handling common request tasks
-axiosInstance.interceptors.request.use(
-  (config) => {
-    // You could add auth tokens here if needed
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
+axiosInstance.interceptors.request.use((config) => {
+  const token = localStorage.getItem('accessToken');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
-);
+  return config;
+});
 
 // Add response interceptor for handling common responses
 axiosInstance.interceptors.response.use(
