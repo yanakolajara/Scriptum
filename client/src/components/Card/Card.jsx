@@ -1,8 +1,8 @@
 import Container from 'components/Container/Container';
 import React from 'react';
-import './Card.scss';
 import { Cta } from '@/components/Cta/Cta';
 import { format, formatRelative, subDays } from 'date-fns';
+import './Card.scss';
 
 export default function Card({ title, content, date, onEdit, onDelete }) {
   const formattedDate = format(date, 'LLL dd, yyyy - hh:mmaaaa');
