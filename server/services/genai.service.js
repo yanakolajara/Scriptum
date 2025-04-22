@@ -12,6 +12,10 @@ export const genaiRequest = async (prompt) => {
   return res;
 };
 
+// todo: Modify tone of response (be less structured and more natural)
+// todo: Add user context to prompt
+// todo: Add function that finalizes the conversation and creates an entry once user confirms
+// todo: Respond as json to fulfill specific areas of focus of the conversation
 export class GenaiChat {
   constructor(userContext) {
     this.userContext = userContext;
@@ -45,6 +49,7 @@ export class GenaiChat {
     }
   }
 
+  // todo: GenerateEntry should create and suggest a title if relevant
   /**
    * Generates an entry in first person based on the chat history
    *

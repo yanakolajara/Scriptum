@@ -23,6 +23,10 @@ export default function Chat() {
     }
   }, []);
 
+  // todo: input should be a text area box
+  // todo: input should have a scroll bar
+  // todo: chat should scroll to the bottom when a new message is added
+
   return (
     <Container className='chat-window'>
       <section>
