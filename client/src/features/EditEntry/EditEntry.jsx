@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { editEntry, getEntry } from 'api/entries';
-import { Form } from 'components/Form';
+import { Form } from '@/components/Form/Form';
 import toast from 'react-hot-toast';
 import './EditEntry.scss';
 
@@ -50,7 +50,6 @@ export default function EditEntry() {
 
   if (!entry) return <h1>Loading...</h1>;
 
-  // FIXME: when text area is extended, 'content' label moves to the side
   return (
     <Form onSubmit={handleEdit}>
       <Form.Input
@@ -66,6 +65,7 @@ export default function EditEntry() {
         value={entry.content}
         onChange={handleChange}
         label='Content'
+        required
       />
       <hr />
       {/* <Form.InputDateTime

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getEntries, deleteEntry, editEntry } from 'api/entries';
-import { Cta } from 'components/Cta';
+import { Cta } from '@/components/Cta/Cta';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuthContext } from 'providers/auth.provider';
 import Card from 'components/Card/Card';

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from 'providers/auth.provider.js';
 import NavAccount from './NavAccount.jsx';
-import { Cta } from 'components/Cta/index.jsx';
+import { Cta } from '@/components/Cta/Cta.jsx';
 import { GrChat, GrHomeRounded, GrLogout } from 'react-icons/gr';
 import { HiUser } from 'react-icons/hi2';
 

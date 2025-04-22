@@ -41,7 +41,6 @@ export class EntryController {
       if (!user) throw new UnauthorizedError('User not logged in.');
       const data = req.body;
       if (!data) throw new ValidationError('No data provided.');
-      //todo: validate if data contains the required information
       const prompt =
         'Generate an entry in first person based on the chat history. ' +
         'The entry should be a summary of the conversation, ' +

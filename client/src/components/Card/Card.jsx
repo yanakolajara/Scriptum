@@ -1,7 +1,7 @@
 import Container from 'components/Container/Container';
 import React from 'react';
 import './Card.scss';
-import { Cta } from 'components/Cta';
+import { Cta } from '@/components/Cta/Cta';
 import { format, formatRelative, subDays } from 'date-fns';
 
 export default function Card({ title, content, date, onEdit, onDelete }) {

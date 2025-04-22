@@ -16,17 +16,6 @@ import { axiosInstance } from 'api/axios.js';
 import './App.scss';
 
 function App() {
-  // todo: implement protected routes based on auth state
-  // todo: create loading screen before loading protected routes
-
-  const corsTest = async () => {
-    console.log('cors test');
-    const res = await axiosInstance.get('/');
-    console.log('cors test RES:', res);
-  };
-  React.useEffect(() => {
-    corsTest();
-  }, []);
   return (
     <div className='app'>
       <Toaster />

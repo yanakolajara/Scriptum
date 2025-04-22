@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useRegister } from './hooks/useRegister';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from 'providers/auth.provider';
-import { Form } from 'components/Form';
+import { Form } from '@/components/Form/Form';
 import Container from 'components/Container/Container';
 import authImage from './assets/images/auth.png';
 import './Register.scss';

@@ -1,10 +1,6 @@
-import Button from 'components/Button/Button';
-import { Cta } from 'components/Cta';
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { Cta } from '@/components/Cta/Cta';
 import './Form.scss';
 
-// todo: change file name
 export const Form = ({ children, onSubmit, ...rest }) => {
   return (
     <form className='form' onSubmit={onSubmit} {...rest}>

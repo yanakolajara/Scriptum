@@ -10,7 +10,6 @@ export default function VerifyEmail() {
   const token = searchParams.get('token');
   const navigate = useNavigate();
 
-  //todo: design a nice email verification page
   useEffect(() => {
     const verify = async () => {
       try {
@@ -30,9 +29,9 @@ export default function VerifyEmail() {
   }, [token, navigate]);
 
   return (
-    <div className="verify-email">
-      <div className="verify-email__loader"></div>
-      <span className="verify-email__text">Verifying your email...</span>
+    <div className='verify-email'>
+      <div className='verify-email__loader'></div>
+      <span className='verify-email__text'>Verifying your email...</span>
     </div>
   );
 }

@@ -6,7 +6,6 @@ export const useLogin = () => {
   const { login } = useAuthContext();
   const navigate = useNavigate();
   const handleLogin = async (formData) => {
-    //todo: Validate data
     try {
       const res = await login(formData);
 
