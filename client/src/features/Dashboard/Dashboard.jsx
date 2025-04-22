@@ -13,7 +13,6 @@ export default function Dashboard() {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const { user } = useAuthContext();
-  // fixme: turn into protected route
 
   const handleGetEntries = async () => {
     try {

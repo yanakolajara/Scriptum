@@ -32,14 +32,9 @@ export default function EditEntry() {
     e.preventDefault();
     try {
       const response = await editEntry(entry);
-      // fixme: returning 304 instead of 200
-      if (response.status === 200) {
-        toast.success(response.data.message);
-      } else {
-        toast.error(response.data.message);
-      }
+      toast.success(response.message);
     } catch (error) {
-      console.error('Error editing entry:', error.message);
+      toast.success(response.message);
     } finally {
       navigate('/dashboard');
     }
