@@ -28,12 +28,12 @@ Form.Input = ({ type, value, onChange, label, ...props }) => {
   );
 };
 
-Form.InputTextArea = ({ value, onChange, label, ...props }) => {
+Form.InputTextArea = ({ type, value, onChange, label, ...props }) => {
   return (
-    <label>
+    <label style={{ display: 'flex', flexDirection: 'column' }}>
       {label}
       <textarea
-        className='form__input'
+        className={`form_input form__input-${type}`}
         value={value}
         onChange={onChange}
         rows='4'

@@ -50,7 +50,6 @@ export default function EditEntry() {
 
   if (!entry) return <h1>Loading...</h1>;
 
-  // FIXME: when user clicks "save", toast displays error when successful
   // FIXME: when text area is extended, 'content' label moves to the side
   return (
     <Form onSubmit={handleEdit}>

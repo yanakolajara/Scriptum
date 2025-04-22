@@ -51,8 +51,6 @@ export default function Dashboard() {
 
   if (loading) return <h1>Loading...</h1>;
 
-  //FIXME: dashboard should not be centered when there are a few entries
-
   return (
     <main className='dashboard'>
       {entries.length ? (
