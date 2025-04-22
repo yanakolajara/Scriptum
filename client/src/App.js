@@ -12,7 +12,6 @@ import VerifyEmail from './features/Auth/VerifyEmail';
 import TwoFactor from './features/Auth/TwoFactor';
 import EditEntry from 'features/EditEntry/EditEntry.jsx';
 import Navbar from 'components/Navbar/Navbar.jsx';
-import { axiosInstance } from 'api/axios.js';
 import './App.scss';
 
 function App() {
