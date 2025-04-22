@@ -56,46 +56,44 @@ export default function Dashboard() {
 
   return (
     <main className='dashboard'>
-      {!!entries.length && (
-        <h2 className='dashboard__title'>Dashboard</h2>
-      )}
-      <section className='dashboard__container'>
-        {entries.length ? (
-          entries.map((entry) => {
-            return (
-              <Card
-                title={entry.title}
-                content={entry.content}
-                key={entry.id}
-                date={entry.entry_date}
-                onEdit={() => handleEdit(entry.id)}
-                onDelete={() => handleDelete(entry.id)}
-              />
-            );
-          })
-        ) : (
-          <div className='dashboard__empty'>
-            <div className='dashboard__empty-content'>
-              <h2 className='dashboard__empty-title'>
-                Create your first entry
-              </h2>
-              <p className='dashboard__empty-description'>
-                This is where your thoughts, reflections, or even random ideas
-                come to life. Just start a chat and we'll turn your words into
-                something meaningful.
-              </p>
-              <Cta
-                className='dashboard__empty-cta'
-                text='Start chat'
-                onClick={() => navigate('/chat')}
-              />
-            </div>
-            <div className='dashboard__empty-image'>
-              <img src={newEntryImg} alt='new entry' />
-            </div>
+      {entries.length ? (
+        <section className='dashboard__entries'>
+          <h2 className='dashboard__title'>Dashboard</h2>
+          <div className='dashboard__entries-container'>
+            {entries.map((entry) => {
+              return (
+                <Card
+                  title={entry.title}
+                  content={entry.content}
+                  key={entry.id}
+                  date={entry.entry_date}
+                  onEdit={() => handleEdit(entry.id)}
+                  onDelete={() => handleDelete(entry.id)}
+                />
+              );
+            })}
           </div>
-        )}
-      </section>
+        </section>
+      ) : (
+        <div className='dashboard__empty'>
+          <div className='dashboard__empty-content'>
+            <h2 className='dashboard__empty-title'>Create your first entry</h2>
+            <p className='dashboard__empty-description'>
+              This is where your thoughts, reflections, or even random ideas
+              come to life. Just start a chat and we'll turn your words into
+              something meaningful.
+            </p>
+            <Cta
+              className='dashboard__empty-cta'
+              text='Start chat'
+              onClick={() => navigate('/chat')}
+            />
+          </div>
+          <div className='dashboard__empty-image'>
+            <img src={newEntryImg} alt='new entry' />
+          </div>
+        </div>
+      )}
     </main>
   );
 }

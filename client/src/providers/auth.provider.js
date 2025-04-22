@@ -101,6 +101,7 @@ const AuthProvider = ({ children }) => {
   };
 
   const checkAuth = async (access_token) => {
+    console.log('checkAuth');
     return await trycatchHandler(async () => {
       const res = await axiosInstance.get('/users/check-auth');
       setUser(res.data.user);
@@ -108,18 +109,7 @@ const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    console.log('useEffect');
-    const cookiesArr = document.cookie.split(';');
-
-    const cookies = {};
-    for (let c of cookiesArr) {
-      const key = c.split('=')[0];
-      const value = c.split('=')[1];
-      cookies[key] = value;
-    }
-    if (cookies.access_token) {
-      checkAuth(cookies.access_token);
-    }
+    checkAuth(cookies.access_token);
   }, []);
 
   useEffect(() => {}, [user]);
