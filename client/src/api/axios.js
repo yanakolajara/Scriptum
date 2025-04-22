@@ -7,9 +7,6 @@ axios.defaults.withCredentials = true;
 const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 const isLocalDev = window.location.hostname === 'localhost';
 
-console.log('API URL:', apiUrl); // Debug log for troubleshooting
-console.log('Is local development:', isLocalDev);
-
 // Set up default axios configuration
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 axios.defaults.headers.common['Accept'] = 'application/json';

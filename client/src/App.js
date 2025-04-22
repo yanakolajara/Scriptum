@@ -17,6 +17,7 @@ import './App.scss';
 
 function App() {
   // todo: implement protected routes based on auth state
+  // todo: create loading screen before loading protected routes
 
   const corsTest = async () => {
     console.log('cors test');
