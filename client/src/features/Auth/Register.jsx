@@ -5,7 +5,7 @@ import { useAuthContext } from 'providers/auth.provider';
 import { Form } from 'components/Form';
 import Container from 'components/Container/Container';
 import authImage from './assets/images/auth.png';
-import './Register.scss'; // Re-using register styles
+import './Register.scss';
 
 export default function Register() {
   const {
@@ -25,9 +25,6 @@ export default function Register() {
   const uppercase = /[A-Z]/;
   const number = /[0-9]/;
   const specialChar = /[!@#$%^&*(),.?":{}|<>]/;
-
-  //todo: password validation specific types of special characters
-  //fixme: match special characters with backend
 
   useEffect(() => {
     if (user) {

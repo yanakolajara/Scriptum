@@ -20,7 +20,7 @@ const userSchema = z.object({
     .refine((password) => /[0-9]/.test(password), {
       message: 'Password must contain at least one number',
     })
-    .refine((password) => /[!@#$%^&*]/.test(password), {
+    .refine((password) => /[!@#$%^&*(),.?":{}|<>]/.test(password), {
       message: 'Password must contain at least one special character',
     }),
   first_name: z.string({ message: 'First name is required' }),
