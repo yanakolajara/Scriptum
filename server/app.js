@@ -22,7 +22,7 @@ export const createApp = ({ userModel, entryModel }) => {
     credentials: true,
     origin:
       config.app.environment === 'production'
-        ? 'https://scriptum-client.vercel.app/'
+        ? 'https://scriptum-app.vercel.app/'
         : 'http://localhost:3000',
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Add other methods if needed
     allowedHeaders: ['Content-Type'], // Add other headers if needed
