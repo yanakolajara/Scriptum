@@ -3,12 +3,13 @@
   flex-direction: column;
   justify-content: space-between;
   background-color: transparent;
-  width: 10vw;
+  width: 15vw;
   padding-block: 12px;
 
   &__logo-container {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 12px;
     padding-left: 16px;
     height: 41px;
@@ -35,7 +36,7 @@
     gap: 10px;
     padding: 18px 40px;
     color: var(--text-white);
-    font-size: 1.2rem;
+    font-size: 1.2ch;
 
     cursor: pointer;
   }
