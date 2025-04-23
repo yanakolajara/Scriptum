@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from 'providers/auth.provider.js';
-import NavAccount from './NavAccount.jsx';
 import { CTA } from '@/components/CTA/CTA.jsx';
 import { GrChat, GrHomeRounded, GrLogout } from 'react-icons/gr';
 import { HiUser } from 'react-icons/hi2';
+import Account from './components/Account.jsx';
 import './Navbar.scss';
 
 export default function Navbar() {

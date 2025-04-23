@@ -3,7 +3,7 @@ import { getEntries, deleteEntry, editEntry } from 'api/entries';
 import { CTA } from '@/components/CTA/CTA';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuthContext } from 'providers/auth.provider';
-import Card from 'components/Card/Card';
+import Card from './components/Card';
 import newEntryImg from './assets/images/new-entry.png';
 import './Dashboard.scss';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function FooterMenu() {
+export default function AccountMenu() {
   return (
     <div>
       <button>Account</button>

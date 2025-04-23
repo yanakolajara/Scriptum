@@ -1,17 +1,17 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
-import NotFound from './components/NotFound/NotFound.jsx';
-import Home from './features/Home/Home.jsx';
-import Dashboard from './features/Dashboard/Dashboard.jsx';
-import Chat from './features/Chat/Chat.jsx';
-import Login from './features/Auth/Login.jsx';
-import Register from './features/Auth/Register';
-import CheckEmail from './features/Auth/CheckEmail';
-import VerifyEmail from './features/Auth/VerifyEmail';
-import TwoFactor from './features/Auth/TwoFactor';
-import EditEntry from 'features/EditEntry/EditEntry.jsx';
-import Navbar from 'components/Navbar/Navbar.jsx';
+import NotFound from '@/features/NotFound/NotFound.jsx';
+import Home from '@/features/Home/Home.jsx';
+import Dashboard from '@/features/Dashboard/Dashboard.jsx';
+import Chat from '@/features/Chat/Chat.jsx';
+import Login from '@/features/Auth/Login.jsx';
+import Register from '@/features/Auth/Register';
+import CheckEmail from '@/features/Auth/CheckEmail';
+import VerifyEmail from '@/features/Auth/VerifyEmail';
+import TwoFactor from '@/features/Auth/TwoFactor';
+import EditEntry from '@/features/EditEntry/EditEntry.jsx';
+import Navbar from '@/features/Navbar/Navbar.jsx';
 import './App.scss';
 
 function App() {

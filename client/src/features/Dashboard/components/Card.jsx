@@ -1,9 +1,7 @@
 import Container from 'components/Container/Container';
 import React from 'react';
-// import { Cta } from '@/components/CTA/CTA';
 import { format, formatRelative, subDays } from 'date-fns';
-import './Card.scss';
-import { CTA } from '../CTA/CTA';
+import { CTA } from '@/components/CTA/CTA';
 
 export default function Card({ title, content, date, onEdit, onDelete }) {
   const formattedDate = format(date, 'LLL dd, yyyy - hh:mmaaaa');
