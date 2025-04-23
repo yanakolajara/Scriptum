@@ -2,10 +2,9 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from 'providers/auth.provider.js';
 import NavAccount from './NavAccount.jsx';
-import { Cta } from '@/components/Cta/Cta.jsx';
+import { CTA } from '@/components/CTA/CTA.jsx';
 import { GrChat, GrHomeRounded, GrLogout } from 'react-icons/gr';
 import { HiUser } from 'react-icons/hi2';
-
 import './Navbar.scss';
 
 export default function Navbar() {
@@ -32,16 +31,24 @@ export default function Navbar() {
         <div className='navbar__logo-text'>Scriptum</div>
       </div>
       <div className='navbar__menu'>
-        <div onClick={() => navigate('/')} className='navbar__menu-item'>
-          <GrHomeRounded />
-          <div>Home</div>
-        </div>
-        {user && (
-          <div onClick={() => navigate('/chat')} className='navbar__menu-item'>
-            <GrChat />
+        <CTA
+          variant='base-ghost'
+          size='large'
+          onClick={() => navigate('/')}
+          icon={<GrHomeRounded />}
+        >
+          Home
+        </CTA>
 
-            <div>Chat</div>
-          </div>
+        {user && (
+          <CTA
+            variant='base-ghost'
+            size='large'
+            onClick={() => navigate('/chat')}
+            icon={<GrChat />}
+          >
+            Chat
+          </CTA>
         )}
         <div className='navbar__divider' />
         {/* <button
@@ -52,16 +59,24 @@ export default function Navbar() {
           <div>Settings</div>
         </button> */}
         {user && (
-          <div onClick={handleLogout} className='navbar__menu-item'>
-            <GrLogout />
-            <div>Log out</div>
-          </div>
+          <CTA
+            variant='base-ghost'
+            size='large'
+            icon={<GrLogout />}
+            onClick={handleLogout}
+          >
+            Log out
+          </CTA>
         )}
         {!user && (
-          <div onClick={() => navigate('/login')} className='navbar__menu-item'>
-            <GrLogout />
-            <div>Log In</div>
-          </div>
+          <CTA
+            variant='base-ghost'
+            size='large'
+            icon={<GrLogout />}
+            onClick={() => navigate('/login')}
+          >
+            Log In
+          </CTA>
         )}
       </div>
 

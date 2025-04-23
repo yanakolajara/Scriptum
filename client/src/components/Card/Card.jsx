@@ -1,6 +1,6 @@
 import Container from 'components/Container/Container';
 import React from 'react';
-import { Cta } from '@/components/Cta/Cta';
+// import { Cta } from '@/components/CTA/CTA';
 import { format, formatRelative, subDays } from 'date-fns';
 import './Card.scss';
 

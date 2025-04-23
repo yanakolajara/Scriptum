@@ -1,4 +1,4 @@
-import { Cta } from '@/components/Cta/Cta';
+import { CTA } from '@/components/CTA/CTA';
 import './Form.scss';
 
 export const Form = ({ children, onSubmit, ...rest }) => {
@@ -57,8 +57,8 @@ Form.InputCheckbox = ({ value, onChange, label, name, ...props }) => {
 
 Form.Submit = ({ text, ...props }) => {
   return (
-    <Cta id='submit' type='submit' text={text} {...props}>
+    <CTA id='submit' type='submit' text={text} {...props}>
       {text}
-    </Cta>
+    </CTA>
   );
 };

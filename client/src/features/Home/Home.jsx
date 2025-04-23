@@ -1,8 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../providers/auth.provider';
-import { Cta } from '@/components/Cta/Cta';
-import Button from 'components/Button/Button';
+import { CTA } from '@/components/CTA/CTA';
 import heroImage from './assets/images/hero-image.png';
 import './Home.scss';
 
@@ -29,7 +28,7 @@ export default function Home() {
             questions to uncover what truly mattered.
           </p>
           <div className='hero-buttons'>
-            <Button onClick={() => navigate('/login')}>Get Started</Button>
+            <CTA onClick={() => navigate('/login')}>Get Started</CTA>
             {/* <Button variant='secondary'>
               <svg
                 className='download-icon'

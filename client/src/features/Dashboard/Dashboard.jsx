@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getEntries, deleteEntry, editEntry } from 'api/entries';
-import { Cta } from '@/components/Cta/Cta';
+import { CTA } from '@/components/CTA/CTA';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuthContext } from 'providers/auth.provider';
 import Card from 'components/Card/Card';
@@ -80,7 +80,7 @@ export default function Dashboard() {
               come to life. Just start a chat and we'll turn your words into
               something meaningful.
             </p>
-            <Cta
+            <CTA
               className='dashboard__empty-cta'
               text='Start chat'
               onClick={() => navigate('/chat')}

@@ -1,10 +1,51 @@
-import React from 'react';
-import './Cta.scss';
+import './CTA.scss';
 
-export const Cta = ({ text, children, onClick, className, ...props }) => {
+export const CTA = ({
+  children,
+  variant = 'base',
+  size = 'medium',
+  disabled = false,
+  href,
+  onClick,
+  className = '',
+  icon,
+  iconPosition = 'left',
+  radius = 'default',
+  borderStyle = 'solid',
+}) => {
+  const baseClass = 'cta';
+  const classes = `
+    ${baseClass} 
+    ${baseClass}--${variant} 
+    ${baseClass}--${size} 
+    ${baseClass}--radius-${radius}
+    ${baseClass}--border-${borderStyle}
+    ${className}
+  `.trim();
+
+  const content = (
+    <>
+      {icon && iconPosition === 'left' && (
+        <span className='cta__icon'>{icon}</span>
+      )}
+      {children}
+      {icon && iconPosition === 'right' && (
+        <span className='cta__icon'>{icon}</span>
+      )}
+    </>
+  );
+
+  if (href && !disabled) {
+    return (
+      <a href={href} className={classes}>
+        {content}
+      </a>
+    );
+  }
+
   return (
-    <button className={`cta ${className}`} onClick={onClick} {...props}>
-      {children || text || 'CTA'}
+    <button className={classes} onClick={onClick} disabled={disabled}>
+      {content}
     </button>
   );
 };
