@@ -26,38 +26,40 @@
   .chat-input-container {
     display: flex;
     align-items: center;
+    width: 100%;
     padding: 12px;
     border-top: 1px solid var(--text-gray);
     &__form {
       display: flex;
       width: 100%;
-      align-items: center;
+      border: 1px solid var(--text-gray);
+      border-radius: 15px;
+      .input-field {
+        flex-grow: 1;
+        padding: 0.5rem;
+        border-radius: 15px 0px 0px 15px;
+        font-size: 1rem;
+        border: 0;
+      }
+      .submit-button {
+        margin-left: 0.625rem;
+        background-color: #4a90e2;
+        color: white;
+        padding: 0.625rem;
+        border-radius: 0px 14px 14px 0px;
+        border: 0;
+        cursor: pointer;
+        font-size: 1.125rem;
+
+        &:hover {
+          background-color: #357abf;
+        }
+
+        &:disabled {
+          opacity: 0.5;
+        }
+      }
     }
-  }
-}
-.input-field {
-  flex-grow: 1;
-  padding: 0.5rem;
-  border-radius: 9999px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
-}
-
-.submit-button {
-  margin-left: 0.625rem;
-  background-color: #4a90e2;
-  color: white;
-  padding: 0.625rem;
-  border-radius: 9999px;
-  cursor: pointer;
-  font-size: 1.125rem;
-
-  &:hover {
-    background-color: #357abf;
-  }
-
-  &:disabled {
-    opacity: 0.5;
   }
 }
 
@@ -65,8 +67,9 @@
   margin-left: 0.625rem;
   background-color: #4a90e2;
   color: white;
-  padding: 0.625rem;
-  border-radius: 9999px;
+
+  border-radius: 16px;
+  border: 0;
   cursor: pointer;
   font-size: 1.125rem;
 
@@ -82,7 +85,7 @@
     justify-content: flex-end;
   }
 
-  &__assistant {
+  &__ai {
     display: flex;
     justify-content: flex-start;
   }
@@ -96,11 +99,15 @@
 }
 
 .message-user {
-  background-color: #fffbcc;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  background-color: var(--color-primary);
+
+  color: var(--text-white);
   align-self: flex-end;
 }
 
-.message-assistant {
+.message-ai {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
   background-color: #f0f0f0;
   align-self: flex-start;
 }
