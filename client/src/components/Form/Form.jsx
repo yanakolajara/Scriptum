@@ -57,7 +57,7 @@ Form.InputCheckbox = ({ value, onChange, label, name, ...props }) => {
 
 Form.Submit = ({ text, ...props }) => {
   return (
-    <CTA id='submit' type='submit' text={text} {...props}>
+    <CTA id='submit' variant='success' type='submit' text={text} {...props}>
       {text}
     </CTA>
   );

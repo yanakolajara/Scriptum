@@ -15,11 +15,11 @@ export const CTA = ({
 }) => {
   const baseClass = 'cta';
   const classes = `
-    ${baseClass} 
-    ${baseClass}--${variant} 
-    ${baseClass}--${size} 
-    ${baseClass}--radius-${radius}
-    ${baseClass}--border-${borderStyle}
+    cta
+    cta--variant-${variant} 
+    cta--size-${size} 
+    cta--radius-${radius}
+    cta--border-${borderStyle}
     ${className}
   `.trim();
 
