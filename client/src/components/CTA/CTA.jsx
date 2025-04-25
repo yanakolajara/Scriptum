@@ -13,6 +13,17 @@ export const CTA = ({
   radius = 'default',
   borderStyle = 'solid',
 }) => {
+  console.log('children:', children);
+  console.log('variant:', variant);
+  console.log('size:', size);
+  console.log('disabled:', disabled);
+  console.log('href:', href);
+  console.log('onClick:', onClick);
+  console.log('className:', className);
+  console.log('icon:', icon);
+  console.log('iconPosition:', iconPosition);
+  console.log('radius:', radius);
+  console.log('    borderStyle:', borderStyle);
   const baseClass = 'cta';
   const classes = `
     cta
@@ -45,7 +56,7 @@ export const CTA = ({
 
   return (
     <button className={classes} onClick={onClick} disabled={disabled}>
-      {content}
+      {children}
     </button>
   );
 };

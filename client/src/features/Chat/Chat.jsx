@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from 'providers/auth.provider.js';
 import Container from 'components/Container/Container.jsx';
 import './Chat.scss';
+import { CTA } from '@/components/CTA/CTA.jsx';
 
 export default function Chat() {
   const { loading, chat, message, setMessage, sendMessage, generateEntry } =
@@ -54,9 +55,13 @@ export default function Chat() {
             className='submit-button'
           />
         </form>
-        <button onClick={generateEntry} className='generate-button'>
-          Generate entry
-        </button>
+        <CTA
+          variant='ai-generation'
+          onClick={generateEntry}
+          className='generate-button'
+        >
+          Generate
+        </CTA>
       </section>
     </Container>
   );
