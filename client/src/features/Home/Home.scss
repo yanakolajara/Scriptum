@@ -43,3 +43,13 @@
   width: 20px;
   height: 20px;
 }
+
+@media only screen and (max-width: 600px) {
+  .hero {
+    flex-direction: column;
+    padding: 20px;
+  }
+  .hero-image {
+    display: none;
+  }
+}
