@@ -20,3 +20,14 @@
     }
   }
 }
+
+@media only screen and (max-width: 600px) {
+  .login {
+    &__container {
+      grid-template-columns: 1fr;
+    }
+    .carousel {
+      display: none;
+    }
+  }
+}
