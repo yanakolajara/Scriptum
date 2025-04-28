@@ -102,3 +102,26 @@
 .sender-name {
   padding-right: 0.5rem;
 }
+
+@media only screen and (max-width: 600px) {
+  .chat-window {
+    width: 100%;
+  }
+
+  .message-text {
+    max-width: 80%;
+  }
+
+  .chat-header-text {
+    font-size: large;
+  }
+
+  .chat-input-container {
+    .input-field {
+      font-size: 0.875rem;
+    }
+    .submit-button {
+      font-size: 0.875rem;
+    }
+  }
+}
