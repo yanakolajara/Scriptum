@@ -51,7 +51,7 @@ export default function EditEntry() {
   if (!entry) return <h1>Loading...</h1>;
 
   return (
-    <Form onSubmit={handleEdit}>
+    <Form onSubmit={handleEdit} className='edit-entry-form'>
       <Form.Input
         type='text'
         name='title'
