@@ -1,6 +1,37 @@
 import React from 'react';
 import './VoiceControls.scss';
 
+// Voice animation component that can be used in the chat input area
+export const VoiceAnimation = ({ isListening, speaking }) => {
+  return (
+    <div className="voice-animation-container">
+      {isListening && (
+        <div className="listening-indicator">
+          <div className="listening-wave">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <span className="status-text">Listening...</span>
+        </div>
+      )}
+
+      {speaking && (
+        <div className="speaking-indicator">
+          <div className="speaking-wave">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <span className="status-text">Speaking...</span>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const VoiceControls = ({
   voiceMode,
   toggleVoiceMode,
@@ -38,34 +69,7 @@ const VoiceControls = ({
         </svg>
       </button>
 
-      {voiceMode && (
-        <div className='voice-status'>
-          {/* Only one of these indicators will show at a time due to our hook logic */}
-          {isListening && (
-            <div className='listening-indicator'>
-              <div className='listening-wave'>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
-              <span className='status-text'>Listening...</span>
-            </div>
-          )}
-
-          {speaking && (
-            <div className='speaking-indicator'>
-              <div className='speaking-wave'>
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
-              <span className='status-text'>Speaking...</span>
-            </div>
-          )}
-        </div>
-      )}
+      {/* Removed status indicators from header */}
     </div>
   );
 };

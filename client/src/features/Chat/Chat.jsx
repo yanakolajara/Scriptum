@@ -27,8 +27,6 @@ const Chat = () => {
         <VoiceControls
           voiceMode={voiceMode}
           toggleVoiceMode={toggleVoiceMode}
-          isListening={isListening}
-          speaking={speaking}
           hasRecognitionSupport={hasRecognitionSupport}
         />
       </div>
@@ -43,6 +41,8 @@ const Chat = () => {
         generateEntry={generateEntry}
         loading={loading}
         hasMessages={chat.length > 0}
+        isListening={isListening}
+        speaking={speaking}
       />
     </div>
   );
