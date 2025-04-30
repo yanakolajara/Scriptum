@@ -45,6 +45,9 @@ export const CTA = ({
 
   return (
     <button className={classes} onClick={onClick} disabled={disabled}>
+      {icon && iconPosition === 'left' && (
+        <span className='cta__icon'>{icon}</span>
+      )}
       {children}
     </button>
   );
