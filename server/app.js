@@ -59,8 +59,6 @@ export const createApp = ({ userModel, entryModel }) => {
     next();
   });
 
-  // fixme: Avoid server error messages in production
-
   //* Auth routes
   app.use('/users', createUsersRouter({ userModel }));
 

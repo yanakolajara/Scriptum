@@ -49,7 +49,6 @@ export class GenaiChat {
     }
   }
 
-  // todo: GenerateEntry should create and suggest a title if relevant
   /**
    * Generates an entry in first person based on the chat history
    *

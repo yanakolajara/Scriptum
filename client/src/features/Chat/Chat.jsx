@@ -3,8 +3,8 @@ import { useChat } from './hooks/useChat.js';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from 'providers/auth.provider.js';
 import Container from 'components/Container/Container.jsx';
-import './Chat.scss';
 import { CTA } from '@/components/CTA/CTA.jsx';
+import './Chat.scss';
 
 export default function Chat() {
   const { loading, chat, message, setMessage, sendMessage, generateEntry } =
@@ -14,7 +14,6 @@ export default function Chat() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // sendMessageStream(message);
     sendMessage(message);
   };
 
@@ -23,10 +22,6 @@ export default function Chat() {
       navigate('/login');
     }
   }, []);
-
-  // todo: input should be a text area box
-  // todo: input should have a scroll bar
-  // todo: chat should scroll to the bottom when a new message is added
 
   return (
     <Container className='chat-window'>
@@ -45,8 +40,8 @@ export default function Chat() {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder='Type your message...'
-            required
             className='input-field'
+            required
           />
           <input
             type='submit'
