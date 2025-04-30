@@ -1,76 +1,51 @@
-import React, { useEffect } from 'react';
-import { useChat } from './hooks/useChat.js';
-import { useNavigate } from 'react-router-dom';
-import { useAuthContext } from 'providers/auth.provider.js';
-import Container from 'components/Container/Container.jsx';
-import { CTA } from '@/components/CTA/CTA.jsx';
+import React from 'react';
+import VoiceControls from './VoiceControls';
+import useChat from './hooks/useChat';
+import ChatInput from './components/ChatMessage';
+import MessageList from './components/MessageList';
 import './Chat.scss';
 
-export default function Chat() {
-  const { loading, chat, message, setMessage, sendMessage, generateEntry } =
-    useChat();
-  const { user } = useAuthContext();
-  const navigate = useNavigate();
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    sendMessage(message);
-  };
-
-  useEffect(() => {
-    if (!user) {
-      navigate('/login');
-    }
-  }, []);
+const Chat = () => {
+  const {
+    loading,
+    chat,
+    message,
+    setMessage,
+    sendMessage,
+    generateEntry,
+    voiceMode,
+    toggleVoiceMode,
+    isListening,
+    speaking,
+    hasRecognitionSupport,
+  } = useChat();
 
   return (
-    <Container className='chat-window'>
-      <section>
-        <h2 className='chat-header-text'>Chat</h2>
-      </section>
-      <section className='chat'>
-        {chat.map((msgData, index) => (
-          <ChatMessage key={index} role={msgData.role} message={msgData.text} />
-        ))}
-      </section>
-      <section className='chat-input-container'>
-        <form onSubmit={handleSubmit} className='chat-input-container__form'>
-          <input
-            type='text'
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder='Type your message...'
-            className='input-field'
-            required
-          />
-          <input
-            type='submit'
-            value='Send'
-            disabled={loading}
-            className='submit-button'
-          />
-        </form>
-        <CTA
-          variant='ai-generation'
-          onClick={generateEntry}
-          className='generate-button'
-        >
-          Generate
-        </CTA>
-      </section>
-    </Container>
-  );
-}
+    <div className='chat-interface'>
+      <div className='chat-header'>
+        <h2>ScriptumAI</h2>
+        <VoiceControls
+          voiceMode={voiceMode}
+          toggleVoiceMode={toggleVoiceMode}
+          isListening={isListening}
+          speaking={speaking}
+          hasRecognitionSupport={hasRecognitionSupport}
+        />
+      </div>
 
-const ChatMessage = ({ message, role }) => {
-  return (
-    <article className={`message-container message-container__${role}`}>
-      <p className={`message-text message-${role}`}>
-        <strong className='sender-name'>
-          {role === 'user' ? 'You' : 'Ai'}:
-        </strong>
-        {message}
-      </p>
-    </article>
+      <MessageList messages={chat} loading={loading} />
+
+      <ChatInput
+        message={message}
+        setMessage={setMessage}
+        sendMessage={sendMessage}
+        voiceMode={voiceMode}
+        generateEntry={generateEntry}
+        loading={loading}
+        hasMessages={chat.length > 0}
+      />
+    </div>
   );
 };
+
+export default Chat;
