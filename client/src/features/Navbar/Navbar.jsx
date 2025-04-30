@@ -36,6 +36,7 @@ export default function Navbar() {
           size='large'
           onClick={() => navigate('/')}
           icon={<GrHomeRounded />}
+          iconPosition='left'
         >
           Home
         </CTA>
