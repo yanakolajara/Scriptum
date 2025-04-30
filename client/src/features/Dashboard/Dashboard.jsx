@@ -17,7 +17,10 @@ export default function Dashboard() {
   const handleGetEntries = async () => {
     try {
       const res = await getEntries();
-      setEntries(res.data);
+      const sorted = res.data.sort((a, b) => {
+        return new Date(b.entry_date) - new Date(a.entry_date);
+      });
+      setEntries(sorted);
     } catch (e) {
       console.error(e);
     } finally {
