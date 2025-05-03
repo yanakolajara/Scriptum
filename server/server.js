@@ -2,10 +2,11 @@ import { createApp } from './app.js';
 import { createServer } from 'node:http';
 import { userModel } from './models/user.model.js';
 import { entryModel } from './models/entry.model.js';
+import { userContextModel } from './models/userContext.model.js';
 import { initializeChatSockets } from './services/sockets.service.js';
 import { corsMiddleware } from './middlewares/cors.middleware.js';
 
-const app = createApp({ userModel, entryModel });
+const app = createApp({ userModel, entryModel, userContextModel });
 const httpServer = createServer(app);
 const PORT = process.env.PORT || 8080;
 
