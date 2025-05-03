@@ -8,8 +8,9 @@ import { config } from './config/config.js';
 import { corsMiddleware } from './middlewares/cors.middleware.js';
 import { createEntriesRouter } from './routes/entries.routes.js';
 import cors from 'cors';
+import { createUserContextRouter } from './routes/userContext.routes.js';
 
-export const createApp = ({ userModel, entryModel }) => {
+export const createApp = ({ userModel, entryModel, userContextModel }) => {
   const app = express();
 
   app.use(morgan('dev'));
@@ -65,6 +66,8 @@ export const createApp = ({ userModel, entryModel }) => {
   //* Protected routes
   app.use('/entries', createEntriesRouter({ entryModel }));
   // app.use('/comments', createCommentsRouter({ commentModel }));
+
+  app.use('/user-context', createUserContextRouter({ userContextModel }));
 
   app.get('/', (req, res) => {
     res.status(200).json({ message: 'Welcome to Scriptum API' });

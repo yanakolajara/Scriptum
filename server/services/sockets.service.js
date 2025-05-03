@@ -8,6 +8,7 @@ export const initializeChatSockets = (httpServer) => {
   });
 
   io.on('connection', async (socket) => {
+    // const getContext = await getUserContext();
     const genaiChat = new GenaiChat(userContext);
     socket.on('message', async ({ message }) => {
       try {
