@@ -28,13 +28,16 @@ export const initializeChatSockets = (httpServer) => {
       'SELECT * FROM user_contexts WHERE user_id = $1',
       [data.id]
     );
+
     if (!userContext) {
       userContext = await db.one(
         'INSERT INTO user_contexts (user_id, context) VALUES ($1, $2) RETURNING *',
-        [user_id, '']
+        [data.id, '']
       );
     }
+    console.log('userContext:', userContext);
     const genaiChat = new GenaiChat(userContext);
+
     socket.on('message', async ({ message }) => {
       try {
         const res = await genaiChat.sendMessage(message);

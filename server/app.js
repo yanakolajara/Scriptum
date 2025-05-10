@@ -2,13 +2,15 @@ import express from 'express';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import jwt from 'jsonwebtoken';
+import cors from 'cors';
+import { createServer } from 'node:http';
 import { createUsersRouter } from './routes/users.routes.js';
 import { errorHandler } from './middlewares/error.middleware.js';
 import { config } from './config/config.js';
 import { corsMiddleware } from './middlewares/cors.middleware.js';
 import { createEntriesRouter } from './routes/entries.routes.js';
-import cors from 'cors';
 import { createUserContextRouter } from './routes/userContext.routes.js';
+import { initializeChatSockets } from './services/sockets.service.js';
 
 export const createApp = ({ userModel, entryModel, userContextModel }) => {
   const app = express();
@@ -78,5 +80,7 @@ export const createApp = ({ userModel, entryModel, userContextModel }) => {
 
   app.use(errorHandler);
 
-  return app;
+  const httpServer = createServer(app);
+  initializeChatSockets(httpServer, corsMiddleware);
+  return httpServer;
 };
