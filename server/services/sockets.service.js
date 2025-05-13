@@ -41,7 +41,6 @@ export const initializeChatSockets = (httpServer) => {
       console.error('No token provided');
       // Handle the case where no token is provided
     }
-    console.log('userContext:', userContext);
     const genaiChat = new GenaiChat(userContext);
 
     socket.on('message', async ({ message }) => {

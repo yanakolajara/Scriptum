@@ -7,18 +7,19 @@ import {
 } from '../utils/errors.js';
 
 export class UserContextModel {
-  // static async getEntry(id) {
-  //   try {
-  //     const entry = await db.oneOrNone('SELECT * FROM entries WHERE id = $1', [
-  //       id,
-  //     ]);
-  //     return entry;
-  //   } catch (error) {
-  //     throw new InternalServerError(error.message);
-  //   }
-  // }
+  static async getUserContext(id) {
+    try {
+      const entry = await db.oneOrNone(
+        'SELECT * FROM user_contexts WHERE user_id = $1',
+        [id]
+      );
+      return entry;
+    } catch (error) {
+      throw new InternalServerError(error.message);
+    }
+  }
 
-  static async updateEntry(id, data) {
+  static async updateUserContext(id, data) {
     try {
       const updatedEntry = await db.one(
         'UPDATE user_contexts SET context = $1 WHERE user_id = $2 RETURNING *',
