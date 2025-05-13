@@ -12,6 +12,7 @@ export const initializeChatSockets = (httpServer) => {
   });
 
   io.on('connection', async (socket) => {
+    let userContext = null;
     const cookies = socket.request.headers.cookie;
     const token = cookies
       ? cookies
@@ -23,17 +24,22 @@ export const initializeChatSockets = (httpServer) => {
     if (token) {
       socket.request.headers.authorization = `Bearer ${token}`;
     }
-    const data = jwt.verify(token, config.jwt.secret);
-    let userContext = await db.oneOrNone(
-      'SELECT * FROM user_contexts WHERE user_id = $1',
-      [data.id]
-    );
-
-    if (!userContext) {
-      userContext = await db.one(
-        'INSERT INTO user_contexts (user_id, context) VALUES ($1, $2) RETURNING *',
-        [data.id, '']
+    if (token) {
+      const data = jwt.verify(token, config.jwt.secret);
+      userContext = await db.oneOrNone(
+        'SELECT * FROM user_contexts WHERE user_id = $1',
+        [data.id]
       );
+
+      if (!userContext) {
+        userContext = await db.one(
+          'INSERT INTO user_contexts (user_id, context) VALUES ($1, $2) RETURNING *',
+          [data.id, '']
+        );
+      }
+    } else {
+      console.error('No token provided');
+      // Handle the case where no token is provided
     }
     console.log('userContext:', userContext);
     const genaiChat = new GenaiChat(userContext);
