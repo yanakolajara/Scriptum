@@ -17,6 +17,18 @@ export class UserContextModel {
   //     throw new InternalServerError(error.message);
   //   }
   // }
+
+  static async updateEntry(id, data) {
+    try {
+      const updatedEntry = await db.one(
+        'UPDATE user_contexts SET context = $1 WHERE user_id = $2 RETURNING *',
+        [data, id]
+      );
+      return updatedEntry;
+    } catch (error) {
+      throw new InternalServerError(error.message);
+    }
+  }
 }
 
 export const userContextModel = UserContextModel;

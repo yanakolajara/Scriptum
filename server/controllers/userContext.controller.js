@@ -1,3 +1,4 @@
+import { userContextStructure } from '../services/data/userContextStructure.js';
 import { genaiRequest } from '../services/genai.service.js';
 import { UnauthorizedError, ValidationError } from '../utils/errors.js';
 
@@ -6,7 +7,7 @@ export class UserContextController {
     this.userContextModel = userContextModel;
   }
 
-  getEntry = async (req, res, next) => {
+  getUserContext = async (req, res, next) => {
     try {
       // const user = req.session.user;
       // if (!user) throw new UnauthorizedError('User not logged in.');
@@ -22,7 +23,7 @@ export class UserContextController {
     }
   };
 
-  createEntry = async (req, res, next) => {
+  createUserContext = async (req, res, next) => {
     // try {
     //   const user = req.session.user;
     //   if (!user) throw new UnauthorizedError('User not logged in.');
@@ -49,24 +50,39 @@ export class UserContextController {
     // }
   };
 
-  updateEntry = async (req, res, next) => {
-    // try {
-    //   const user = req.session.user;
-    //   if (!user) throw new UnauthorizedError('User not logged in.');
-    //   const { id } = req.params;
-    //   if (!id) throw new ValidationError('No id provided.');
-    //   const data = req.body;
-    //   if (!data) throw new ValidationError('No data provided.');
-    //   const entry = await this.entryModel.updateEntry(id, data);
-    //   res
-    //     .status(200)
-    //     .json({ message: 'Entry updated successfully', data: entry });
-    // } catch (error) {
-    //   next(error);
-    // }
+  updateUserContext = async (req, res, next) => {
+    try {
+      console.log('updateUserContext');
+      const user = req.session.user;
+      if (!user) throw new UnauthorizedError('User not logged in.');
+      const data = req.body;
+      if (!data) throw new ValidationError('No data provided.');
+      // Updates the user context by adding relevant information to the existing context, if any. (responds only with the updated context as a JSON object). USE THE USER CONTEXT STRUCTURE AS A TEMPLATE
+      const prompt =
+        'Update the user context based on the provided data, if any. Respond only with the updated context as a JSON object, without any additional text. Use the user context structure as a template. ';
+      const context = await genaiRequest(
+        `${prompt} \n\n ${JSON.stringify(
+          userContextStructure
+        )} \n\n ${JSON.stringify(data)}`
+      );
+      console.log('user.id', user.id);
+      console.log('context.response.text()', context.response.text());
+
+      const updatedContext = await this.userContextModel.updateEntry(
+        user.id,
+        context.response.text()
+      );
+      res.status(200).json({
+        message: 'User context updated successfully',
+        data: updatedContext,
+      });
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
   };
 
-  deleteEntry = async (req, res, next) => {
+  deleteUserContext = async (req, res, next) => {
     // try {
     //   const user = req.session.user;
     //   if (!user) throw new UnauthorizedError('User not logged in.');

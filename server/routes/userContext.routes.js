@@ -1,12 +1,12 @@
 import { Router } from 'express';
-import { EntryController } from '../controllers/entry.controller.js';
+import { UserContextController } from '../controllers/userContext.controller.js';
 
 export const createUserContextRouter = ({ userContextModel }) => {
   const router = Router();
-  const userContextController = new EntryController({ userContextModel });
-  router.get('/:id', userContextController.getEntry);
-  // router.post('/', entryController.createEntry);
-  // router.put('/:id', entryController.updateEntry);
-  // router.delete('/:id', entryController.deleteEntry);
+  const userContextController = new UserContextController({ userContextModel });
+  router.get('/:id', userContextController.getUserContext);
+  // router.post('/' );
+  router.put('/', userContextController.updateUserContext);
+  // router.delete('/:id');
   return router;
 };

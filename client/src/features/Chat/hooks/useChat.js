@@ -1,6 +1,6 @@
 import { useEffect, useReducer, useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createEntry } from '@/api/entries.js';
+import { createEntry, editEntry } from '@/api/entries.js';
 import { socket } from '../services/socket.js';
 import { useSocket } from '../services/useSocket.js';
 import { initialState, speechReducer, ACTIONS } from './speechReducer.js';
@@ -9,6 +9,7 @@ import {
   loadVoicesAsync,
 } from '../services/speechServices.js';
 import { getPreferredVoice } from '../utils/speechUtils.js';
+import { updateUserContext } from '@/api/userContext.js';
 
 export const useChat = () => {
   const [state, dispatch] = useReducer(speechReducer, initialState);
@@ -191,6 +192,8 @@ export const useChat = () => {
     try {
       socket.disconnect();
       const res = await createEntry(chat);
+      // Update context
+      await updateUserContext(res.data.content);
       navigate(`/edit-entry?id=${res.data.id}`);
     } catch (error) {
       console.error('Error in entry:', error.message);
