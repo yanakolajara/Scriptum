@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import jwt from 'jsonwebtoken';
 import { config } from '../config/config.js';
 import db from '../models/db/dbConfig.js';
+import { parseCookies } from '../utils/cookieUtils.js';
 
 export const initializeChatSockets = (httpServer) => {
   const io = new Server(httpServer, {
@@ -12,52 +13,36 @@ export const initializeChatSockets = (httpServer) => {
   });
 
   io.use((socket, next) => {
-    const rawCookies = socket.handshake.headers.cookie || '';
-
-    const token = cookies?.split(';')[0]?.split('=')[1];
-    socket.token = token;
-    next();
-  });
-
-  io.use((socket, next) => {
-    const cookies = socket.handshake.headers.cookie;
-    const token = cookies?.split(';');
-    // const accessToken = cookies?.split('')
-    // const token = socket.handshake;
-
-    console.log('🚀 ~ io.use ~ token:', token);
-
     try {
-      const payload = jwt.verify(token, config.jwt.secret);
-      socket.user = payload; // attach decoded user
-      next();
-    } catch (err) {
-      return next(new Error('Invalid token'));
+      const cookies = parseCookies(socket.handshake.headers.cookie || '');
+      const token = cookies.access_token;
+
+      if (token) {
+        const data = jwt.verify(token, config.jwt.secret);
+        socket.user = data;
+        next();
+      } else {
+        next(new Error('Authentication error'));
+      }
+    } catch (error) {
+      next(new Error('Authentication error'));
     }
   });
 
   io.on('connection', async (socket) => {
-    console.log(
-      `✅ Socket connected: ${socket.id} (userId: ${socket.user?.id})`
+    let userContext;
+    userContext = await db.oneOrNone(
+      'SELECT * FROM user_contexts WHERE user_id = $1',
+      [socket.user.id]
     );
 
-    if (token) {
-      const data = jwt.verify(token, config.jwt.secret);
-      userContext = await db.oneOrNone(
-        'SELECT * FROM user_contexts WHERE user_id = $1',
-        [data.id]
+    if (!userContext) {
+      userContext = await db.one(
+        'INSERT INTO user_contexts (user_id, context) VALUES ($1, $2) RETURNING *',
+        [socket.user.id, '']
       );
-
-      if (!userContext) {
-        userContext = await db.one(
-          'INSERT INTO user_contexts (user_id, context) VALUES ($1, $2) RETURNING *',
-          [data.id, '']
-        );
-      }
-    } else {
-      console.error('No token provided');
-      // Handle the case where no token is provided
     }
+
     const genaiChat = new GenaiChat(userContext);
 
     socket.on('message', async ({ message }) => {
