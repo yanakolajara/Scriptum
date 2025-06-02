@@ -3,9 +3,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { config } from '../config/config.js';
 import { modelSettings } from './data/modelSettings.js';
 import { formatChat } from '../utils/adapters.utils.js';
-import { userContext } from '../genaiFakeContext.js';
 
-export const genaiRequest = async (prompt) => {
+export const genaiRequest = async (prompt, userContext = {}) => {
   const genai = new GoogleGenerativeAI(config.externalServices.genaiApiKey);
   const model = genai.getGenerativeModel(modelSettings(userContext));
   const res = await model.generateContent(prompt);
@@ -17,10 +16,12 @@ export const genaiRequest = async (prompt) => {
 // todo: Add function that finalizes the conversation and creates an entry once user confirms
 // todo: Respond as json to fulfill specific areas of focus of the conversation
 export class GenaiChat {
-  constructor(userContext) {
-    this.userContext = userContext;
+  constructor(userContext = {}) {
+    this.userContext = userContext || {};
     this.genAI = new GoogleGenerativeAI(config.externalServices.genaiApiKey);
-    this.model = this.genAI.getGenerativeModel(modelSettings(userContext));
+    this.model = this.genAI.getGenerativeModel(
+      modelSettings(userContext || {})
+    );
     this.chat = this.model.startChat({
       history: [],
       generationConfig: {

@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { EntryController } from '../controllers/entry.controller.js';
 
-export const createEntriesRouter = ({ entryModel }) => {
+export const createEntriesRouter = (entryModel) => {
   const router = Router();
   const entryController = new EntryController({ entryModel });
   router.get('/', entryController.getAllEntries);
