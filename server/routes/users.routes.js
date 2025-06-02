@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { authenticateToken } from '../middlewares/auth.middleware.js';
 import { UsersController } from '../controllers/users.controller.js';
 
-export const createUsersRouter = ({ userModel }) => {
+export const createUsersRouter = (userModel) => {
   const router = Router();
   const usersController = new UsersController({ userModel });
 
