@@ -28,8 +28,10 @@ export const config = {
   },
   security: {
     corsAllowedOrigins: process.env.CORS_ALLOWED_ORIGINS
-      ? process.env.CORS_ALLOWED_ORIGINS.split(',').map(origin => origin.trim())
-      : ['http://localhost:3000', 'https://scriptum-app.netlify.app'],
+      ? process.env.CORS_ALLOWED_ORIGINS.split(',').map((origin) =>
+          origin.trim()
+        )
+      : ['http://localhost:3000', 'https://scriptum-app.vercel.app'],
     rateLimitWindowMs: 15 * 60 * 1000,
     rateLimitMax: 100,
   },

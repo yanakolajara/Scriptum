@@ -30,9 +30,9 @@ export const createApp = (models) => {
     credentials: true,
 
     origin: [
-      'https://www.scriptum-app.vercel.app/',
-      'https://scriptum-client-n4f89nqz9-yanakolajaras-projects.vercel.app/',
-      'https://scriptum-app.vercel.app/',
+      'https://www.scriptum-app.vercel.app',
+      'https://scriptum-client-n4f89nqz9-yanakolajaras-projects.vercel.app',
+      'https://scriptum-app.vercel.app',
       'http://localhost:3000',
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
