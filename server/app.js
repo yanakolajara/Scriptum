@@ -28,12 +28,13 @@ export const createApp = (models) => {
   app.use(
     cors({
       credentials: true,
-      origin: '*',
-      // origin: [
-      //   'https://scriptum-app.vercel.app',
-      //   'https://www.scriptum-app.vercel.app',
-      //   'http://localhost:3000',
-      // ],
+
+      origin: [
+        'https://www.scriptum-app.vercel.app/',
+        'https://scriptum-client-n4f89nqz9-yanakolajaras-projects.vercel.app/',
+        'https://scriptum-app.vercel.app/',
+        'http://localhost:3000',
+      ],
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
       allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
       exposedHeaders: ['set-cookie'],
