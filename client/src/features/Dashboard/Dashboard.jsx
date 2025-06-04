@@ -87,7 +87,9 @@ export default function Dashboard() {
               className='dashboard__empty-cta'
               text='Start chat'
               onClick={() => navigate('/chat')}
-            />
+            >
+              Start Chat
+            </CTA>
           </div>
           <div className='dashboard__empty-image'>
             <img src={newEntryImg} alt='new entry' />
