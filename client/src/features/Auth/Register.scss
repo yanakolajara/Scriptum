@@ -1,39 +1,122 @@
 .register {
   display: flex;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   justify-content: center;
   align-items: center;
-  padding: 15%;
+  padding: 40px 20px;
+
   &__container {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 15px;
+    gap: 40px;
+    max-width: 1000px;
+    width: 100%;
+    align-items: center;
+
     .carousel {
       width: 100%;
       height: 100%;
+      min-height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
       img {
         width: 100%;
         height: 100%;
-        border-radius: 10px;
+        object-fit: cover;
+        border-radius: 12px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
       }
     }
   }
+
   &__name {
-    display: flex;
-    flex-direction: row;
-    gap: 15px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+  }
+
+  .password-validation {
+    padding: 12px;
+    background-color: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 8px;
+    margin-top: 8px;
+
+    p {
+      margin: 4px 0;
+      font-size: 13px;
+      color: #856404;
+      line-height: 1.4;
+    }
   }
 }
 
-@media only screen and (max-width: 600px) {
+/* Mobile devices (768px and down) */
+@media only screen and (max-width: 768px) {
   .register {
-    font-size: 12px;
+    padding: 20px 16px;
+    min-height: calc(100vh - 70px);
+
     &__container {
       grid-template-columns: 1fr;
+      gap: 0;
+      max-width: 400px;
     }
+
+    &__name {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
     .carousel {
       display: none;
+    }
+
+    .password-validation {
+      padding: 10px;
+
+      p {
+        font-size: 12px;
+      }
+    }
+  }
+}
+
+/* Small mobile devices (480px and down) */
+@media only screen and (max-width: 480px) {
+  .register {
+    padding: 16px 12px;
+
+    &__container {
+      max-width: 100%;
+    }
+
+    &__name {
+      gap: 10px;
+    }
+  }
+}
+
+/* Tablet devices */
+@media only screen and (min-width: 769px) and (max-width: 1024px) {
+  .register {
+    padding: 32px 24px;
+
+    &__container {
+      gap: 32px;
+      max-width: 800px;
+    }
+
+    &__name {
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+
+      label:last-child {
+        grid-column: 1 / -1;
+      }
     }
   }
 }

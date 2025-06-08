@@ -14,32 +14,49 @@
   gap: 10px;
   flex: 1;
   border-radius: 10px;
-  // background-color: var(--background);
   overflow-y: auto;
   max-height: 100%;
-  scrollbar-width: thin; /* or thin, none, etc. */
-  scrollbar-color: #666 #fff; /* or any other color values */
+  scrollbar-width: thin;
+  scrollbar-color: #666 #fff;
 }
 
-/* Extra small devices (phones, 600px and down) */
-@media only screen and (max-width: 600px) {
+/* Mobile devices (phones, 768px and down) */
+@media only screen and (max-width: 768px) {
   .app {
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 80px auto;
+    grid-template-rows: 70px 1fr;
     background: 0;
     padding: 0;
+    gap: 0;
     background-color: var(--background);
 
     .navbar {
       grid-row: 1;
       grid-column: 1;
       width: 100%;
-      background: #3758f9;
+      background: #685bde;
+      border-radius: 0;
+      margin: 0;
     }
+    
     .main-container {
       grid-row: 2;
       grid-column: 1;
+      padding: 16px;
+      margin: 0;
     }
+  }
+}
+
+/* Tablet devices (769px to 1024px) */
+@media only screen and (min-width: 769px) and (max-width: 1024px) {
+  .app {
+    padding: 8px;
+    gap: 12px;
+  }
+  
+  .main-container {
+    padding: 12px;
   }
 }
