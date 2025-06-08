@@ -70,7 +70,7 @@ export default function Navbar() {
           </CTA>
         )}
       </div>
-      <div className='navbar__divider' />
+      {user && <div className='navbar__divider' />}
 
       {user && (
         <div className='profile'>
