@@ -5,16 +5,17 @@ axios.defaults.withCredentials = true;
 
 // Create axios instance with proper configuration
 const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
-const isLocalDev = window.location.hostname === 'localhost';
+const isLocalDev =
+  window.location.hostname === 'localhost' ||
+  window.location.hostname === '127.0.0.1';
 
 // Set up default axios configuration
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 axios.defaults.headers.common['Accept'] = 'application/json';
 
 export const axiosInstance = axios.create({
-  baseURL:
-    isLocalDev && !import.meta.env.PROD ? 'http://localhost:8080' : apiUrl,
-  timeout: 15000, // Increased timeout for potentially slow connections
+  baseURL: isLocalDev ? 'http://localhost:8080' : apiUrl,
+  timeout: 30000, // Increased timeout for mobile networks
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
@@ -22,42 +23,95 @@ export const axiosInstance = axios.create({
   withCredentials: true,
 });
 
-axiosInstance.interceptors.request.use((config) => {
-  const token = localStorage.getItem('accessToken');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
+// Request interceptor to add auth token
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
 
-// Add response interceptor for handling common responses
+    console.log('Making request to:', config.baseURL + config.url);
+    return config;
+  },
+  (error) => {
+    console.error('Request interceptor error:', error);
+    return Promise.reject(error);
+  }
+);
+
+// Response interceptor with improved error handling
 axiosInstance.interceptors.response.use(
   (response) => {
     return response;
   },
   (error) => {
-    // Handle common errors like 401, 403, etc.
-    if (error.response) {
-      // The request was made and the server responded with a status code
-      // that falls out of the range of 2xx
-      console.error(
-        'Response error:',
-        error.response.status,
-        error.response.data
-      );
+    console.error('Axios error:', {
+      message: error.message,
+      status: error.response?.status,
+      data: error.response?.data,
+      config: {
+        url: error.config?.url,
+        method: error.config?.method,
+        baseURL: error.config?.baseURL,
+      },
+    });
 
-      // Handle specific error codes
-      if (error.response.status === 401) {
-        // Handle unauthorized
-        console.log('User is unauthorized');
+    if (error.response) {
+      // Server responded with error status
+      const { status, data } = error.response;
+
+      switch (status) {
+        case 401:
+          // Unauthorized - clear token and redirect to login
+          localStorage.removeItem('accessToken');
+          delete axiosInstance.defaults.headers.common['Authorization'];
+
+          // Only redirect if not already on login page
+          if (window.location.pathname !== '/login') {
+            console.log('Unauthorized - redirecting to login');
+            window.location.href = '/login';
+          }
+          break;
+
+        case 403:
+          console.log('Forbidden access');
+          break;
+
+        case 404:
+          console.log('Resource not found');
+          break;
+
+        case 500:
+          console.log('Server error');
+          break;
+
+        default:
+          console.log('Unexpected error status:', status);
       }
+
+      // Return a consistent error structure
+      return Promise.reject({
+        status,
+        data: data || { message: 'An error occurred' },
+        message: data?.message || `Request failed with status ${status}`,
+      });
     } else if (error.request) {
-      // The request was made but no response was received
-      console.error('Request error:', error.request);
+      // Network error - no response received
+      console.error('Network error - no response received');
+      return Promise.reject({
+        status: 0,
+        data: { message: 'Network error - please check your connection' },
+        message: 'Network error - please check your connection',
+      });
     } else {
-      // Something happened in setting up the request that triggered an Error
-      console.error('Error:', error.message);
+      // Something else happened
+      console.error('Request setup error:', error.message);
+      return Promise.reject({
+        status: 0,
+        data: { message: 'Request failed to send' },
+        message: 'Request failed to send',
+      });
     }
-    return Promise.reject(error);
   }
 );

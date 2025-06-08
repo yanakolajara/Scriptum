@@ -59,12 +59,15 @@ export class GenaiChat {
     try {
       let history = await this.chat.getHistory();
       history = formatChat(history);
-      const prompt =
-        'Generate an entry in first person based on the chat history. ' +
-        'The entry should be a summary of the conversation, ' +
-        'including the main topics discussed and any important details. ' +
-        'Please make sure to use proper grammar and punctuation. ';
-      const res = await this.model.generateContent(`${prompt} \n\n ${history}`);
+      const summaryPrompt = `
+Based on our conversation so far, generate a coherent and well-written summary in a single paragraph.
+Write it in the first person, as if I were writing it myself for my diary.
+This summary should capture the key events and feelings I have shared.
+Start the summary with a phrase like 'Today was a day when...' or similar.
+Do not include any introduction or comments of your own, only the text of the summary.
+            `;
+      const prompt = `${summaryPrompt} \n\n ${history}`;
+      const res = await this.model.generateContent(prompt);
       return res.response.text();
     } catch (error) {
       console.error('Error in generateEntry:', error.message);

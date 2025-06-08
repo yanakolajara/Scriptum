@@ -1,26 +1,46 @@
 import { createContext, useState, useEffect, useContext } from 'react';
 import { axiosInstance } from '../api/axios';
 
-// Token storage helper functions
+// Improved token storage helper functions
+const TOKEN_KEY = 'accessToken'; // Consistent key
+
 const setToken = (token) => {
-  localStorage.setItem('access_token', token);
-  // Update axios instance to include token in future requests
-  axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  if (token) {
+    localStorage.setItem(TOKEN_KEY, token);
+    axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  }
 };
 
 const getToken = () => {
-  return localStorage.getItem('access_token');
+  return localStorage.getItem(TOKEN_KEY);
 };
 
 const removeToken = () => {
-  localStorage.removeItem('access_token');
+  localStorage.removeItem(TOKEN_KEY);
   delete axiosInstance.defaults.headers.common['Authorization'];
+};
+
+// Improved cookie parsing with error handling
+const getTokenFromCookies = () => {
+  try {
+    const cookies = document.cookie.split(';');
+    const tokenCookie = cookies.find((c) =>
+      c.trim().startsWith('access_token=')
+    );
+
+    if (tokenCookie) {
+      const token = tokenCookie.split('=')[1];
+      return token;
+    }
+  } catch (error) {
+    console.warn('Cookie parsing failed:', error);
+  }
+  return null;
 };
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const cookies = document.cookie.split(';');
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -28,46 +48,46 @@ const AuthProvider = ({ children }) => {
     try {
       setLoading(true);
       const response = await func();
-      console.log(response);
+      console.log('Auth response:', response);
       return response;
     } catch (error) {
-      return error.response;
+      console.error('Auth error:', error);
+      return (
+        error.response || { status: 500, data: { message: 'Network error' } }
+      );
     } finally {
       setLoading(false);
     }
   };
 
   const register = async (data) => {
-    return await trycatchHandler(() => {
-      const res = axiosInstance.post('/users/register', data);
-      return res;
-    });
+    return await trycatchHandler(() =>
+      axiosInstance.post('/users/register', data)
+    );
   };
 
   const login = async (data) => {
     return await trycatchHandler(async () => {
       const res = await axiosInstance.post('/users/login', data);
-      setUser(res.data.user);
 
-      // Store token in localStorage as backup for cookie auth
-      if (res.headers && res.headers.authorization) {
-        const token = res.headers.authorization.split(' ')[1];
-        localStorage.setItem('accessToken', token);
-      }
+      if (res.status === 200 && res.data.user) {
+        setUser(res.data.user);
 
-      // Alternatively, we can extract token from cookies using javascript
-      const cookies = document.cookie.split(';');
-      const tokenCookie = cookies.find((c) =>
-        c.trim().startsWith('access_token=')
-      );
+        // Try to get token from response headers first
+        let token = null;
+        if (res.headers && res.headers.authorization) {
+          token = res.headers.authorization.split(' ')[1];
+        }
 
-      if (tokenCookie) {
-        const token = tokenCookie.split('=')[1];
-        localStorage.setItem('accessToken', token);
-        // Update axios instance
-        axiosInstance.defaults.headers.common[
-          'Authorization'
-        ] = `Bearer ${token}`;
+        // Fallback to cookies if no header token
+        if (!token) {
+          token = getTokenFromCookies();
+        }
+
+        // Store token if found
+        if (token) {
+          setToken(token);
+        }
       }
 
       return res;
@@ -78,6 +98,7 @@ const AuthProvider = ({ children }) => {
     return await trycatchHandler(async () => {
       const res = await axiosInstance.post('/users/logout');
       setUser(null);
+      removeToken();
       return res;
     });
   };
@@ -100,19 +121,47 @@ const AuthProvider = ({ children }) => {
     });
   };
 
-  const checkAuth = async (access_token) => {
-    console.log('checkAuth');
+  const checkAuth = async () => {
+    console.log('Checking authentication...');
     return await trycatchHandler(async () => {
+      // First check if we have a stored token
+      const storedToken = getToken();
+      if (storedToken) {
+        axiosInstance.defaults.headers.common[
+          'Authorization'
+        ] = `Bearer ${storedToken}`;
+      }
+
       const res = await axiosInstance.get('/users/check-auth');
-      setUser(res.data.user);
+
+      if (res.status === 200 && res.data.user) {
+        setUser(res.data.user);
+      } else {
+        // Clear invalid token
+        removeToken();
+        setUser(null);
+      }
+
+      return res;
     });
   };
 
+  // Initialize auth check on mount
   useEffect(() => {
-    checkAuth(cookies.access_token);
-  }, []);
+    const initializeAuth = async () => {
+      // Check for existing token or cookie
+      const existingToken = getToken() || getTokenFromCookies();
 
-  useEffect(() => {}, [user]);
+      if (existingToken) {
+        setToken(existingToken);
+        await checkAuth();
+      } else {
+        setLoading(false);
+      }
+    };
+
+    initializeAuth();
+  }, []);
 
   return (
     <AuthContext.Provider
@@ -125,6 +174,7 @@ const AuthProvider = ({ children }) => {
         verify,
         resendCode,
         verifyEmail,
+        checkAuth,
       }}
     >
       {children}

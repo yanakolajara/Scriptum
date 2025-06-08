@@ -14,7 +14,8 @@ export default function Login() {
     password: '',
   });
   const [showPassword, setShowPassword] = useState(false);
-  const { user } = useAuthContext();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { user, loading } = useAuthContext();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -25,16 +26,38 @@ export default function Login() {
       [name]: value,
     }));
   };
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    handleLogin(formData);
+    if (isSubmitting) return; // Prevent double submission
+
+    setIsSubmitting(true);
+    try {
+      await handleLogin(formData);
+    } catch (error) {
+      console.error('Login error:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
+  // Fixed useEffect - remove formData dependency to prevent infinite re-renders
   useEffect(() => {
-    if (user) {
+    if (user && !loading) {
       navigate('/dashboard');
     }
-  }, [formData, user]);
+  }, [user, loading, navigate]);
+
+  // Show loading state
+  if (loading) {
+    return (
+      <main className='login'>
+        <Container className='login__container'>
+          <div>Loading...</div>
+        </Container>
+      </main>
+    );
+  }
 
   return (
     <main className='login'>
@@ -48,6 +71,7 @@ export default function Login() {
             value={formData.email}
             onChange={handleChange}
             required
+            disabled={isSubmitting}
           />
           <Form.Input
             type={showPassword ? 'text' : 'password'}
@@ -56,6 +80,7 @@ export default function Login() {
             value={formData.password}
             onChange={handleChange}
             required
+            disabled={isSubmitting}
           />
           <Form.InputCheckbox
             type='checkbox'
@@ -63,8 +88,13 @@ export default function Login() {
             label='Show password'
             value={showPassword}
             onChange={(e) => setShowPassword(e.target.checked)}
+            disabled={isSubmitting}
           />
-          <Form.Submit type='submit' text='Log in' />
+          <Form.Submit
+            type='submit'
+            text={isSubmitting ? 'Logging in...' : 'Log in'}
+            disabled={isSubmitting}
+          />
           <p>
             Don&apos;t have an account?
             <a href='/register'>Sign up</a>
