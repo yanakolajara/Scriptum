@@ -2,10 +2,11 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: transparent;
+  background-color: #685bde;
   width: 15vw;
   padding-block: 12px;
-
+  border-radius: 12px;
+  padding: 12px;
   &__logo-container {
     display: flex;
     align-items: center;
@@ -26,19 +27,35 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-
-    gap: 15px;
+    gap: 10px;
   }
 
-  &__menu-item {
+  .main-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+  }
+
+  .menu-item {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 18px 40px;
+    padding: 15px 20px;
     color: var(--text-white);
-    font-size: 1.2ch;
-
+    font-size: 1.3rem;
+    background: none;
+    border-radius: 10px;
+    border: 0;
+    align-items: flex-start;
+    gap: 15px;
+    align-self: stretch;
     cursor: pointer;
+    transition: background-color 0.18s ease;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
   }
 
   &__divider {

@@ -30,28 +30,21 @@ export default function Navbar() {
       <div className='navbar__logo-container'>
         <div className='navbar__logo-text'>Scriptum</div>
       </div>
+      <div className='navbar__divider' />
       <div className='navbar__menu'>
-        <CTA
-          variant='base-ghost'
-          size='large'
-          onClick={() => navigate('/')}
-          icon={<GrHomeRounded />}
-          iconPosition='left'
-        >
-          Home
-        </CTA>
+        <div className='main-menu'>
+          <button className='menu-item' onClick={() => navigate('/')}>
+            <GrHomeRounded />
+            <span>Dashboard</span>
+          </button>
+          {user && (
+            <button className='menu-item' onClick={() => navigate('/chat')}>
+              <GrChat />
+              <span>Ai Chat</span>
+            </button>
+          )}
+        </div>
 
-        {user && (
-          <CTA
-            variant='base-ghost'
-            size='large'
-            onClick={() => navigate('/chat')}
-            icon={<GrChat />}
-          >
-            Chat
-          </CTA>
-        )}
-        <div className='navbar__divider' />
         {/* <button
           onClick={() => navigate('')}
           className='flex items-center gap-[10px] py-[18px] px-[40px] text-[var(--text-white)] text-base cursor-pointer'
@@ -59,15 +52,12 @@ export default function Navbar() {
           <i className='' />
           <div>Settings</div>
         </button> */}
+
         {user && (
-          <CTA
-            variant='base-ghost'
-            size='large'
-            icon={<GrLogout />}
-            onClick={handleLogout}
-          >
-            Log out
-          </CTA>
+          <button className='menu-item' onClick={handleLogout}>
+            <GrLogout />
+            <span>Log out</span>
+          </button>
         )}
         {!user && (
           <CTA
@@ -80,6 +70,7 @@ export default function Navbar() {
           </CTA>
         )}
       </div>
+      <div className='navbar__divider' />
 
       {user && (
         <div className='profile'>
