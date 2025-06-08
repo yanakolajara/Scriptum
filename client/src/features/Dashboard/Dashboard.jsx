@@ -5,6 +5,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuthContext } from 'providers/auth.provider';
 import Card from './components/Card';
 import newEntryImg from './assets/images/new-entry.png';
+import toast from 'react-hot-toast';
 import './Dashboard.scss';
 
 export default function Dashboard() {
@@ -12,7 +13,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { user } = useAuthContext();
+  const { user, loading: authLoading } = useAuthContext();
 
   const handleGetEntries = async () => {
     try {
@@ -22,7 +23,12 @@ export default function Dashboard() {
       });
       setEntries(sorted);
     } catch (e) {
-      console.error(e);
+      console.error('Error fetching entries:', e);
+      // If unauthorized, redirect to login
+      if (e.status === 401) {
+        navigate('/login');
+        return;
+      }
     } finally {
       setLoading(false);
     }
@@ -37,26 +43,55 @@ export default function Dashboard() {
       } else {
         toast.error(res.data.message);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error('Error deleting entry:', error);
+      toast.error('Failed to delete entry');
+    }
   };
 
   const handleEdit = (id) => {
     navigate(`/edit-entry?id=${id}&edit=true`);
   };
+
   useEffect(() => {
-    if (!user) {
-      navigate('/');
+    // Wait for auth to finish loading before making decisions
+    if (authLoading) {
+      return;
     }
-    if (loading) {
+
+    // Only redirect if auth is done loading and user is definitely null
+    if (!authLoading && !user) {
+      console.log('User not authenticated, redirecting to login');
+      navigate('/login');
+      return;
+    }
+
+    // If we have a user and we're still loading entries, fetch them
+    if (user && loading) {
       handleGetEntries();
     }
-  }, [loading, user]);
+  }, [loading, user, authLoading, navigate]);
 
-  if (loading) return <h1>Loading...</h1>;
+  // Show loading while auth is loading or entries are loading
+  if (authLoading || loading) {
+    return (
+      <main className='dashboard'>
+        <div style={{ padding: '2rem', textAlign: 'center' }}>
+          <h1>Loading...</h1>
+        </div>
+      </main>
+    );
+  }
+
+  // If no user after auth loading is complete, don't render anything
+  // (the useEffect will handle the redirect)
+  if (!user) {
+    return null;
+  }
 
   return (
     <main className='dashboard'>
-      {entries.length ? (
+      {entries && entries.length ? (
         <section className='dashboard__entries'>
           <h2 className='dashboard__title'>Dashboard</h2>
           <div className='dashboard__entries-container'>

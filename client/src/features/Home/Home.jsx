@@ -6,14 +6,33 @@ import heroImage from './assets/images/hero-image.png';
 import './Home.scss';
 
 export default function Home() {
-  const { user } = useAuthContext();
+  const { user, loading: authLoading } = useAuthContext();
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    if (user) {
+    // Only redirect if auth loading is complete and user exists
+    if (!authLoading && user) {
+      console.log('User authenticated, redirecting to dashboard');
       navigate('/dashboard');
     }
-  }, [user]);
+  }, [user, authLoading, navigate]);
+
+  // Show loading while auth is being determined
+  if (authLoading) {
+    return (
+      <main className='hero'>
+        <div className='hero-content'>
+          <h1>Loading...</h1>
+        </div>
+      </main>
+    );
+  }
+
+  // Don't render content if user is authenticated
+  // (useEffect will handle redirect)
+  if (user) {
+    return null;
+  }
 
   return (
     <>
