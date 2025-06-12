@@ -25,10 +25,10 @@ export default function Dashboard() {
     } catch (e) {
       console.error('Error fetching entries:', e);
       // If unauthorized, redirect to login
-      if (e.status === 401) {
-        navigate('/login');
-        return;
-      }
+      // if (e.status === 401) {
+      //   navigate('/login');
+      //   return;
+      // }
     } finally {
       setLoading(false);
     }
@@ -62,7 +62,8 @@ export default function Dashboard() {
     // Only redirect if auth is done loading and user is definitely null
     if (!authLoading && !user) {
       console.log('User not authenticated, redirecting to login');
-      navigate('/login');
+
+      // navigate('/login');
       return;
     }
 

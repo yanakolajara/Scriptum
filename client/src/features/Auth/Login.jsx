@@ -29,8 +29,7 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (isSubmitting) return; // Prevent double submission
-
+    if (isSubmitting) return;
     setIsSubmitting(true);
     try {
       await handleLogin(formData);

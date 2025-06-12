@@ -15,8 +15,6 @@ export const useLogin = () => {
 
       if (res.status === 200) {
         toast.success(res.data.message);
-
-        // Add a small delay to ensure user state is updated
         setTimeout(() => {
           console.log('Navigating to dashboard');
           navigate('/dashboard');
