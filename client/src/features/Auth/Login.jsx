@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import './Login.scss';
 import Container from 'components/Container/Container';
 import authImage from './assets/images/auth.png';
+import toast from 'react-hot-toast';
 
 export default function Login() {
   const { handleLogin } = useLogin();
