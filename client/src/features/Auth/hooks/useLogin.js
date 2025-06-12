@@ -18,6 +18,7 @@ export const useLogin = () => {
         setTimeout(() => {
           console.log('Navigating to dashboard');
           // navigate('/dashboard');
+          navigate('/test');
         }, 100);
       } else {
         console.log('Login failed:', res.data.message);

@@ -30,6 +30,7 @@ function App() {
           <Route path='/check-email' element={<CheckEmail />} />
           <Route path='/verify-email' element={<VerifyEmail />} />
           <Route path='/twoFactor' element={<TwoFactor />} />
+          <Route path='/test' element={<div>test</div>} />
           <Route path='*' element={<NotFound />} />
         </Routes>
       </div>
