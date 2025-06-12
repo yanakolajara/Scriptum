@@ -32,6 +32,7 @@ export const createApp = (models) => {
     origin: [
       'https://www.scriptum-app.vercel.app',
       'https://scriptum-client-n4f89nqz9-yanakolajaras-projects.vercel.app',
+      'scriptum-client-git-fix-mobile-au-b65c00-yanakolajaras-projects.vercel.app',
       'https://scriptum-app.vercel.app',
       'http://localhost:3000',
     ],
