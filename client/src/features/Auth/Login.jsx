@@ -43,7 +43,8 @@ export default function Login() {
   // Fixed useEffect - remove formData dependency to prevent infinite re-renders
   useEffect(() => {
     if (user && !loading) {
-      navigate('/dashboard');
+      toast.success(user);
+      // navigate('/dashboard');
     }
   }, [user, loading, navigate]);
 

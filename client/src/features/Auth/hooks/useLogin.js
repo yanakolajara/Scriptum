@@ -17,7 +17,7 @@ export const useLogin = () => {
         toast.success(res.data.message);
         setTimeout(() => {
           console.log('Navigating to dashboard');
-          navigate('/dashboard');
+          // navigate('/dashboard');
         }, 100);
       } else {
         console.log('Login failed:', res.data.message);
