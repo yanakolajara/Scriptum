@@ -20,7 +20,6 @@ const removeToken = () => {
   delete axiosInstance.defaults.headers.common['Authorization'];
 };
 
-// Improved cookie parsing with error handling
 const getTokenFromCookies = () => {
   try {
     const cookies = document.cookie.split(';');
@@ -42,6 +41,7 @@ const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const trycatchHandler = async (func) => {
@@ -69,27 +69,7 @@ const AuthProvider = ({ children }) => {
   const login = async (data) => {
     return await trycatchHandler(async () => {
       const res = await axiosInstance.post('/users/login', data);
-
-      if (res.status === 200 && res.data.user) {
-        setUser(res.data.user);
-
-        // Try to get token from response headers first
-        let token = null;
-        if (res.headers && res.headers.authorization) {
-          token = res.headers.authorization.split(' ')[1];
-        }
-
-        // Fallback to cookies if no header token
-        if (!token) {
-          token = getTokenFromCookies();
-        }
-
-        // Store token if found
-        if (token) {
-          setToken(token);
-        }
-      }
-
+      setIsAuthenticated(res.status === 200 && res.data.user);
       return res;
     });
   };
@@ -122,20 +102,11 @@ const AuthProvider = ({ children }) => {
   };
 
   const checkAuth = async () => {
-    console.log('Checking authentication...');
     return await trycatchHandler(async () => {
-      // First check if we have a stored token
-      const storedToken = getToken();
-      if (storedToken) {
-        axiosInstance.defaults.headers.common[
-          'Authorization'
-        ] = `Bearer ${storedToken}`;
-      }
-
       const res = await axiosInstance.get('/users/check-auth');
-
-      if (res.status === 200 && res.data.user) {
-        setUser(res.data.user);
+      console.log('Check auth response:', res);
+      if (res.status === 200) {
+        setIsAuthenticated(true);
       } else {
         // Clear invalid token
         removeToken();
@@ -148,25 +119,16 @@ const AuthProvider = ({ children }) => {
 
   // Initialize auth check on mount
   useEffect(() => {
-    const initializeAuth = async () => {
-      // Check for existing token or cookie
-      const existingToken = getToken() || getTokenFromCookies();
-
-      if (existingToken) {
-        setToken(existingToken);
-        await checkAuth();
-      } else {
-        setLoading(false);
-      }
-    };
-
-    initializeAuth();
+    checkAuth();
   }, []);
+
+  // useEffect(() => {}, [isAuthenticated]);
 
   return (
     <AuthContext.Provider
       value={{
         user,
+        isAuthenticated,
         loading,
         register,
         login,

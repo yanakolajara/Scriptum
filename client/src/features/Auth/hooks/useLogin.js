@@ -8,24 +8,14 @@ export const useLogin = () => {
 
   const handleLogin = async (formData) => {
     try {
-      console.log('Attempting login with:', { email: formData.email });
       const res = await login(formData);
-
-      console.log('Login response:', res);
-
       if (res.status === 200) {
         toast.success(res.data.message);
-        setTimeout(() => {
-          console.log('Navigating to dashboard');
-          // navigate('/dashboard');
-          navigate('/test');
-        }, 100);
+        navigate('/dashboard');
       } else {
-        console.log('Login failed:', res.data.message);
         toast.error(res.data.message);
       }
     } catch (error) {
-      console.error('Login error:', error);
       toast.error(error.message || 'Login failed');
     }
   };

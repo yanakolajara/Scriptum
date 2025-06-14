@@ -13,6 +13,7 @@ import TwoFactor from '@/features/Auth/TwoFactor';
 import EditEntry from '@/features/EditEntry/EditEntry.jsx';
 import Navbar from '@/features/Navbar/Navbar.jsx';
 import './App.scss';
+import { ProtectedRoute } from './components/ProtectedRoute/ProtectedRoute';
 
 function App() {
   return (
@@ -22,14 +23,23 @@ function App() {
       <div className='main-container'>
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/dashboard' element={<Dashboard />} />
-          <Route path='/chat' element={<Chat />} />
-          <Route path='/edit-entry' element={<EditEntry />} />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
           <Route path='/check-email' element={<CheckEmail />} />
           <Route path='/verify-email' element={<VerifyEmail />} />
           <Route path='/twoFactor' element={<TwoFactor />} />
+
+          <Route
+            path='/dashboard'
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route path='/chat' element={<Chat />} />
+          <Route path='/edit-entry' element={<EditEntry />} />
+
           <Route path='/test' element={<div>test</div>} />
           <Route path='*' element={<NotFound />} />
         </Routes>

@@ -13,7 +13,6 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { user, loading: authLoading } = useAuthContext();
 
   const handleGetEntries = async () => {
     try {
@@ -54,27 +53,13 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    // Wait for auth to finish loading before making decisions
-    if (authLoading) {
-      return;
-    }
-
-    // Only redirect if auth is done loading and user is definitely null
-    if (!authLoading && !user) {
-      console.log('User not authenticated, redirecting to login');
-
-      // navigate('/login');
-      return;
-    }
-
-    // If we have a user and we're still loading entries, fetch them
-    if (user && loading) {
+    if (loading) {
       handleGetEntries();
     }
-  }, [loading, user, authLoading, navigate]);
+  }, [loading, navigate]);
 
   // Show loading while auth is loading or entries are loading
-  if (authLoading || loading) {
+  if (loading) {
     return (
       <main className='dashboard'>
         <div style={{ padding: '2rem', textAlign: 'center' }}>
@@ -82,12 +67,6 @@ export default function Dashboard() {
         </div>
       </main>
     );
-  }
-
-  // If no user after auth loading is complete, don't render anything
-  // (the useEffect will handle the redirect)
-  if (!user) {
-    return null;
   }
 
   return (
