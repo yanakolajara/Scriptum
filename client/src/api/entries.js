@@ -1,8 +1,8 @@
-import { axiosInstance } from './axios';
+import axios from './axios';
 
 export const getEntries = async () => {
   try {
-    const response = await axiosInstance.get('/entries');
+    const response = await axios.get('/entries');
     return response.data;
   } catch {
     console.log(error);
@@ -11,7 +11,7 @@ export const getEntries = async () => {
 
 export const getEntry = async (id) => {
   try {
-    const response = await axiosInstance.get(`/entries/${id}`);
+    const response = await axios.get(`/entries/${id}`);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -20,7 +20,7 @@ export const getEntry = async (id) => {
 
 export const createEntry = async (data) => {
   try {
-    const response = await axiosInstance.post('/entries', data);
+    const response = await axios.post('/entries', data);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -29,7 +29,7 @@ export const createEntry = async (data) => {
 
 export const editEntry = async (data) => {
   try {
-    const response = await axiosInstance.put(`/entries/${data.id}`, data);
+    const response = await axios.put(`/entries/${data.id}`, data);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -39,7 +39,7 @@ export const editEntry = async (data) => {
 export const deleteEntry = async (id) => {
   try {
     console.log(id);
-    const response = await axiosInstance.delete(`/entries/${id}`);
+    const response = await axios.delete(`/entries/${id}`);
     return response.data;
   } catch (error) {
     console.log(error);

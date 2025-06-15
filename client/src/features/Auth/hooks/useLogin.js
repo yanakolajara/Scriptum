@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from 'providers/auth.provider';
 import toast from 'react-hot-toast';
@@ -5,20 +6,42 @@ import toast from 'react-hot-toast';
 export const useLogin = () => {
   const { login } = useAuthContext();
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
 
-  const handleLogin = async (formData) => {
-    try {
-      const res = await login(formData);
-      if (res.status === 200) {
-        toast.success(res.data.message);
-        navigate('/dashboard');
-      } else {
-        toast.error(res.data.message);
-      }
-    } catch (error) {
-      toast.error(error.message || 'Login failed');
-    }
+  const handleChange = (e) => {
+    e.preventDefault();
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  return { handleLogin };
+  const handleLogin = (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    login(formData)
+      .then((res) => {
+        toast.success(res.data.message);
+        navigate('/dashboard');
+      })
+      .catch((error) => {
+        toast.error('Login failed');
+      })
+      .finally(() => setIsSubmitting(false));
+  };
+
+  return {
+    handleChange,
+    handleLogin,
+    formData,
+    isSubmitting,
+    showPassword,
+    setShowPassword,
+  };
 };

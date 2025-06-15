@@ -1,41 +1,5 @@
 import { createContext, useState, useEffect, useContext } from 'react';
-import { axiosInstance } from '../api/axios';
-
-// Improved token storage helper functions
-const TOKEN_KEY = 'accessToken'; // Consistent key
-
-const setToken = (token) => {
-  if (token) {
-    localStorage.setItem(TOKEN_KEY, token);
-    axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-  }
-};
-
-const getToken = () => {
-  return localStorage.getItem(TOKEN_KEY);
-};
-
-const removeToken = () => {
-  localStorage.removeItem(TOKEN_KEY);
-  delete axiosInstance.defaults.headers.common['Authorization'];
-};
-
-const getTokenFromCookies = () => {
-  try {
-    const cookies = document.cookie.split(';');
-    const tokenCookie = cookies.find((c) =>
-      c.trim().startsWith('access_token=')
-    );
-
-    if (tokenCookie) {
-      const token = tokenCookie.split('=')[1];
-      return token;
-    }
-  } catch (error) {
-    console.warn('Cookie parsing failed:', error);
-  }
-  return null;
-};
+import axios from '../api/axios';
 
 const AuthContext = createContext();
 
@@ -44,92 +8,66 @@ const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const trycatchHandler = async (func) => {
-    try {
-      setLoading(true);
-      const response = await func();
-      console.log('Auth response:', response);
-      return response;
-    } catch (error) {
-      console.error('Auth error:', error);
-      return (
-        error.response || { status: 500, data: { message: 'Network error' } }
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
+  const register = (data) =>
+    axios
+      .post('/users/register', data)
+      .then((res) => res.data)
+      .catch((error) => error.message);
 
-  const register = async (data) => {
-    return await trycatchHandler(() =>
-      axiosInstance.post('/users/register', data)
-    );
-  };
-
-  const login = async (data) => {
-    return await trycatchHandler(async () => {
-      const res = await axiosInstance.post('/users/login', data);
-      setIsAuthenticated(res.status === 200 && res.data.user);
-      return res;
-    });
-  };
-
-  const logout = async () => {
-    return await trycatchHandler(async () => {
-      const res = await axiosInstance.post('/users/logout');
-      setUser(null);
-      removeToken();
-      return res;
-    });
-  };
-
-  const verify = async (data) => {
-    return await trycatchHandler(async () => {
-      return await axiosInstance.post('/users/verify', data);
-    });
-  };
-
-  const resendCode = async (data) => {
-    return await trycatchHandler(async () => {
-      return await axiosInstance.post('/users/resend-code', data);
-    });
-  };
-
-  const verifyEmail = async (data) => {
-    return await trycatchHandler(async () => {
-      return await axiosInstance.post('/users/verify-email', data);
-    });
-  };
-
-  const checkAuth = async () => {
-    return await trycatchHandler(async () => {
-      const res = await axiosInstance.get('/users/check-auth');
-      console.log('Check auth response:', res);
-      if (res.status === 200) {
+  const login = (data) =>
+    axios
+      .post('/users/login', data)
+      .then((res) => {
         setIsAuthenticated(true);
-      } else {
-        // Clear invalid token
-        removeToken();
+        setUser(res.data.user);
+        return res;
+      })
+      .catch((error) => {
+        throw error;
+      });
+
+  const logout = async () => await axios.post('/users/logout');
+  const verify = (data) =>
+    axios
+      .post('/users/verify', data)
+      .then((res) => res.data)
+      .catch((error) => error.message);
+
+  const resendCode = (data) =>
+    axios
+      .post('/users/resend-code', data)
+      .then((res) => res.data)
+      .catch((error) => error.message);
+
+  const verifyEmail = (data) =>
+    axios
+      .post('/users/verify-email', data)
+      .then((res) => res.data)
+      .catch((error) => error.message);
+
+  const checkAuth = () =>
+    axios
+      .get('/users/check-auth')
+      .then((res) => {
+        setIsAuthenticated(true);
+        setUser(res.data.user);
+      })
+      .catch((error) => {
+        setIsAuthenticated(false);
         setUser(null);
-      }
+      })
+      .finally(() => setLoading(false));
 
-      return res;
-    });
-  };
-
-  // Initialize auth check on mount
   useEffect(() => {
     checkAuth();
   }, []);
 
-  // useEffect(() => {}, [isAuthenticated]);
-
   return (
     <AuthContext.Provider
       value={{
+        loading,
         user,
         isAuthenticated,
-        loading,
         register,
         login,
         logout,

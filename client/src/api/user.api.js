@@ -1,1 +1,1 @@
-import { axiosInstance } from './axios.js';
+import axios from './axios.js';

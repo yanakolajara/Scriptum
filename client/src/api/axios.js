@@ -13,7 +13,7 @@ const isLocalDev =
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 axios.defaults.headers.common['Accept'] = 'application/json';
 
-export const axiosInstance = axios.create({
+const axiosInstance = axios.create({
   baseURL: isLocalDev ? 'http://localhost:8080' : apiUrl,
   timeout: 30000, // Increased timeout for mobile networks
   headers: {
@@ -115,3 +115,5 @@ axiosInstance.interceptors.response.use(
     }
   }
 );
+
+export default axiosInstance;

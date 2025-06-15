@@ -1,8 +1,8 @@
-import { axiosInstance } from './axios';
+import axios from './axios';
 
 export const updateUserContext = async (data) => {
   try {
-    const response = await axiosInstance.put('/user-context', { data: data });
+    const response = await axios.put('/user-context', { data: data });
     return response.data;
   } catch (error) {
     console.log(error);
