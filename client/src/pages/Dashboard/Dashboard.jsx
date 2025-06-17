@@ -14,24 +14,18 @@ export default function Dashboard() {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const handleGetEntries = async () => {
-    try {
-      const res = await getEntries();
-      const sorted = res.data.sort((a, b) => {
-        return new Date(b.entry_date) - new Date(a.entry_date);
-      });
-      setEntries(sorted);
-    } catch (e) {
-      console.error('Error fetching entries:', e);
-      // If unauthorized, redirect to login
-      // if (e.status === 401) {
-      //   navigate('/login');
-      //   return;
-      // }
-    } finally {
-      setLoading(false);
-    }
-  };
+  const handleGetEntries = () =>
+    getEntries()
+      .then((res) => {
+        const sorted = res.data.sort((a, b) => {
+          return new Date(b.entry_date) - new Date(a.entry_date);
+        });
+        setEntries(sorted);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => setLoading(false));
 
   const handleDelete = async (id) => {
     try {

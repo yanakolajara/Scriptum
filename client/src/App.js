@@ -1,19 +1,19 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
-import NotFound from '@/features/NotFound/NotFound.jsx';
-import Home from '@/features/Home/Home.jsx';
-import Dashboard from '@/features/Dashboard/Dashboard.jsx';
-import Chat from '@/features/Chat/Chat.jsx';
-import Login from '@/features/Auth/Login.jsx';
-import Register from '@/features/Auth/Register';
-import CheckEmail from '@/features/Auth/CheckEmail';
-import VerifyEmail from '@/features/Auth/VerifyEmail';
-import TwoFactor from '@/features/Auth/TwoFactor';
-import EditEntry from '@/features/EditEntry/EditEntry.jsx';
-import Navbar from '@/features/Navbar/Navbar.jsx';
+import { ProtectedRoute } from '@/components/ProtectedRoute/ProtectedRoute';
+import Navbar from '@/components/Navbar/Navbar.jsx';
+import NotFound from '@/pages/NotFound/NotFound.jsx';
+import Home from '@/pages/Home/Home.jsx';
+import Dashboard from '@/pages/Dashboard/Dashboard.jsx';
+import Chat from '@/pages/Chat/Chat.jsx';
+import Login from '@/pages/Auth/Login.jsx';
+import Register from '@/pages/Auth/Register';
+import CheckEmail from '@/pages/Auth/CheckEmail';
+import VerifyEmail from '@/pages/Auth/VerifyEmail';
+import TwoFactor from '@/pages/Auth/TwoFactor';
+import EditEntry from '@/pages/EditEntry/EditEntry.jsx';
 import './App.scss';
-import { ProtectedRoute } from './components/ProtectedRoute/ProtectedRoute';
 
 function App() {
   return (

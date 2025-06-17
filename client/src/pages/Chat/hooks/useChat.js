@@ -10,6 +10,7 @@ import {
 } from '../services/speechServices.js';
 import { getPreferredVoice } from '../utils/speechUtils.js';
 import { updateUserContext } from '@/api/userContext.js';
+import toast from 'react-hot-toast';
 
 export const useChat = () => {
   const [state, dispatch] = useReducer(speechReducer, initialState);
@@ -188,16 +189,12 @@ export const useChat = () => {
       )
     );
   }, []);
-  const generateEntry = async () => {
-    try {
-      socket.disconnect();
-      const res = await createEntry(chat);
-      // Update context
-      await updateUserContext(res.data.content);
-      navigate(`/edit-entry?id=${res.data.id}`);
-    } catch (error) {
-      console.error('Error in entry:', error.message);
-    }
+  const generateEntry = () => {
+    createEntry(chat)
+      .then((res) => updateUserContext(res.data))
+      .then((res) => navigate(`/edit-entry?id=${res.data.id}`))
+      .catch((e) => toast.error(message))
+      .finally(() => socket.disconnect());
   };
 
   const sendMessage = (messageText) => {

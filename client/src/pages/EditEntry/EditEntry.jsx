@@ -13,31 +13,19 @@ export default function EditEntry() {
   const getQueryParams = () => new URLSearchParams(location.search);
   const entryId = getQueryParams().get('id');
 
-  useEffect(() => {
-    if (entryId) {
-      fetchEntry(entryId);
-    }
-  }, [entryId]);
-
-  const fetchEntry = async (id) => {
-    try {
-      const response = await getEntry(id);
-      setEntry(response.data);
-    } catch (error) {
-      console.error('Error fetching entry:', error.message);
-    }
-  };
+  const fetchEntry = (id) =>
+    getEntry(id)
+      .then((res) => setEntry(res.data))
+      .catch((err) => toast.error(err.message));
 
   const handleEdit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await editEntry(entry);
-      toast.success(response.message);
-    } catch (error) {
-      toast.success(response.message);
-    } finally {
-      navigate('/dashboard');
-    }
+    editEntry(entry)
+      .then((res) => toast.success(res.message))
+      .catch((err) => {
+        toast.error(err.message);
+      })
+      .finally(() => navigate('/dashboard'));
   };
 
   const handleChange = (e) => {
@@ -47,6 +35,10 @@ export default function EditEntry() {
       [name]: value,
     }));
   };
+
+  useEffect(() => {
+    fetchEntry(entryId);
+  }, []);
 
   if (!entry) return <h1>Loading...</h1>;
 

@@ -12,7 +12,6 @@ export default function TwoFactor() {
   const handleChange = (e) => {
     e.preventDefault();
     const { value } = e.target;
-    // validates if character is a string with a number
     if (validateNumber(value.slice(-1))) {
       setCode(value);
     }
@@ -40,16 +39,15 @@ export default function TwoFactor() {
   };
 
   useEffect(() => {
-    // verifies if code is complete (6 digits)
     if (isCodeComplete(code)) {
       handleVerify();
     }
   }, [code]);
   return (
-    <div className="two-factor">
-      <h1 className="two-factor__title">Verify</h1>
-      <p className="two-factor__subtitle">Check your inbox</p>
-      <form className="two-factor__form">
+    <div className='two-factor'>
+      <h1 className='two-factor__title'>Verify</h1>
+      <p className='two-factor__subtitle'>Check your inbox</p>
+      <form className='two-factor__form'>
         <input
           type='text'
           value={code}
@@ -58,9 +56,9 @@ export default function TwoFactor() {
           maxLength={6}
           required
           disabled={isCodeComplete(code)}
-          className="two-factor__input"
+          className='two-factor__input'
         />
-        <p className="two-factor__resend">
+        <p className='two-factor__resend'>
           Din't receive it?{' '}
           <a href='/#' onClick={handleResend}>
             {' '}
