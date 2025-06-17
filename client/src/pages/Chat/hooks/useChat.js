@@ -191,8 +191,10 @@ export const useChat = () => {
   }, []);
   const generateEntry = () => {
     createEntry(chat)
-      .then((res) => updateUserContext(res.data))
-      .then((res) => navigate(`/edit-entry?id=${res.data.id}`))
+      .then((res) => {
+        updateUserContext(res.data);
+        navigate(`/edit-entry?id=${res.data.id}`);
+      })
       .catch((e) => toast.error(message))
       .finally(() => socket.disconnect());
   };

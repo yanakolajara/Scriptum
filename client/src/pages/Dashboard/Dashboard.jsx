@@ -14,12 +14,15 @@ export default function Dashboard() {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
+  const sortArrByKey = (arr, key) =>
+    arr.sort((a, b) => {
+      return new Date(b[key]) - new Date(a[key]);
+    });
+
   const handleGetEntries = () =>
     getEntries()
       .then((res) => {
-        const sorted = res.data.sort((a, b) => {
-          return new Date(b.entry_date) - new Date(a.entry_date);
-        });
+        const sorted = sortArrByKey(res.data, 'entry_date');
         setEntries(sorted);
       })
       .catch((error) => {
@@ -27,30 +30,19 @@ export default function Dashboard() {
       })
       .finally(() => setLoading(false));
 
-  const handleDelete = async (id) => {
-    try {
-      const res = await deleteEntry(id);
-      if (res.status === 200) {
-        toast.success(res.data.message);
-        setLoading(true);
-      } else {
-        toast.error(res.data.message);
-      }
-    } catch (error) {
-      console.error('Error deleting entry:', error);
-      toast.error('Failed to delete entry');
-    }
-  };
+  const handleDelete = (id) =>
+    deleteEntry(id)
+      .then((res) => toast.success(res.message))
+      .catch((err) => toast.error(err.message))
+      .finally(() => setLoading(true));
 
-  const handleEdit = (id) => {
-    navigate(`/edit-entry?id=${id}&edit=true`);
-  };
+  const handleEdit = (id) => navigate(`/edit-entry?id=${id}&edit=true`);
 
   useEffect(() => {
     if (loading) {
       handleGetEntries();
     }
-  }, [loading, navigate]);
+  }, [loading, navigate, handleDelete]);
 
   // Show loading while auth is loading or entries are loading
   if (loading) {

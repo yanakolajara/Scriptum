@@ -30,8 +30,6 @@ axiosInstance.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-
-    console.log('Making request to:', config.baseURL + config.url);
     return config;
   },
   (error) => {
