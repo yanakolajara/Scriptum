@@ -13,67 +13,39 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { user, loading: authLoading } = useAuthContext();
 
-  const handleGetEntries = async () => {
-    try {
-      const res = await getEntries();
-      const sorted = res.data.sort((a, b) => {
-        return new Date(b.entry_date) - new Date(a.entry_date);
-      });
-      setEntries(sorted);
-    } catch (e) {
-      console.error('Error fetching entries:', e);
-      // If unauthorized, redirect to login
-      if (e.status === 401) {
-        navigate('/login');
-        return;
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
+  const sortArrByKey = (arr, key) =>
+    arr.sort((a, b) => {
+      return new Date(b[key]) - new Date(a[key]);
+    });
 
-  const handleDelete = async (id) => {
-    try {
-      const res = await deleteEntry(id);
-      if (res.status === 200) {
-        toast.success(res.data.message);
-        setLoading(true);
-      } else {
-        toast.error(res.data.message);
-      }
-    } catch (error) {
-      console.error('Error deleting entry:', error);
-      toast.error('Failed to delete entry');
-    }
-  };
+  const handleGetEntries = () =>
+    getEntries()
+      .then((res) => {
+        const sorted = sortArrByKey(res.data, 'entry_date');
+        setEntries(sorted);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => setLoading(false));
 
-  const handleEdit = (id) => {
-    navigate(`/edit-entry?id=${id}&edit=true`);
-  };
+  const handleDelete = (id) =>
+    deleteEntry(id)
+      .then((res) => toast.success(res.message))
+      .catch((err) => toast.error(err.message))
+      .finally(() => setLoading(true));
+
+  const handleEdit = (id) => navigate(`/edit-entry?id=${id}&edit=true`);
 
   useEffect(() => {
-    // Wait for auth to finish loading before making decisions
-    if (authLoading) {
-      return;
-    }
-
-    // Only redirect if auth is done loading and user is definitely null
-    if (!authLoading && !user) {
-      console.log('User not authenticated, redirecting to login');
-      navigate('/login');
-      return;
-    }
-
-    // If we have a user and we're still loading entries, fetch them
-    if (user && loading) {
+    if (loading) {
       handleGetEntries();
     }
-  }, [loading, user, authLoading, navigate]);
+  }, [loading, navigate, handleDelete]);
 
   // Show loading while auth is loading or entries are loading
-  if (authLoading || loading) {
+  if (loading) {
     return (
       <main className='dashboard'>
         <div style={{ padding: '2rem', textAlign: 'center' }}>
@@ -81,12 +53,6 @@ export default function Dashboard() {
         </div>
       </main>
     );
-  }
-
-  // If no user after auth loading is complete, don't render anything
-  // (the useEffect will handle the redirect)
-  if (!user) {
-    return null;
   }
 
   return (

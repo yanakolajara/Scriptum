@@ -165,7 +165,7 @@ export class UsersController {
           httpOnly: true,
           secure: process.env.NODE_ENV === 'production',
           sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
-          path: '/'
+          path: '/',
         })
         .status(200)
         .json({ message: 'Logged out' });

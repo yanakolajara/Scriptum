@@ -11,22 +11,14 @@ export default function VerifyEmail() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const verify = async () => {
-      try {
-        const res = await verifyEmail({ token });
-        console.log(res);
-        if (res.status === 200) {
-          toast.success(res.data.message);
-          navigate('/login');
-        } else {
-          toast.error(res.data.message);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
+    const verify = () =>
+      verifyEmail({ token })
+        .then((message) => toast.success(message))
+        .then(() => navigate('/login'))
+        .catch((err) => toast.error(err));
+
     verify();
-  }, [token, navigate]);
+  }, []);
 
   return (
     <div className='verify-email'>

@@ -10,21 +10,17 @@ import './Navbar.scss';
 export default function Navbar() {
   const { user, logout } = useAuthContext();
   const navigate = useNavigate();
-  const handleLogout = async (e) => {
+  const handleLogout = (e) => {
     e.preventDefault();
-    try {
-      const res = await logout();
-      navigate('/');
-    } catch (error) {
-      console.error(error);
-    }
+    logout()
+      .then(() => {
+        navigate('/');
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
-  useEffect(() => {
-    console.log('user', user);
-  }, [user]);
-
-  // align-self: stretch;
   return (
     <div className='navbar'>
       <div className='navbar__logo-container'>
