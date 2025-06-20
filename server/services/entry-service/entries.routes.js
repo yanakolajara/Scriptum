@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { EntryController } from '../controllers/entry.controller.js';
+import { EntryController } from './entry.controller.js';
 
 export const createEntriesRouter = (entryModel) => {
   const router = Router();

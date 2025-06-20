@@ -7,17 +7,17 @@ import cors from 'cors';
 import { createServer } from 'node:http';
 
 //* Setup config
-import { config } from './config/config.js';
+import { config } from './shared/config/config.js';
 
 //* Setup middlewares
-import { corsMiddleware } from './middlewares/cors.middleware.js';
-import { errorHandler } from './middlewares/error.middleware.js';
+import { corsMiddleware } from './shared/middlewares/cors.middleware.js';
+import { errorHandler } from './shared/middlewares/error.middleware.js';
 
 //* Setup modules
-import { createUsersRouter } from './routes/users.routes.js';
-import { createEntriesRouter } from './routes/entries.routes.js';
+import { createUsersRouter } from './services/auth-service/';
+import { createEntriesRouter } from './services/entry-service/entries.routes.js';
 import { createUserContextRouter } from './routes/userContext.routes.js';
-import { initializeChatSockets } from './services/sockets.service.js';
+import { initializeChatSockets } from './sockets.service.js';
 
 export const createApp = (models) => {
   const app = express();
@@ -31,8 +31,6 @@ export const createApp = (models) => {
 
     origin: [
       'https://www.scriptum-app.vercel.app',
-      'https://scriptum-client-n4f89nqz9-yanakolajaras-projects.vercel.app',
-      'https://scriptum-client-git-fix-mobile-au-b65c00-yanakolajaras-projects.vercel.app',
       'https://scriptum-app.vercel.app',
       'http://localhost:3000',
     ],
@@ -41,9 +39,6 @@ export const createApp = (models) => {
     exposedHeaders: ['set-cookie'],
   };
   app.use(cors(corsOptions));
-  // Setup web sockets
-  // Return app
-
   app.options('*', (req, res) => {
     res.sendStatus(200);
   });

@@ -1,7 +1,7 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { v4 as uuidv4 } from 'uuid';
 import { config } from '../config/config.js';
-import { modelSettings } from './data/modelSettings.js';
+import { modelSettings } from '../services/auth-service/modelSettings.js';
 import { formatChat } from '../utils/adapters.utils.js';
 
 export const genaiRequest = async (prompt, userContext = {}) => {

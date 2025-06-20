@@ -1,4 +1,4 @@
-import db from '../db/dbConfig.js';
+import db from '../../shared/db/dbConfig.js';
 
 export const createConversation = async (userID) => {
   const title = 'New Chat';

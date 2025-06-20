@@ -2,9 +2,9 @@ import { Server } from 'socket.io';
 import { GenaiChat } from './genai.service.js';
 import cookieParser from 'cookie-parser';
 import jwt from 'jsonwebtoken';
-import { config } from '../config/config.js';
+import { config } from './shared/config/config.js';
 import db from '../models/db/dbConfig.js';
-import { parseCookies } from '../utils/cookieUtils.js';
+import { parseCookies } from './utils/cookieUtils.js';
 
 export const initializeChatSockets = (httpServer) => {
   const io = new Server(httpServer, {

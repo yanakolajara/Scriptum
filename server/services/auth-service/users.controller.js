@@ -1,19 +1,20 @@
-// import jwt from 'jsonwebtoken';
 import e from 'express';
 import {
   loginDataValidation,
   registerDataValidation,
-} from '../middlewares/validate.middleware.js';
+} from './validate.middleware.js';
 import {
   sendCodeToEmail,
   sendEmailVerification,
-} from '../services/email.service.js';
-import { comparePassword, createToken } from '../utils/auth.utils.js';
-import { DuplicateError, UnauthorizedError } from '../utils/errors.js';
-import { logger } from '../utils/logger.utils.js';
+} from '../email-service/email.service.js';
+import { comparePassword, createToken } from 'auth.utils.js';
+import {
+  DuplicateError,
+  UnauthorizedError,
+} from '../../shared/middlewares/error.middleware.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { config } from '../config/config.js';
+import { config } from '../../shared/config/config.js';
 
 export class UsersController {
   constructor({ userModel }) {
@@ -72,31 +73,6 @@ export class UsersController {
       next(error);
     }
   };
-
-  // verifyEmail = async (req, res, next) => {
-  // try {
-  //   const { email, code } = req.body;
-  //   await this.userModel.verifyCode(email);
-  //   const user = await this.userModel.getByEmail(email);
-  //   if (!user) throw new UnauthorizedError('User not found.');
-  //   createToken(
-  //     {
-  //       id: user.id,
-  //       email: user.email,
-  //       first_name: user.first_name,
-  //       middle_name: user.middle_name,
-  //       last_name: user.last_name,
-  //     },
-  //     'access'
-  //   );
-  //   createToken({ id: user.id }, 'refresh');
-  //   res.status(200).json({
-  //     message: 'User verified successfully.',
-  //   });
-  // } catch (error) {
-  //   next(error);
-  // }
-  // };
 
   login = async (req, res, next) => {
     try {

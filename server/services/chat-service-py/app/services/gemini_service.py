@@ -9,6 +9,7 @@ def genai_message(message = "", history = []):
   client = genai.Client(api_key = Config.GENAI_KEY)
   # todo: add settings
 
+
   # setup chat model with or without chat history
   chat = client.chats.create(model = "gemini-2.5-flash", history = history)
   response = chat.send_message(message)

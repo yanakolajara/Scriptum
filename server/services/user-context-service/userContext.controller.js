@@ -1,6 +1,6 @@
 import { userContextStructure } from '../services/data/userContextStructure.js';
 import { genaiRequest } from '../services/genai.service.js';
-import { UnauthorizedError, ValidationError } from '../utils/errors.js';
+import { UnauthorizedError, ValidationError } from '../../utils/errors.js';
 
 export class UserContextController {
   constructor({ userContextModel }) {
