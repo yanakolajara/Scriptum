@@ -14,7 +14,7 @@ import { corsMiddleware } from './shared/middlewares/cors.middleware.js';
 import { errorHandler } from './shared/middlewares/error.middleware.js';
 
 //* Setup modules
-import { createUsersRouter } from './services/auth-service/';
+import { createUsersRouter } from './services/user-service/index.js';
 import { createEntriesRouter } from './services/entry-service/entries.routes.js';
 import { createUserContextRouter } from './routes/userContext.routes.js';
 import { initializeChatSockets } from './sockets.service.js';

@@ -1,0 +1,84 @@
+version: '3.8'
+
+services:
+  user-service:
+    build: ./server/services/user-service
+    ports:
+      - '3001:3001'
+    volumes:
+      - ./server/services/user-service:/app
+    depends_on:
+      - postgres
+    environment:
+      - NODE_ENV=development
+      - PORT=3001
+
+  entry-service:
+    build: ./server/services/entry-service
+    ports:
+      - '3002:3002'
+    volumes:
+      - ./server/services/entry-service:/app
+    depends_on:
+      - postgres
+    environment:
+      - NODE_ENV=development
+      - PORT=3002
+
+  chat-service:
+    build: ./server/services/chat-service
+    ports:
+      - '3003:3003'
+    volumes:
+      - ./server/services/chat-service:/app
+    depends_on:
+      - postgres
+    environment:
+      - NODE_ENV=development
+      - PORT=3003
+
+  email-service:
+    build: ./server/services/email-service
+    ports:
+      - '3004:3004'
+    volumes:
+      - ./server/services/email-service:/app
+    depends_on:
+      - postgres
+    environment:
+      - NODE_ENV=development
+      - PORT=3003
+
+  user-context-service:
+    build: ./server/services/user-context-service
+    ports:
+      - '3005:3005'
+    volumes:
+      - ./server/services/user-context-service:/app
+    depends_on:
+      - postgres
+    environment:
+      - NODE_ENV=development
+      - PORT=3003
+
+  client:
+    build: ./client
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./client:/app
+    environment:
+      - NODE_ENV=development
+
+  postgres:
+    image: postgres:15
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+
+volumes:
+  pgdata:
