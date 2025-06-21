@@ -2,23 +2,19 @@ import e from 'express';
 import {
   loginDataValidation,
   registerDataValidation,
-} from './validate.middleware.js';
+} from '../middlewares/validate.middleware.js';
 import {
   sendCodeToEmail,
   sendEmailVerification,
 } from '../email-service/email.service.js';
-import { comparePassword, createToken } from 'auth.utils.js';
-import {
-  DuplicateError,
-  UnauthorizedError,
-} from '../../shared/middlewares/error.middleware.js';
+import { comparePassword, createToken } from '../utils/auth.utils.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { config } from '../../shared/config/config.js';
+import { UserModel } from '../models/user.model.js';
 
 export class UsersController {
-  constructor({ userModel }) {
-    this.userModel = userModel;
+  constructor() {
+    this.userModel = UserModel;
   }
 
   register = async (req, res, next) => {
@@ -27,7 +23,7 @@ export class UsersController {
       const data = registerDataValidation(req.body);
       // Verify if user exists in database
       const userExists = await this.userModel.getByEmail(data.email);
-      if (userExists) throw new DuplicateError('Email already exists.');
+      if (userExists) throw new Error('User already exists');
       //Hash password
       const hashedPassword = await bcrypt.hash(data.password, 10);
       const newUser = await this.userModel.register({
@@ -37,7 +33,7 @@ export class UsersController {
       // Create email verification token
       const verificationToken = jwt.sign(
         { email: newUser.email },
-        config.jwt.secret,
+        process.env.JWT_SECRET,
         { expiresIn: '1d' }
       );
 
@@ -62,9 +58,9 @@ export class UsersController {
   verifyEmail = async (req, res, next) => {
     try {
       const { token } = req.body;
-      const decoded = jwt.verify(token, config.jwt.secret);
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
       const user = await this.userModel.getByEmail(decoded.email);
-      if (!user) throw new UnauthorizedError('User not found.');
+      if (!user) throw new Error('User not found.');
       await this.userModel.verifyEmail(user.email);
       res.status(200).json({
         message: 'User verified successfully.',
@@ -81,14 +77,13 @@ export class UsersController {
       // Verify if user exists in database
       const dbData = await this.userModel.getByEmail(data.email);
       // Throw error if no user was found with the provided email or password
-      if (!dbData) throw new UnauthorizedError('Invalid credentials.');
+      if (!dbData) throw new Error('Invalid credentials.');
       // Check if user is verified
-      if (!dbData.is_verified)
-        throw new UnauthorizedError('Email not verified.');
+      if (!dbData.is_verified) throw new Error('Email not verified.');
       // Compare password
       const match = await comparePassword(data.password, dbData.password);
       // Throw error if password is incorrect
-      if (!match) throw new UnauthorizedError('Invalid credentials.');
+      if (!match) throw new Error('Invalid credentials.');
       if (dbData.mfa) {
         res.status(200).json({
           message: 'Authentication code sent to email.',
@@ -103,7 +98,7 @@ export class UsersController {
             middle_name: dbData.middle_name,
             last_name: dbData.last_name,
           },
-          config.jwt.secret,
+          process.env.JWT_SECRET,
           { expiresIn: '7d' }
         ); //! Remove expiration date after refresh token is implemented
 
@@ -179,10 +174,10 @@ export class UsersController {
   checkAuth = async (req, res, next) => {
     try {
       const token = req.cookies.access_token;
-      if (!token) throw new UnauthorizedError('No token provided.');
-      const decoded = jwt.verify(token, config.jwt.secret);
+      if (!token) throw new Error('No token provided.');
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
       const user = await this.userModel.getByEmail(decoded.email);
-      if (!user) throw new UnauthorizedError('User not found.');
+      if (!user) throw new Error('User not found.');
       res.status(200).json({
         message: 'User authenticated successfully.',
         user: {

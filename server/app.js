@@ -17,7 +17,7 @@ import { errorHandler } from './shared/middlewares/error.middleware.js';
 import { createUsersRouter } from './services/user-service/index.js';
 import { createEntriesRouter } from './services/entry-service/entries.routes.js';
 import { createUserContextRouter } from './routes/userContext.routes.js';
-import { initializeChatSockets } from './sockets.service.js';
+import { initializeChatSockets } from './services/chat-service/sockets.service.js';
 
 export const createApp = (models) => {
   const app = express();

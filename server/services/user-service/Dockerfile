@@ -1,5 +1,7 @@
 FROM node:20
 WORKDIR /app
-COPY . .
+COPY package*.json ./
 RUN npm install
-CMD ["npm", "start"]
+COPY . .
+EXPOSE 4000
+CMD ["node", "server.js"]

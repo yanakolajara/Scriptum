@@ -1,7 +1,5 @@
 // server/middlewares/validate.middleware.js
 import { z } from 'zod';
-import { ValidationError } from '../utils/errors.js';
-import { logger } from '../utils/logger.utils.js';
 
 const userSchema = z.object({
   email: z
@@ -38,32 +36,28 @@ const loginSchema = z.object({
 /**
  * Validates user data for registration.
  * @param {object} data - The user data to validate.
- * @throws {ValidationError} - If the data is invalid.
+ * @throws {} - If the data is invalid.
  * @returns {object} - The validated user data.
  */
 export const registerDataValidation = (data) => {
   try {
     return userSchema.parse(data);
   } catch (e) {
-    throw new ValidationError(
-      e.issues.map((issue) => issue.message).join(', ')
-    );
+    throw e;
   }
 };
 
 /**
  * Validates user data for login.
  * @param {object} data - The user data to validate.
- * @throws {ValidationError} - If the data is invalid.
+ * @throws {} - If the data is invalid.
  * @returns {object} - The validated user data.
  */
 export const loginDataValidation = (data) => {
   try {
     return loginSchema.parse(data);
   } catch (e) {
-    throw new ValidationError(
-      e.issues.map((issue) => issue.message).join(', ')
-    );
+    throw e;
   }
 };
 

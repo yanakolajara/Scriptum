@@ -1,13 +1,6 @@
-import db from './db/dbConfig.js';
+import db from '../db/dbConfig.js';
 import { v4 as uuidv4 } from 'uuid';
 import { generateCode } from '../utils/auth.utils.js';
-import { config } from '../config/config.js';
-import { logger } from '../utils/logger.utils.js';
-import {
-  DatabaseError,
-  InternalServerError,
-  UnauthorizedError,
-} from '../utils/errors.js';
 
 export class UserModel {
   static async getByEmail(email) {
@@ -17,8 +10,7 @@ export class UserModel {
       ]);
       return user;
     } catch (error) {
-      console.log('getByEmail(email) error:', error);
-      throw new InternalServerError(error.message);
+      throw new Error(error.message);
     }
   }
   static async getByID(id) {
@@ -28,8 +20,7 @@ export class UserModel {
       ]);
       return user;
     } catch (error) {
-      console.log('getByEmail(id) error:', error);
-      throw new InternalServerError(error.message);
+      throw new Error(error.message);
     }
   }
   static async getRefreshToken(id) {
@@ -66,7 +57,7 @@ export class UserModel {
       );
       return user;
     } catch (error) {
-      throw new DatabaseError(error.message);
+      throw new Error(error.message);
     }
   }
 
@@ -83,9 +74,8 @@ export class UserModel {
   static async createCode(email) {
     try {
       const code = generateCode();
-      const expiresAt = new Date(
-        Date.now() + config.security.rateLimitWindowMs
-      );
+      const rateLimitMax = 15 * 60 * 1000;
+      const expiresAt = new Date(Date.now() + rateLimitMax);
       await db.one(
         'INSERT INTO mfa_codes (email, code, expires_at) VALUES ($1, $2, $3) RETURNING *',
         [email, code, expiresAt]
@@ -103,7 +93,7 @@ export class UserModel {
         [email, code]
       );
       if (!record || new Date(record.expires_at) < new Date()) {
-        throw new UnauthorizedError('Invalid or expired verification code.');
+        throw new Error('Invalid or expired verification code.');
       }
       return true;
     } catch (error) {
