@@ -15,7 +15,7 @@ import { errorHandler } from './shared/middlewares/error.middleware.js';
 
 //* Setup modules
 import { createUsersRouter } from './services/user-service/index.js';
-import { createEntriesRouter } from './services/entry-service/entries.routes.js';
+import { createEntriesRouter } from './services/entry-service/routes/entries.routes.js';
 import { createUserContextRouter } from './routes/userContext.routes.js';
 import { initializeChatSockets } from './services/chat-service/sockets.service.js';
 
