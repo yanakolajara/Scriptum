@@ -9,4 +9,6 @@ router.post('/', entryController.createEntry);
 router.put('/:entryId', entryController.updateEntry);
 router.delete('/:entryId', entryController.deleteEntry);
 
+// router.post('/generate-from-chat', EntryController.generateFromChat);
+
 export default router;

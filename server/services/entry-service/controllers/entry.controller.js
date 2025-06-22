@@ -1,4 +1,5 @@
 import { EntryModel } from '../models/entry.model.js';
+import { processingService } from '../services/processing.service.js';
 
 export class EntryController {
   constructor() {
@@ -31,6 +32,35 @@ export class EntryController {
       next(error);
     }
   };
+
+  // generateFromChat = async (req, res, next) => {
+  //   try {
+  //     const userId = req.headers['x-user-id'];
+  //     const { transcript, title } = req.body;
+
+  //     if (!userId || !transcript) {
+  //       return res
+  //         .status(400)
+  //         .json({ error: 'User ID and transcript are required.' });
+  //     }
+  //     const summaryContent = await processingService.generateSummary(
+  //       transcript
+  //     );
+
+  //     const newEntry = await entryModel.create({
+  //       userId,
+  //       title: title || `Chat summary - ${new Date().toLocaleDateString()}`,
+  //       content: summaryContent,
+  //       starred: false,
+  //     });
+
+  //     res.status(201).json({ entry: newEntry });
+
+  //     processingService.updateContextInBackground(userId, transcript);
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // };
 
   createEntry = async (req, res, next) => {
     try {
