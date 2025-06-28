@@ -4,7 +4,7 @@ dotenv.config();
 
 import app from './app.js';
 
-const PORT = process.env.PORT || 4001;
+const PORT = process.env.PORT || 4020;
 
 app.listen(PORT, () => {
   console.log(`✅ Entry service running on port ${PORT}`);

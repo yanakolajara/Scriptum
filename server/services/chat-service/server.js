@@ -7,7 +7,7 @@ import { initializeChatSockets } from './socket.js';
 const httpServer = createServer();
 initializeChatSockets(httpServer);
 
-const PORT = process.env.PORT || 4010;
+const PORT = process.env.PORT || 4040;
 
 httpServer.listen(PORT, () =>
   console.log(`✅ Chat service running on port ${PORT}`)

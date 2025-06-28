@@ -1,5 +1,5 @@
 {
-  "name": "user-context-service",
+  "name": "context-service",
   "version": "1.0.0",
   "type": "module",
   "main": "server.js",
@@ -11,6 +11,7 @@
     "db:reset": "psql -U postgres -f db/schema.sql && psql -U postgres -f db/seed.sql"
   },
   "dependencies": {
+    "@google/genai": "^1.6.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "4.21.2",

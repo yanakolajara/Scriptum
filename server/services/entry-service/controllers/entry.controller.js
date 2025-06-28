@@ -1,5 +1,5 @@
 import { EntryModel } from '../models/entry.model.js';
-import { processingService } from '../services/processing.service.js';
+// import { processingService } from '../services/processing.service.js';
 
 export class EntryController {
   constructor() {

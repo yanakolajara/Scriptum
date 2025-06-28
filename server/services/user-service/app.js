@@ -1,6 +1,7 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import usersRouter from './routes/users.routes.js';
+import cors from 'cors';
 
 const app = express();
 
@@ -11,12 +12,10 @@ app.use(cookieParser());
 
 // TODO: Add rate limiter and cors config
 
-app.use('/users', usersRouter);
+app.use('/', usersRouter);
 
-app.get('/', (req, res) => {
-  res.status(200).json({
-    message: 'Welcome to the user service',
-  });
+app.get('/health', (_, res) => {
+  res.status(200).json({ message: 'User service is running' });
 });
 
 app.use((err, req, res, next) => {

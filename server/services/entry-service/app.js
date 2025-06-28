@@ -8,9 +8,9 @@ app.use(cors({ origin: '*', credentials: true }));
 app.use(morgan('dev'));
 app.use(express.json());
 
-app.use('/entries', entriesRouter);
+app.use('/', entriesRouter);
 
-app.use('/', (_, res) => res.status(200).json({ message: 'Hello world!' }));
+app.use('/health', (_, res) => res.send('Entry service is running'));
 
 app.use('*', (req, res) => {
   res.status(404).json({ message: 'Route not found' });
