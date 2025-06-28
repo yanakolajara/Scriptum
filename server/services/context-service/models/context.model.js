@@ -1,25 +1,14 @@
 import db from '../db/dbConfig.js';
 
 export class ContextModel {
-  static async getContextById({ id }) {
-    try {
-      const entry = await db.oneOrNone('SELECT * FROM contexts WHERE id = $1', [
-        id,
-      ]);
-      return entry;
-    } catch (error) {
-      throw new Error(`Error fetching context: ${error.message}`);
-    }
-  }
-
-  static async getContextByUserId({ userId }) {
+  static async getContext({ userId }) {
     console.log('🚀 ~ ContextModel ~ getContextByUserId ~ userId:', userId);
     try {
-      const entry = await db.oneOrNone(
+      const data = await db.oneOrNone(
         'SELECT * FROM contexts WHERE user_id = $1',
         [userId]
       );
-      return entry;
+      return data;
     } catch (error) {
       throw new Error(`Error fetching context: ${error.message}`);
     }
@@ -27,31 +16,35 @@ export class ContextModel {
 
   static async createContext({ userId, context }) {
     try {
-      const newEntry = await db.one(
+      const data = await db.one(
         'INSERT INTO contexts (user_id, context) VALUES ($1, $2) RETURNING *',
         [userId, context]
       );
-      return newEntry;
+      return data;
     } catch (error) {
       throw new Error(`Error creating context: ${error.message}`);
     }
   }
 
-  static async updateContext({ userId, data }) {
+  static async updateContext({ userId, context }) {
     try {
-      const updatedEntry = await db.one(
+      const data = await db.one(
         'UPDATE contexts SET context = $1 WHERE user_id = $2 RETURNING *',
-        [data, userId]
+        [context, userId]
       );
-      return updatedEntry;
+      return data;
     } catch (error) {
       throw new Error(`Error updating context: ${error.message}`);
     }
   }
 
-  static async deleteContext(id) {
+  static async deleteContext({ userId }) {
     try {
-      await db.none('DELETE FROM contexts WHERE user_id = $1', [id]);
+      const data = await db.oneOrNone(
+        'DELETE FROM contexts WHERE user_id = $1 RETURNING *',
+        [userId]
+      );
+      return data;
     } catch (error) {
       throw new Error(`Error deleting context: ${error.message}`);
     }

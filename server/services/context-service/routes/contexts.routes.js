@@ -8,11 +8,10 @@ export const createContextRouter = ({ ContextModel, GeminiService }) => {
     GeminiService,
   });
 
-  router.get('/:id', userContextController.getContextById);
-  router.get('/user/:userId', userContextController.getContextByUserId);
+  router.get('/', userContextController.getContext);
   router.post('/', userContextController.createContext);
   router.put('/', userContextController.updateContext);
-  // router.delete('/:id');
+  router.delete('/', userContextController.deleteContext);
 
   return router;
 };

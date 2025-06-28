@@ -4,32 +4,11 @@ export class ContextController {
     this.geminiServie = new GeminiService();
   }
 
-  getContextById = async (req, res, next) => {
-    const id = req.params.id;
+  getContext = async (req, res, next) => {
+    const userId = req.headers['x-user-id'];
 
     try {
-      const context = await this.contextModel.getContextById({ id });
-      if (!context) {
-        res.status(404).json({ message: 'Context not found' });
-      } else {
-        res.status(200).json({
-          message: 'Context retrieved successfully',
-          data: context,
-        });
-      }
-    } catch (error) {
-      next(error);
-    }
-  };
-
-  getContextByUserId = async (req, res, next) => {
-    const userId = req.params.userId;
-    console.log(
-      '🚀 ~ ContextController ~ getContextByUserId= ~ userId:',
-      userId
-    );
-    try {
-      const context = await this.contextModel.getContextByUserId({ userId });
+      const context = await this.contextModel.getContext({ userId });
       if (!context) {
         res.status(404).json({ message: 'Context not found' });
       } else {
@@ -44,25 +23,22 @@ export class ContextController {
   };
 
   createContext = async (req, res, next) => {
-    try {
-      const chatHistory = req.body.chatHistory;
-      console.log(
-        '🚀 ~ ContextController ~ createContext= ~ chatHistory:',
-        chatHistory
-      );
-      const userId = req.headers['x-user-id'];
-      console.log('🚀 ~ ContextController ~ createContext= ~ userId:', userId);
+    const chat = req.body.chat;
+    const userId = req.headers['x-user-id'];
 
-      const context = await this.geminiServie.generateContext({ chatHistory });
-      console.log(
-        '🚀 ~ ContextController ~ createContext= ~ context:',
-        context
-      );
+    try {
+      const existingContext = await this.contextModel.getContext({ userId });
+      if (existingContext) {
+        return res.status(400).json({
+          message: 'Context already exists',
+        });
+      }
+
+      const context = await this.geminiServie.generateContext({ chat });
       const data = await this.contextModel.createContext({
         context,
         userId,
       });
-      console.log('🚀 ~ ContextController ~ createContext= ~ data:', data);
 
       res.status(201).json({
         message: 'Context created successfully',
@@ -74,22 +50,25 @@ export class ContextController {
   };
 
   updateContext = async (req, res, next) => {
-    try {
-      const chatHistory = req.body.chatHistory;
-      const userId = req.headers['x-user-id'];
+    const chat = req.body.chat;
+    const userId = req.headers['x-user-id'];
 
-      const currentContext = await this.contextModel.getContext(userId);
-      const updatedContext = await this.geminiServie.updateContext({
-        chatHistory,
-        currentContext,
+    try {
+      const context = await this.contextModel.getContext({ userId });
+      if (!context) {
+        return res.status(404).json({ message: 'Context not found' });
+      }
+      const newContext = await this.geminiServie.updateContext({
+        chat,
+        context,
       });
 
-      const data = await this.contextModel.updateContext(
+      const data = await this.contextModel.updateContext({
         userId,
-        newContext.response.text()
-      );
+        context: newContext,
+      });
       res.status(200).json({
-        message: 'User context updated successfully',
+        message: 'Context updated successfully',
         data,
       });
     } catch (error) {
@@ -100,11 +79,14 @@ export class ContextController {
   deleteContext = async (req, res, next) => {
     try {
       const userId = req.headers['x-user-id'];
-
-      await this.contextModel.deleteContext(userId);
-      res.status(200).json({
-        message: 'User context deleted successfully',
-      });
+      const context = await this.contextModel.deleteContext({ userId });
+      if (!context) {
+        res.status(404).json({ message: 'Context not found' });
+      } else {
+        res.status(200).json({
+          message: 'Context deleted successfully',
+        });
+      }
     } catch (error) {
       next(error);
     }

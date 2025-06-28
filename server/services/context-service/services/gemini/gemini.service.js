@@ -1,5 +1,6 @@
 import { GoogleGenAI } from '@google/genai';
 import { generateContextPrompt, updateContextPrompt } from './prompts.js';
+import { generateContextContent, updateContextContent } from './contents.js';
 
 const model = process.env.GEMINI_API_MODEL;
 
@@ -8,40 +9,38 @@ export class GeminiService {
     this.ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
   }
 
-  generateContext = async ({ chatHistory }) => {
+  generateContext = async ({ chat }) => {
+    console.log(chat);
+
     try {
-      return 'hi';
       const context = await this.ai.models.generateContent({
         model,
         config: {
           systemInstruction: generateContextPrompt,
-          thinkingConfig: {
-            thinkingBudget: 0,
-          },
+          // thinkingConfig: {
+          //   thinkingBudget: 0,
+          // },
         },
-        contents: chatHistory,
+        contents: generateContextContent({ chat }),
       });
       console.log(`context: ${context.text}`);
-      return context.content;
+      return context.text;
     } catch (error) {
       console.log(error);
     }
   };
 
   updateContext = async ({ chat, currentContext }) => {
-    return await this.ai.models.generateContent({
+    const updatedContext = await this.ai.models.generateContent({
       model,
       config: {
         systemInstruction: updateContextPrompt,
-        thinkingConfig: {
-          thinkingBudget: 0,
-        },
+        // thinkingConfig: {
+        //   thinkingBudget: 0,
+        // },
       },
-      contents: `
-      current context: ${currentContext}
-      
-      chat history: ${chat}
-      `,
+      contents: updateContextContent({ chat, currentContext }),
     });
+    return updatedContext.text;
   };
 }
