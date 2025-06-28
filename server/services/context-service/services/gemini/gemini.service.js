@@ -10,8 +10,6 @@ export class GeminiService {
   }
 
   generateContext = async ({ chat }) => {
-    console.log(chat);
-
     try {
       const context = await this.ai.models.generateContent({
         model,
@@ -23,24 +21,29 @@ export class GeminiService {
         },
         contents: generateContextContent({ chat }),
       });
-      console.log(`context: ${context.text}`);
       return context.text;
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      return null;
     }
   };
 
   updateContext = async ({ chat, currentContext }) => {
-    const updatedContext = await this.ai.models.generateContent({
-      model,
-      config: {
-        systemInstruction: updateContextPrompt,
-        // thinkingConfig: {
-        //   thinkingBudget: 0,
-        // },
-      },
-      contents: updateContextContent({ chat, currentContext }),
-    });
-    return updatedContext.text;
+    try {
+      const updatedContext = await this.ai.models.generateContent({
+        model,
+        config: {
+          systemInstruction: updateContextPrompt,
+          // thinkingConfig: {
+          //   thinkingBudget: 0,
+          // },
+        },
+        contents: updateContextContent({ chat, currentContext }),
+      });
+      return updatedContext.text;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
   };
 }

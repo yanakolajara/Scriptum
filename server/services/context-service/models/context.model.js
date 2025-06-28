@@ -2,7 +2,6 @@ import db from '../db/dbConfig.js';
 
 export class ContextModel {
   static async getContext({ userId }) {
-    console.log('🚀 ~ ContextModel ~ getContextByUserId ~ userId:', userId);
     try {
       const data = await db.oneOrNone(
         'SELECT * FROM contexts WHERE user_id = $1',
