@@ -1,28 +1,30 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
-import usersRouter from './routes/users.routes.js';
+import { createUserRouter } from './routes/users.routes.js';
 import cors from 'cors';
+import morgan from 'morgan';
 
-const app = express();
+export const createApp = ({ UserModel }) => {
+  const app = express();
 
-app.use(cors({ origin: '*', credentials: true }));
+  app.use(cors({ origin: '*', credentials: true }));
 
-app.use(express.json());
-app.use(cookieParser());
+  app.use(express.json());
+  app.use(cookieParser());
+  app.use(morgan('dev'));
 
-// TODO: Add rate limiter and cors config
+  app.use('/', createUserRouter({ UserModel }));
 
-app.use('/', usersRouter);
-
-app.get('/health', (_, res) => {
-  res.status(200).json({ message: 'User service is running' });
-});
-
-app.use((err, req, res, next) => {
-  res.status(err.status || 500).json({
-    message: err.status === 500 ? 'Internal server error' : err.message,
-    error: err.message,
+  app.get('/health', (_, res) => {
+    res.status(200).json({ message: 'User service is running' });
   });
-});
 
-export default app;
+  app.use((err, req, res, next) => {
+    res.status(err.status || 500).json({
+      message: err.status === 500 ? 'Internal server error' : err.message,
+      error: err.message,
+    });
+  });
+
+  return app;
+};

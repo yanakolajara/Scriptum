@@ -3,15 +3,15 @@ import { ContextController } from '../controllers/context.controller.js';
 
 export const createContextRouter = ({ ContextModel, GeminiService }) => {
   const router = Router();
-  const userContextController = new ContextController({
+  const contextController = new ContextController({
     ContextModel,
     GeminiService,
   });
 
-  router.get('/', userContextController.getContext);
-  router.post('/', userContextController.createContext);
-  router.put('/', userContextController.updateContext);
-  router.delete('/', userContextController.deleteContext);
+  router.get('/', contextController.getContext);
+  router.post('/', contextController.createContext);
+  router.put('/', contextController.updateContext);
+  router.delete('/', contextController.deleteContext);
 
   return router;
 };

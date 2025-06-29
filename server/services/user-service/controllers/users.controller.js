@@ -1,4 +1,3 @@
-import e from 'express';
 import {
   loginDataValidation,
   registerDataValidation,
@@ -10,39 +9,77 @@ import {
 import { comparePassword, createToken } from '../utils/auth.utils.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { UserModel } from '../models/user.model.js';
 
 export class UsersController {
-  constructor() {
+  constructor({ UserModel }) {
     this.userModel = UserModel;
   }
 
-  register = async (req, res, next) => {
+  getByEmail = async (req, res, next) => {
+    const email = req.params.email;
     try {
-      // Validate data
-      const data = registerDataValidation(req.body);
+      const user = await this.userModel.getByEmail({ email });
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      res.status(200).json(user);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  get = async (req, res, next) => {
+    const id = req.headers['x-user-id'];
+    try {
+      const user = await this.userModel.get({ id });
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      res.status(200).json(user);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  create = async (req, res, next) => {
+    const body = req.body;
+    try {
       // Verify if user exists in database
-      const userExists = await this.userModel.getByEmail(data.email);
-      if (userExists) throw new Error('User already exists');
+      const userExists = await this.userModel.getByEmail({
+        email: body.email,
+      });
+      if (userExists) {
+        res.status(409).json({
+          message: 'User already exists with this email.',
+        });
+        return;
+      }
       //Hash password
-      const hashedPassword = await bcrypt.hash(data.password, 10);
-      const newUser = await this.userModel.register({
-        ...data,
+      const hashedPassword = await bcrypt.hash(body.password, 10);
+      const data = await this.userModel.create({
+        ...body,
         password: hashedPassword,
       });
+
       // Create email verification token
       const verificationToken = jwt.sign(
-        { email: newUser.email },
+        { email: data.email },
         process.env.JWT_SECRET,
         { expiresIn: '1d' }
       );
 
       // Send email verification token
-      await sendEmailVerification(newUser.email, verificationToken);
+      await sendEmailVerification(data.email, verificationToken);
 
       res.status(201).json({
         message:
           'User registered successfully, verify email to activate account.',
+        user: {
+          ...data,
+          password: undefined,
+          is_verified: undefined,
+          mfa: undefined,
+        },
       });
     } catch (error) {
       next(error);
@@ -147,14 +184,33 @@ export class UsersController {
   };
 
   edit = async (req, res, next) => {
-    const { id } = req.user.id;
+    const id = req.headers['x-user-id'];
+    const body = req.body;
     try {
-      await this.userModel.update({
+      const user = await this.userModel.get({ id });
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+
+      const data = await this.userModel.update({
         id,
-        ...req.body,
+        user: {
+          email: body.email || user.email,
+          password: body.password || user.password,
+          first_name: body.first_name || user.first_name,
+          middle_name: body.middle_name || user.middle_name,
+          last_name: body.last_name || user.last_name,
+        },
       });
       res.status(200).json({
         message: 'User updated successfully',
+        user: {
+          ...data,
+          password: undefined,
+          is_verified: undefined,
+          mfa: undefined,
+          id: undefined,
+        },
       });
     } catch (error) {
       next(error);
@@ -162,8 +218,13 @@ export class UsersController {
   };
 
   delete = async (req, res, next) => {
-    const { id } = req.user.id;
+    const id = req.headers['x-user-id'];
     try {
+      const user = await this.userModel.get({ id });
+      if (!user) {
+        res.status(404).json({ message: 'User not found' });
+        return;
+      }
       await this.userModel.delete({ id });
       res.status(200).json({ message: 'User deleted successfully' });
     } catch (error) {

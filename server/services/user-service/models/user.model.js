@@ -3,17 +3,17 @@ import { v4 as uuidv4 } from 'uuid';
 import { generateCode } from '../utils/auth.utils.js';
 
 export class UserModel {
-  static async getByEmail(email) {
+  static async getByEmail({ email }) {
     try {
-      const user = await db.oneOrNone('SELECT * FROM users WHERE email = $1', [
+      const data = await db.oneOrNone('SELECT * FROM users WHERE email = $1', [
         email,
       ]);
-      return user;
+      return data;
     } catch (error) {
       throw new Error(error.message);
     }
   }
-  static async getByID(id) {
+  static async get({ id }) {
     try {
       const user = await db.oneOrNone('SELECT * FROM users WHERE id = $1', [
         id,
@@ -42,19 +42,15 @@ export class UserModel {
       throw error;
     }
   }
-  static async register({
-    email,
-    password,
-    first_name,
-    middle_name,
-    last_name,
-  }) {
+  static async create({ email, password, first_name, middle_name, last_name }) {
     try {
       const id = uuidv4();
+
       const user = await db.one(
         'INSERT INTO users (id, email, password, first_name, middle_name, last_name) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
         [id, email, password, first_name, middle_name, last_name]
       );
+      console.log(user);
       return user;
     } catch (error) {
       throw new Error(error.message);
@@ -109,25 +105,20 @@ export class UserModel {
     }
   }
 
-  static async update(id, userData) {
-    const {
-      email = null,
-      password = null,
-      first_name = null,
-      middle_name = null,
-      last_name = null,
-    } = userData;
+  static async update({ id, user }) {
+    const { email, password, first_name, middle_name, last_name } = user;
     try {
-      await db.one(
+      const data = await db.one(
         'UPDATE users SET email = COALESCE($1, email), password = COALESCE($2, password), first_name = COALESCE($3, first_name), middle_name = COALESCE($4, middle_name), last_name = COALESCE($5, last_name) WHERE id = $6 RETURNING *',
         [email, password, first_name, middle_name, last_name, id]
       );
+      return data;
     } catch (error) {
       throw error;
     }
   }
 
-  static async delete(id) {
+  static async delete({ id }) {
     try {
       await db.one('DELETE FROM users WHERE id = $1 RETURNING *', [id]);
     } catch (error) {

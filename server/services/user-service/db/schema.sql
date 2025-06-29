@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS scriptum_users;
-CREATE DATABASE scriptum_users;
-\c scriptum_users;
+DROP DATABASE IF EXISTS user_service;
+CREATE DATABASE user_service;
+\c user_service;
 
 DROP TABLE IF EXISTS mfa_codes;
 DROP TABLE IF EXISTS users;
