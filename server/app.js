@@ -98,9 +98,18 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(morgan('dev'));
 
-app.use('/users', usersRouter);
-// app.use('/entries', entriesRouter);
-
 app.get('/health', (_, res) => res.send('Gateway running'));
+
+// app.use('/auth', authRouter);
+app.use('/users', usersRouter);
+// app.use('/chat', chatRouter);
+// app.use('/entry', entryRouter);
+// app.use('/context', contextRouter);
+
+app.use((err, req, res, next) => {
+  const status = err.response.status || 500;
+  const message = err.response.data.message || 'Internal server error';
+  res.status(status).json({ message });
+});
 
 export default app;

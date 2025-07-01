@@ -15,7 +15,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
     "bcrypt": "5.1.1",
@@ -46,5 +45,9 @@
     "transform": {
       "^.+\\.js$": "babel-jest"
     }
-  }
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "description": ""
 }

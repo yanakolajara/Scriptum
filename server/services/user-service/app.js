@@ -13,11 +13,11 @@ export const createApp = ({ UserModel }) => {
   app.use(cookieParser());
   app.use(morgan('dev'));
 
-  app.use('/', createUserRouter({ UserModel }));
-
   app.get('/health', (_, res) => {
     res.status(200).json({ message: 'User service is running' });
   });
+
+  app.use('/', createUserRouter({ UserModel }));
 
   app.use((err, req, res, next) => {
     res.status(err.status || 500).json({

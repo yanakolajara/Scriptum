@@ -29,7 +29,7 @@ export class UsersController {
   };
 
   get = async (req, res, next) => {
-    const id = req.headers['x-user-id'];
+    const id = req.params.id;
     try {
       const user = await this.userModel.get({ id });
       if (!user) {
@@ -86,86 +86,6 @@ export class UsersController {
     }
   };
 
-  /**
-   * Changes the is_verified property of a user in database to true.
-   * @param {*} req
-   * @param {*} res
-   * @param {*} next
-   */
-  verifyEmail = async (req, res, next) => {
-    try {
-      const { token } = req.body;
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      const user = await this.userModel.getByEmail(decoded.email);
-      if (!user) throw new Error('User not found.');
-      await this.userModel.verifyEmail(user.email);
-      res.status(200).json({
-        message: 'User verified successfully.',
-      });
-    } catch (error) {
-      next(error);
-    }
-  };
-
-  login = async (req, res, next) => {
-    try {
-      // Validate body data
-      const data = loginDataValidation(req.body);
-      // Verify if user exists in database
-      const dbData = await this.userModel.getByEmail(data.email);
-      // Throw error if no user was found with the provided email or password
-      if (!dbData) throw new Error('Invalid credentials.');
-      // Check if user is verified
-      if (!dbData.is_verified) throw new Error('Email not verified.');
-      // Compare password
-      const match = await comparePassword(data.password, dbData.password);
-      // Throw error if password is incorrect
-      if (!match) throw new Error('Invalid credentials.');
-      if (dbData.mfa) {
-        res.status(200).json({
-          message: 'Authentication code sent to email.',
-          mfa_required: true,
-        });
-      } else {
-        const accessToken = jwt.sign(
-          {
-            id: dbData.id,
-            email: dbData.email,
-            first_name: dbData.first_name,
-            middle_name: dbData.middle_name,
-            last_name: dbData.last_name,
-          },
-          process.env.JWT_SECRET,
-          { expiresIn: '7d' }
-        ); //! Remove expiration date after refresh token is implemented
-
-        res
-          .cookie('access_token', accessToken, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax', // Critical for cross-domain
-            maxAge: 24 * 60 * 60 * 1000, // 24 hours
-            path: '/',
-          })
-          .status(200)
-          .json({
-            message: 'User logged in successfully.',
-            mfa_required: false,
-            user: {
-              ...dbData,
-              id: undefined,
-              password: undefined,
-              is_verified: undefined,
-              mfa: undefined,
-            },
-          });
-      }
-      // Create tokens
-    } catch (error) {
-      next(error);
-    }
-  };
-
   logout = async (req, res, next) => {
     try {
       res
@@ -184,7 +104,7 @@ export class UsersController {
   };
 
   edit = async (req, res, next) => {
-    const id = req.headers['x-user-id'];
+    const id = req.params.id;
     const body = req.body;
     try {
       const user = await this.userModel.get({ id });
@@ -218,7 +138,7 @@ export class UsersController {
   };
 
   delete = async (req, res, next) => {
-    const id = req.headers['x-user-id'];
+    const id = req.params.id;
     try {
       const user = await this.userModel.get({ id });
       if (!user) {
@@ -232,25 +152,25 @@ export class UsersController {
     }
   };
 
-  checkAuth = async (req, res, next) => {
-    try {
-      const token = req.cookies.access_token;
-      if (!token) throw new Error('No token provided.');
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      const user = await this.userModel.getByEmail(decoded.email);
-      if (!user) throw new Error('User not found.');
-      res.status(200).json({
-        message: 'User authenticated successfully.',
-        user: {
-          ...user,
-          id: undefined,
-          password: undefined,
-          is_verified: undefined,
-          mfa: undefined,
-        },
-      });
-    } catch (error) {
-      next(error);
-    }
-  };
+  // checkAuth = async (req, res, next) => {
+  //   try {
+  //     const token = req.cookies.access_token;
+  //     if (!token) throw new Error('No token provided.');
+  //     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  //     const user = await this.userModel.getByEmail(decoded.email);
+  //     if (!user) throw new Error('User not found.');
+  //     res.status(200).json({
+  //       message: 'User authenticated successfully.',
+  //       user: {
+  //         ...user,
+  //         id: undefined,
+  //         password: undefined,
+  //         is_verified: undefined,
+  //         mfa: undefined,
+  //       },
+  //     });
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // };
 }
