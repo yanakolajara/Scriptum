@@ -4,7 +4,8 @@ import axios from 'axios';
 axios.defaults.withCredentials = true;
 
 // Create axios instance with proper configuration
-const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+const localURL = 'http://localhost:4000';
+const apiUrl = import.meta.env.VITE_API_URL || localURL;
 const isLocalDev =
   window.location.hostname === 'localhost' ||
   window.location.hostname === '127.0.0.1';
@@ -14,7 +15,7 @@ axios.defaults.headers.common['Content-Type'] = 'application/json';
 axios.defaults.headers.common['Accept'] = 'application/json';
 
 const axiosInstance = axios.create({
-  baseURL: isLocalDev ? 'http://localhost:8080' : apiUrl,
+  baseURL: isLocalDev ? localURL : apiUrl,
   timeout: 30000, // Increased timeout for mobile networks
   headers: {
     'Content-Type': 'application/json',

@@ -26,6 +26,7 @@ export const useLogin = () => {
     e.preventDefault();
     setIsSubmitting(true);
     login(formData)
+      // todo: fix
       .then((res) => {
         toast.success(res.data.message);
         navigate('/dashboard');

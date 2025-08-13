@@ -18,6 +18,7 @@ const AuthProvider = ({ children }) => {
     axios
       .post('/users/login', data)
       .then((res) => {
+        console.log('tesafds');
         setIsAuthenticated(true);
         setUser(res.data.user);
         return res;

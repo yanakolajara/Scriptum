@@ -12,6 +12,17 @@ export const createApp = ({ UserModel }) => {
   app.use(express.json());
   app.use(cookieParser());
   app.use(morgan('dev'));
+  app.use((req, res, next) => {
+    console.log({
+      url: req.url,
+      method: req.method,
+      body: req.body,
+      query: req.query,
+      params: req.params,
+      cookies: req.cookies,
+    });
+    next();
+  });
 
   app.get('/health', (_, res) => {
     res.status(200).json({ message: 'User service is running' });
