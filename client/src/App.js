@@ -30,19 +30,11 @@ function App() {
             <Route path='/check-email' element={<CheckEmail />} />
             <Route path='/verify-email' element={<VerifyEmail />} />
             <Route path='/twoFactor' element={<TwoFactor />} />
-
-            <Route
-              path='/dashboard'
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            />
-            <Route path='/chat' element={<Chat />} />
-            <Route path='/edit-entry' element={<EditEntry />} />
-
-            <Route path='/test' element={<div>test</div>} />
+            <Route element={<ProtectedRoute />}>
+              <Route path='/dashboard' element={<Dashboard />} />
+              <Route path='/chat' element={<Chat />} />
+              <Route path='/edit-entry' element={<EditEntry />} />
+            </Route>
             <Route path='*' element={<NotFound />} />
           </Routes>
         </div>

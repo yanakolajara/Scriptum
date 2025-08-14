@@ -1,22 +1,12 @@
-import React from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
 import { useAuthContext } from '@/providers/auth.provider';
+import { Navigate, Outlet } from 'react-router-dom';
 
-export const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated, loading } = useAuthContext();
-  const location = useLocation();
+export const ProtectedRoute = () => {
+  const { user, loading } = useAuthContext();
 
   if (loading) {
-    return (
-      <div className='flex items-center justify-center h-screen'>
-        <div className='text-xl'>Loading...</div>
-      </div>
-    );
+    return <div>Loading...</div>; // Or a spinner
   }
 
-  if (!isAuthenticated) {
-    // return <Navigate to='/login' state={{ from: location }} replace />;
-  }
-
-  return children;
+  return user ? <Outlet /> : <Navigate to='/login' replace />;
 };
