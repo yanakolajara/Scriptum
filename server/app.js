@@ -2,22 +2,15 @@
 import express from 'express';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
-import jwt from 'jsonwebtoken';
-import cors from 'cors';
 import { createServer } from 'node:http';
-
-//* Setup config
-import { config } from './config/config.js';
-
-//* Setup middlewares
 import { corsMiddleware } from './middlewares/cors.middleware.js';
 import { errorHandler } from './middlewares/error.middleware.js';
-
-//* Setup modules
 import { createUsersRouter } from './routes/users.routes.js';
 import { createEntriesRouter } from './routes/entries.routes.js';
 import { createUserContextRouter } from './routes/userContext.routes.js';
 import { initializeChatSockets } from './services/sockets.service.js';
+import { createAuthRouter } from './routes/auth.routes.js';
+import db from './models/db/dbConfig.js';
 
 export const createApp = (models) => {
   const app = express();
@@ -25,52 +18,12 @@ export const createApp = (models) => {
   app.use(morgan('dev'));
   app.use(express.json());
   app.use(cookieParser());
-
-  const corsOptions = {
-    credentials: true,
-
-    origin: [
-      'https://www.scriptum-app.vercel.app',
-      'https://scriptum-client-n4f89nqz9-yanakolajaras-projects.vercel.app',
-      'https://scriptum-client-git-fix-mobile-au-b65c00-yanakolajaras-projects.vercel.app',
-      'https://scriptum-app.vercel.app',
-      'http://localhost:3000',
-    ],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
-    exposedHeaders: ['set-cookie'],
-  };
-  app.use(cors(corsOptions));
-  // Setup web sockets
-  // Return app
-
-  app.options('*', (req, res) => {
-    res.sendStatus(200);
-  });
+  app.use(corsMiddleware());
 
   // Middleware to check auth
-  app.use((req, res, next) => {
-    req.session = { user: null };
-    const token =
-      req.cookies.access_token ||
-      (req.headers.authorization && req.headers.authorization.split(' ')[1]);
-
-    if (!token) {
-      return next();
-    }
-
-    try {
-      const data = jwt.verify(token, config.jwt.secret);
-      req.session = { user: data };
-    } catch (error) {
-      req.session = { user: null };
-    }
-    next();
-  });
-
+  app.use('/auth', createAuthRouter(models.userModel));
   app.use('/users', createUsersRouter(models.userModel));
   app.use('/entries', createEntriesRouter(models.entryModel));
-  // app.use('/comments', createCommentsRouter({ commentModel }))
   app.use('/user-context', createUserContextRouter(models.userContextModel));
   app.get('/', (req, res) => {
     res.status(200).json({ message: 'Welcome to Scriptum API' });

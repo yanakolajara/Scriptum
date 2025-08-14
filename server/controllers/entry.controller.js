@@ -9,6 +9,7 @@ export class EntryController {
   getAllEntries = async (req, res, next) => {
     try {
       const user = req.session.user;
+      console.log('🚀 ~ EntryController ~ user:', user);
       if (!user) throw new UnauthorizedError('User not logged in.');
       const entries = await this.entryModel.getAllEntries(user.id);
       res

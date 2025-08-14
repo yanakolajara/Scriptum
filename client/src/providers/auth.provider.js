@@ -8,55 +8,77 @@ const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const register = (data) =>
-    axios
-      .post('/users/register', data)
-      .then((res) => res.data)
-      .catch((error) => error.message);
+  async function register(data) {
+    try {
+      const response = await axios.post('/users/register', data);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
 
-  const login = (data) =>
-    axios
-      .post('/users/login', data)
-      .then((res) => {
-        setIsAuthenticated(true);
-        setUser(res.data.user);
-        return res;
-      })
-      .catch((error) => {
-        throw error;
-      });
+  async function login(data) {
+    try {
+      const response = await axios.post('/auth/login', data);
+      setIsAuthenticated(true);
+      setUser(response.data.user);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
 
-  const logout = async () => await axios.post('/users/logout');
-  const verify = (data) =>
-    axios
-      .post('/users/verify', data)
-      .then((res) => res.data)
-      .catch((error) => error.message);
+  async function logout() {
+    try {
+      await axios.post('/users/logout');
+      setIsAuthenticated(false);
+      setUser(null);
+    } catch (error) {
+      throw error;
+    }
+  }
 
-  const resendCode = (data) =>
-    axios
-      .post('/users/resend-code', data)
-      .then((res) => res.data)
-      .catch((error) => error.message);
+  async function verify() {
+    try {
+      const response = await axios.get('/users/verify');
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
 
-  const verifyEmail = (data) =>
-    axios
-      .post('/users/verify-email', data)
-      .then((res) => res.data)
-      .catch((error) => error.message);
+  async function resendCode(data) {
+    try {
+      const response = await axios.post('/users/resend-code', data);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
 
-  const checkAuth = () =>
-    axios
-      .get('/users/check-auth')
-      .then((res) => {
-        setIsAuthenticated(true);
-        setUser(res.data.user);
-      })
-      .catch((error) => {
-        setIsAuthenticated(false);
-        setUser(null);
-      })
-      .finally(() => setLoading(false));
+  async function verifyEmail() {
+    try {
+      const response = await axios.get('/users/verify-email');
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async function checkAuth() {
+    try {
+      const response = await axios.get('/auth/check');
+      setUser(response.data.user);
+      setIsAuthenticated(true);
+      setLoading(false);
+      return response;
+    } catch (error) {
+      setUser(null);
+      setIsAuthenticated(false);
+      setLoading(false);
+      throw error;
+    }
+  }
 
   useEffect(() => {
     checkAuth();
