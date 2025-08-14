@@ -30,7 +30,7 @@ const AuthProvider = ({ children }) => {
 
   async function logout() {
     try {
-      await axios.post('/users/logout');
+      await axios.post('/auth/logout');
       setIsAuthenticated(false);
       setUser(null);
     } catch (error) {
@@ -40,7 +40,7 @@ const AuthProvider = ({ children }) => {
 
   async function verify() {
     try {
-      const response = await axios.get('/users/verify');
+      const response = await axios.get('/auth/verify');
       return response;
     } catch (error) {
       throw error;
@@ -49,7 +49,7 @@ const AuthProvider = ({ children }) => {
 
   async function resendCode(data) {
     try {
-      const response = await axios.post('/users/resend-code', data);
+      const response = await axios.post('/auth/resend-code', data);
       return response;
     } catch (error) {
       throw error;
@@ -58,7 +58,7 @@ const AuthProvider = ({ children }) => {
 
   async function verifyEmail() {
     try {
-      const response = await axios.get('/users/verify-email');
+      const response = await axios.get('/auth/verify-email');
       return response;
     } catch (error) {
       throw error;

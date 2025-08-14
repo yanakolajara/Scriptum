@@ -12,13 +12,11 @@ import {
 export class UserModel {
   static async getByEmail(email) {
     try {
-      console.log(email);
       const user = await db.oneOrNone('SELECT * FROM users WHERE email = $1', [
         email,
       ]);
       return user;
     } catch (error) {
-      console.log('FDSAFDSA');
       throw new InternalServerError(error.message);
     }
   }
@@ -29,7 +27,6 @@ export class UserModel {
       ]);
       return user;
     } catch (error) {
-      console.log('getByEmail(id) error:', error);
       throw new InternalServerError(error.message);
     }
   }
