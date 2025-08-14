@@ -15,9 +15,14 @@ export function createAuthRouter(userModel) {
       const decoded = jwt.verify(token, config.jwt.secret);
       const user = await userModel.getByEmail(decoded.email);
       if (!user) throw new Error();
-      res
-        .status(200)
-        .json({ message: 'Authenticated', user: { email: user.email } });
+      res.status(200).json({
+        message: 'Authenticated',
+        user: {
+          firstName: user.first_name,
+          lastName: user.last_name,
+          email: user.email,
+        },
+      });
     } catch (error) {
       res.clearCookie('access_token', {
         httpOnly: true,

@@ -74,7 +74,7 @@ export default function Navbar() {
           {/* <img src='' alt='profile-image' /> */}
           <HiUser className='profile__avatar' fill='#fff' />
           <p className='profile__name'>
-            {user.first_name} {user.last_name}
+            {user.firstName} {user.lastName}
           </p>
         </div>
       )}
