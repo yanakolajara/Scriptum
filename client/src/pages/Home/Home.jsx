@@ -1,29 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../providers/auth.provider';
 import { CTA } from '@/components/CTA/CTA.jsx';
 import heroImage from './assets/images/hero-image.png';
 import './Home.scss';
+import { Loader } from '@/components/Loader/Loader';
 
 export default function Home() {
   const { user, loading: authLoading } = useAuthContext();
   const navigate = useNavigate();
 
-  React.useEffect(() => {
-    // Only redirect if auth loading is complete and user exists
+  useEffect(() => {
     if (!authLoading && user) {
       console.log('User authenticated, redirecting to dashboard');
       navigate('/dashboard');
     }
   }, [user, authLoading, navigate]);
 
-  // Show loading while auth is being determined
   if (authLoading) {
     return (
       <main className='hero'>
-        <div className='hero-content'>
-          <h1>Loading...</h1>
-        </div>
+        <Loader />
       </main>
     );
   }

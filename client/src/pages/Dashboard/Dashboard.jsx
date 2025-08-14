@@ -12,6 +12,7 @@ export default function Dashboard() {
   const [entries, setEntries] = useState(null);
   const [loading, setLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
+  const { user } = useAuthContext();
   const navigate = useNavigate();
 
   const sortArrByKey = (arr, key) =>
@@ -44,7 +45,12 @@ export default function Dashboard() {
     }
   }, [loading, navigate, handleDelete]);
 
-  // Show loading while auth is loading or entries are loading
+  useEffect(() => {
+    if (!user) {
+      navigate('/');
+    }
+  }, [user]);
+
   if (loading) {
     return (
       <main className='dashboard'>

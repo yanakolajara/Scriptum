@@ -10,6 +10,7 @@ import './Navbar.scss';
 export default function Navbar() {
   const { user, logout } = useAuthContext();
   const navigate = useNavigate();
+
   const handleLogout = (e) => {
     e.preventDefault();
     logout()
