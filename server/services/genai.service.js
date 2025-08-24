@@ -25,16 +25,15 @@ export class GenaiChat {
     this.chat = this.model.startChat({
       history: [],
       generationConfig: {
-        maxOutputTokens: 500,
+        maxOutputTokens: 100,
       },
     });
   }
 
   async sendMessage(message) {
-    const messageId = uuidv4();
     try {
-      const res = await this.chat.sendMessage(message);
-      return { text: res.response.text(), messageId };
+      const data = await this.chat.sendMessage(message);
+      return data.response.text();
     } catch (e) {
       console.error('Error in sendMessage:', e.message);
     }

@@ -11,7 +11,7 @@ export const initializeChatSockets = (httpServer) => {
     cors: { origin: '*' },
     credentials: true,
   });
-
+  
   io.use((socket, next) => {
     try {
       const cookies = parseCookies(socket.handshake.headers.cookie || '');
@@ -44,11 +44,12 @@ export const initializeChatSockets = (httpServer) => {
     }
 
     const genaiChat = new GenaiChat(userContext);
+    socket.emit('connected', { response: 'Connected successfully' });
 
-    socket.on('message', async ({ message }) => {
+    socket.on('message', async (message) => {
       try {
-        const res = await genaiChat.sendMessage(message);
-        socket.emit('response', { response: res });
+        const response = await genaiChat.sendMessage(message);
+        socket.emit('response', response);
       } catch (error) {
         console.error('Error in message:', error.message);
         socket.emit('error', { error: error.message });
