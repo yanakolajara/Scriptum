@@ -3,8 +3,10 @@ import { useChat } from './hooks/useChat';
 import { useVoiceMode } from './hooks/useVoiceMode.js';
 import { Message } from './components/Message';
 import { Feed } from './components/Feed';
-import { TextMode } from './components/TextMode';
+import { TextMode } from './TextMode';
 import { Composer } from './components/Composer';
+import { VoiceMode } from './VoiceMode';
+import { ModeSelector } from './components/ModeSelector';
 import './Chat.scss';
 
 const Chat = () => {
@@ -26,21 +28,13 @@ const Chat = () => {
   });
 
   if (!chatMode) {
-    return (
-      <>
-        <button onClick={() => setChatMode('voice')}>Voice</button>
-        <button onClick={() => setChatMode('text')}>Chat</button>
-      </>
-    );
+    return <ModeSelector setChatMode={setChatMode} />;
   }
 
   return (
     <>
       {chatMode == 'text' ? (
         <TextMode>
-          <div className='chat-header'>
-            <h2>ScriptumAI</h2>
-          </div>
           <Feed
             messages={messages}
             renderMessage={({ role, text }) => (
@@ -56,22 +50,15 @@ const Chat = () => {
           />
         </TextMode>
       ) : (
-        <div className='voice-interface'>
-          <p>Voice mode active. Speak now...</p>
-          <Feed
-            messages={messages}
-            renderMessage={({ role, text }) => (
-              <Message role={role} text={text} />
-            )}
-          />
-          <button
-            onClick={generateEntry}
-            className='generate-button'
-            disabled={!messages.length}
-          >
-            Generate Entry
-          </button>
-        </div>
+        <VoiceMode
+          messages={messages}
+          generateEntry={generateEntry}
+          isListening={false} // You'll need to add this state
+          isProcessing={waitingResponse}
+          isSpeaking={false} // You'll need to add this state
+          onStartListening={() => {}} // You'll need to implement this
+          onStopListening={() => {}} // You'll need to implement this
+        />
       )}
     </>
   );

@@ -75,7 +75,9 @@ export function useChat() {
     };
   }, [url]);
 
-  useEffect(() => {}, [chatMode]);
+  useEffect(() => {
+    console.log('MODE:', chatMode);
+  }, [chatMode]);
 
   useEffect(() => {
     if (messages.length > 0) {
