@@ -26,7 +26,9 @@ export class UsersController {
       const data = registerDataValidation(req.body);
       // Verify if user exists in database
       const userExists = await this.userModel.getByEmail(data.email);
-      if (userExists) throw new DuplicateError('Email already exists.');
+      if (userExists) {
+        return res.status(409).json({ message: 'Email already in use.' });
+      }
       //Hash password
       const hashedPassword = await bcrypt.hash(data.password, 10);
       const newUser = await this.userModel.register({

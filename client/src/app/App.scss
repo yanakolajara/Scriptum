@@ -1,0 +1,55 @@
+.app {
+  align-items: flex-start;
+  background: #fff;
+}
+
+.main-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100vw;
+  height: calc(100vh - 64px); // Use height instead of min-height
+  overflow: hidden;
+  background: #fff;
+}
+
+/* e.g. App.scss or Layout.scss */
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100vw;
+  background: #fff;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  min-height: calc(100vh - 64px); // adjust for navbar height
+  width: 100vw;
+  overflow: hidden;
+}
+
+/* Responsive Design */
+
+/* Mobile devices (phones, 768px and down) */
+@media only screen and (max-width: 768px) {
+  .main-container {
+    padding: 8px 0;
+    min-height: calc(100vh - 56px); // Slightly smaller navbar on mobile
+  }
+}
+
+/* Tablet devices (769px to 1024px) */
+@media only screen and (min-width: 769px) and (max-width: 1024px) {
+  .main-container {
+    padding: 16px 0;
+    min-height: calc(100vh - 64px);
+  }
+}

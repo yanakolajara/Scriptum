@@ -1,0 +1,72 @@
+.chat-input-area {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.composer-form {
+  width: 100%;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  background: #f6f8fa;
+  border-radius: 12px;
+  padding: 10px 16px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+}
+
+.input-field {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 1.08rem;
+  padding: 8px;
+  outline: none;
+  color: #222;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.send-button {
+  background: var(--accent, #4f46e5);
+  border: none;
+  color: #fff;
+  border-radius: 8px;
+  padding: 6px 10px;
+  margin-left: 8px;
+  cursor: pointer;
+  transition: background 0.18s;
+  display: flex;
+  align-items: center;
+}
+
+.send-button:disabled {
+  background: #c7d2fe;
+  cursor: not-allowed;
+}
+
+.generate-button {
+  background: #fff;
+  border: 1px solid var(--accent, #4f46e5);
+  color: var(--accent, #4f46e5);
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+}
+
+.generate-button:disabled {
+  background: #f3f4f6;
+  color: #b3b3b3;
+  border-color: #e5e8eb;
+  cursor: not-allowed;
+}

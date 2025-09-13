@@ -52,6 +52,7 @@ export class UserContextController {
 
   updateUserContext = async (req, res, next) => {
     try {
+      console.log(req.headers);
       const user = req.session.user;
       console.log(user);
       if (!user) throw new UnauthorizedError('User not logged in.');

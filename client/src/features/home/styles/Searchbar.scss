@@ -1,0 +1,12 @@
+.dashboard__searchbar {
+  display: flex;
+  gap: 10px;
+  &-input {
+    flex: 1;
+    border-radius: 10px;
+    border: 0;
+    background-color: #f0f0f0;
+    height: 44px;
+    padding: 0px 8px;
+  }
+}

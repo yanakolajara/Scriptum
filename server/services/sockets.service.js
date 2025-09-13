@@ -11,7 +11,7 @@ export const initializeChatSockets = (httpServer) => {
     cors: { origin: '*' },
     credentials: true,
   });
-  
+
   io.use((socket, next) => {
     try {
       const cookies = parseCookies(socket.handshake.headers.cookie || '');
@@ -30,6 +30,7 @@ export const initializeChatSockets = (httpServer) => {
   });
 
   io.on('connection', async (socket) => {
+    // console.log(socket);
     let userContext;
     userContext = await db.oneOrNone(
       'SELECT * FROM user_contexts WHERE user_id = $1',
@@ -45,6 +46,11 @@ export const initializeChatSockets = (httpServer) => {
 
     const genaiChat = new GenaiChat(userContext);
     socket.emit('connected', { response: 'Connected successfully' });
+
+    socket.on('start-chat', async (history) => {
+      genaiChat.startChat(history || []);
+      socket.emit('chat-started', { response: 'Chat started' });
+    });
 
     socket.on('message', async (message) => {
       try {

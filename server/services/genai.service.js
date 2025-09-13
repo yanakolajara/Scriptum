@@ -22,12 +22,20 @@ export class GenaiChat {
     this.model = this.genAI.getGenerativeModel(
       modelSettings(userContext || {})
     );
-    this.chat = this.model.startChat({
-      history: [],
-      generationConfig: {
-        maxOutputTokens: 100,
-      },
-    });
+    this.chat = null;
+  }
+
+  startChat(history = []) {
+    try {
+      this.chat = this.model.startChat({
+        history,
+        generationConfig: {
+          maxOutputTokens: 100,
+        },
+      });
+    } catch (error) {
+      console.error('Error in startChat:', error.message);
+    }
   }
 
   async sendMessage(message) {
